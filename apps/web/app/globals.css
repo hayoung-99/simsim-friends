@@ -605,12 +605,49 @@ h3 { font-size: 1.02rem; font-weight: 700; letter-spacing: -0.005em; line-height
   background: var(--sunk);
   overflow: hidden;
 }
-.duo-glass img {
+/*
+ * 왼쪽 창의 고양이(정지 그림)와 오른쪽 창의 춤추는 칸이 **같은 자리에 같은 크기로**
+ * 서야 해서 위치 규칙을 둘이 나눠 쓴다.
+ *
+ * `> img` 로 좁힌 것이 중요하다. 시트 이미지는 `.duo-dancer` 안에 들어 있는데,
+ * 여기 걸리면 창 대신 시트가 통째로 자리를 잡아 버린다. 시트 쪽은 아래
+ * `.duo-dancer img` 가 따로 맡는다.
+ */
+.duo-glass > img,
+.duo-dancer {
   position: absolute;
   left: 50%;
   bottom: 4%;
   width: 62%;
   transform: translateX(-50%);
+}
+
+/*
+ * 춤은 **열두 칸짜리 시트에서 한 칸만 내다보는 창**이다.
+ *
+ * 동영상이 아니라 정지 그림 한 장인 것이 핵심이다. Safari 는 WebM 의 알파를 살려
+ * 주지 않아 캐릭터가 검은 네모 위에 뜨고, 이미지 태그로 얹은 애니메이션 WebP 는 재생
+ * 시점을 잡을 수 없어 **누르는 것과 춤추는 것의 인과가 깨진다** (이 장면의 뜻이
+ * 바로 그 인과다 — 위 주석 참고). 시트는 아래 keyframes 가 직접 넘기므로 타이밍을
+ * 이 파일이 쥔다. 자바스크립트는 여전히 한 줄도 쓰지 않는다.
+ *
+ * 시트는 `apps/desktop/scripts/make-site-images.js` 의 `SHEETS` 가 만든다.
+ * **칸 수를 바꾸면 여기 `width` 와 아래 `steps()` 를 함께 고쳐야 한다.**
+ */
+.duo-dancer {
+  aspect-ratio: 320 / 380;
+  overflow: hidden;
+}
+
+.duo-dancer img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* 열두 칸이 한 줄로 있으므로 한 칸이 창을 꽉 채우려면 열두 배로 늘린다 */
+  width: 1200%;
+  height: 100%;
+  /* 맨 위의 전역 `img { max-width: 100%; height: auto }` 를 걷어낸다 */
+  max-width: none;
 }
 
 .duo-screen figcaption {
@@ -647,12 +684,17 @@ h3 { font-size: 1.02rem; font-weight: 700; letter-spacing: -0.005em; line-height
 @media (prefers-reduced-motion: no-preference) {
   .duo.is-in .duo-tap { animation: duo-tap 3.4s 3 both; }
   /*
-   * `:not(.duo-dancer)` 가 꼭 있어야 한다. `.duo-glass img` 는 타입 선택자를 하나 더
-   * 가져서 `.duo-dancer` 보다 명시도가 높고, 그냥 두면 **춤춰야 할 쪽이 움찔을 받는다.**
-   * 실제로 그렇게 나갔고, 정지 화면으로는 보이지 않았다.
+   * 예전에는 여기에 `:not(.duo-dancer)` 가 붙어 있었다. 그때는 춤추는 쪽도 형제
+   * 이미지라 `.duo-glass img` 가 타입 선택자를 하나 더 가져 명시도가 높았고, 그냥
+   * 두면 **춤춰야 할 쪽이 움찔을 받았다** — 실제로 그렇게 나갔고 정지 화면으로는
+   * 보이지 않았다.
+   *
+   * 지금은 춤추는 쪽이 창 안에 한 겹 들어가 있어 `> img` 에 아예 걸리지 않는다.
+   * 선택자를 비트는 대신 구조가 갈라 주는 셈이라, **`>` 를 지우면 그 사고가 그대로
+   * 돌아온다.**
    */
-  .duo.is-in .duo-glass img:not(.duo-dancer) { animation: duo-twitch 3.4s 3 both; }
-  .duo.is-in .duo-dancer { animation: duo-dance 3.4s 3 both; }
+  .duo.is-in .duo-glass > img { animation: duo-twitch 3.4s 3 both; }
+  .duo.is-in .duo-dancer img { animation: duo-dance 3.4s 3 both; }
   .duo.is-in .duo-arrow { animation: duo-arrow 3.4s 3 both; }
 }
 
@@ -679,18 +721,32 @@ h3 { font-size: 1.02rem; font-weight: 700; letter-spacing: -0.005em; line-height
 }
 
 /*
- * 받은 쪽 — 앱의 '콕' 이 그렇듯 좌우로 흔들며 춤춘다.
+ * 받은 쪽 — 앱이 실제로 추는 '콕' 을 프레임 그대로 넘긴다.
  *
- * 왼쪽이 눌린 뒤(0.35초)에 시작한다. 앱의 춤 한 바퀴가 0.84초이고 두 바퀴를 도므로,
- * 여기서도 네 번 기울여 같은 박자를 낸다.
+ * 한때 이 자리는 정지 그림을 ±7° 로 기울이는 흉내였다. 박자는 맞춰 두었지만 캐릭터가
+ * 실제로 하는 동작은 아니었고, 지금은 앱과 같은 코드로 찍은 열두 칸을 넘긴다.
+ *
+ * **왼쪽이 눌린 뒤(0.35초)에 시작한다.** 시작이 늦어야 원인과 결과로 읽힌다 — 둘이
+ * 동시에 움직이면 그냥 둘 다 흔들리는 그림이 된다. 위 주석이 이 장면의 뜻을 지는
+ * 것이 타이밍이라고 적어 둔 바로 그 간격이다.
+ *
+ * 한 바퀴는 0.84초이고 앱은 두 바퀴를 돈다. 3.4초 가운데 20%(0.68초)에 시작하므로
+ * 한 바퀴가 24.71%, 두 바퀴가 49.41% 를 차지해 69.41% 에 끝난다.
+ *
+ * `steps(12, end)` 는 구간을 열두 칸으로 끊어 **0칸부터 11칸까지만** 보여 주고
+ * `-100%` 자체에는 닿지 않는다. 그래서 44.71% 에서 0 으로 되돌려도 눈에 띄지 않는다 —
+ * `DANCE_UNIT` 은 시작과 끝의 자세가 같은 완벽한 루프라 12칸 다음이 곧 0칸이다.
+ * (`-100%` 는 시트 한 장 전체를 민 것이고, 한 칸은 그 열두 분의 일이다.)
+ *
+ * **끝나면 반드시 0칸으로 돌아간다.** 세 번 돌고 멈춘 뒤 화면에 남는 것이 그 칸이고,
+ * 0칸이 곧 가만히 선 자세다. 모션을 줄이기로 한 사람에게는 이 칸만 보인다.
  */
 @keyframes duo-dance {
-  0%, 20% { transform: translateX(-50%) rotate(0deg); }
-  26% { transform: translateX(-56%) rotate(-7deg); }
-  32% { transform: translateX(-44%) rotate(7deg); }
-  38% { transform: translateX(-56%) rotate(-7deg); }
-  44% { transform: translateX(-44%) rotate(7deg); }
-  50%, 100% { transform: translateX(-50%) rotate(0deg); }
+  0%, 20% { transform: translateX(0); animation-timing-function: steps(12, end); }
+  44.71% { transform: translateX(-100%); animation-timing-function: steps(1, end); }
+  44.72% { transform: translateX(0); animation-timing-function: steps(12, end); }
+  69.41% { transform: translateX(-100%); animation-timing-function: steps(1, end); }
+  69.42%, 100% { transform: translateX(0); }
 }
 
 /*

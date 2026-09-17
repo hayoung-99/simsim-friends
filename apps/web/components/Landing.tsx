@@ -225,15 +225,22 @@ export function Landing({ copy }: { copy: Copy }) {
 
                 <figure className="duo-screen">
                   <span className="duo-glass">
-                    <img
-                      className="duo-dancer"
-                      src="/assets/duo-bunny.webp"
-                      alt={copy.try.altTheirs}
-                      width={320}
-                      height={380}
-                      loading="lazy"
-                      decoding="async"
-                    />
+                    {/*
+                      춤은 정지 그림이 아니라 **열두 칸짜리 시트에서 한 칸씩 넘겨**
+                      보여 준다. 그래서 칸 하나만 내다보는 창(`.duo-dancer`)이 필요하고,
+                      그 뒤에서 시트가 미끄러진다. 이미지 태그 하나로 두면 칸을 잘라
+                      낼 자리가 없다.
+                    */}
+                    <span className="duo-dancer">
+                      <img
+                        src="/assets/duo-bunny-dance.webp"
+                        alt={copy.try.altTheirs}
+                        width={3840}
+                        height={380}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </span>
                   </span>
                   <figcaption>{copy.try.theirs}</figcaption>
                 </figure>

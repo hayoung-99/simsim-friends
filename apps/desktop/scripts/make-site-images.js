@@ -75,6 +75,42 @@ const SHOTS = [
   { shot: 'peek-cat', file: 'peek-cat.webp', width: 612, height: 828, transparent: true },
 ]
 
+/**
+ * 동작 한 바퀴를 프레임으로 나눠 찍어 **격자 한 장**에 담는 것들 (스프라이트 시트).
+ *
+ * 랜딩의 "눌러 보면 이렇게 돼요" 장면에서 춤을 흉내가 아니라 앱이 실제로 쓰는
+ * 동작으로 보여 주려고 둔다. 동영상이 아니라 정지 그림 한 장인 것이 핵심이다 —
+ * Safari 는 WebM 의 알파를 살려 주지 않고, `<img>` 로 얹은 애니메이션 WebP 는
+ * 재생 시점을 잡을 수 없어 **누르는 것과 춤추는 것의 인과가 깨진다.** 시트는
+ * `steps()` 로 CSS 가 직접 넘기므로 그 타이밍을 랜딩이 쥔다.
+ *
+ * **한 바퀴만 담는다.** `DANCE_UNIT` 은 시작과 끝의 값이 같은 완벽한 루프라
+ * (`pet/animations.ts` 의 `buildDanceTimeline` 이 이 유닛을 그대로 이어 붙인다),
+ * 두 바퀴를 담으면 같은 그림이 두 벌 들어가 용량만 두 배가 된다.
+ *
+ * 마지막 칸에 `t = 한 바퀴` 를 넣지 않는 이유도 같다 — 그 자세는 첫 칸과 같다.
+ *
+ *   frames   한 바퀴를 몇 칸으로 나눌지. 12 칸이면 0.84초에 약 14fps
+ *   columns  격자의 가로 칸 수
+ *
+ * **한 줄로 담는다 (`columns === frames`).** 격자로 접으면 CSS 에서 칸을 넘길 수가
+ * 없다 — `translateX(%)` 는 그 요소 **자신의 너비**를 기준으로 재기 때문에, 4열로
+ * 접는 순간 가로 25%·세로 33.3% 를 따로 움직여야 하고 `steps()` 하나로는 표현되지
+ * 않는다. 한 줄이면 한 칸이 정확히 `100% / frames` 라 `steps(frames)` 하나로 끝난다.
+ * 화소 수는 어느 쪽이든 같다.
+ */
+const SHEETS = [
+  {
+    shot: 'duo-bunny-dance',
+    file: 'duo-bunny-dance.webp',
+    track: 'dance',
+    frames: 12,
+    columns: 12,
+    width: 320,
+    height: 380,
+  },
+]
+
 /** 앱을 띄워 손으로 찍어 온 것들. 여기서는 형식만 바꿔 준다 (`--webp-only`). */
 const HAND_MADE = ['team-window', 'team-window-en']
 
@@ -89,10 +125,13 @@ const args = process.argv.slice(2)
 const webpOnly = args.includes('--webp-only')
 const only = args.filter((arg) => !arg.startsWith('-'))
 const targets = webpOnly ? [] : only.length ? SHOTS.filter((s) => only.includes(s.shot)) : SHOTS
+const sheetTargets = webpOnly ? [] : only.length ? SHEETS.filter((s) => only.includes(s.shot)) : SHEETS
 
-if (!webpOnly && !targets.length) {
+if (!webpOnly && !targets.length && !sheetTargets.length) {
   console.error(`그런 그림이 없습니다: ${only.join(', ')}`)
-  console.error(`고를 수 있는 것: ${SHOTS.map((s) => s.shot).join(', ')}`)
+  console.error(
+    `고를 수 있는 것: ${[...SHOTS, ...SHEETS].map((s) => s.shot).join(', ')}`,
+  )
   process.exit(1)
 }
 
@@ -179,6 +218,110 @@ async function capture(encoder, { shot, file, width, height, transparent }) {
 }
 
 /**
+ * 시트를 만드는 세 걸음 — 격자를 열고, 프레임을 한 칸씩 얹고, 굽는다.
+ *
+ * 프레임을 전부 모아 한 번에 넘기지 않고 한 장씩 얹는 이유는, 열두 장을 base64 로
+ * 이어 붙이면 `executeJavaScript` 에 수백 KB 짜리 문자열이 통째로 들어가기 때문이다.
+ * 인코더 창에 격자를 열어 두고 거기에 얹으면 그럴 일이 없다.
+ */
+async function beginSheet(encoder, { width, height, columns, frames }) {
+  const rows = Math.ceil(frames / columns)
+  await encoder.webContents.executeJavaScript(`
+    globalThis.__sheet = new OffscreenCanvas(${columns * width}, ${rows * height})
+    globalThis.__sheetCtx = globalThis.__sheet.getContext('2d')
+    true
+  `)
+}
+
+async function addSheetFrame(encoder, png, { index, width, height, columns }) {
+  const encoded = png.toString('base64')
+  const x = (index % columns) * width
+  const y = Math.floor(index / columns) * height
+  await encoder.webContents.executeJavaScript(`(async () => {
+    const response = await fetch('data:image/png;base64,${encoded}')
+    const bitmap = await createImageBitmap(await response.blob())
+    globalThis.__sheetCtx.drawImage(bitmap, ${x}, ${y})
+    bitmap.close()
+    return true
+  })()`)
+}
+
+async function encodeSheet(encoder) {
+  const base64 = await encoder.webContents.executeJavaScript(`(async () => {
+    const blob = await globalThis.__sheet.convertToBlob({ type: 'image/webp', quality: ${WEBP_QUALITY} })
+    const bytes = new Uint8Array(await blob.arrayBuffer())
+    let binary = ''
+    for (let i = 0; i < bytes.length; i += 0x8000) {
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000))
+    }
+    return btoa(binary)
+  })()`)
+
+  const bytes = Buffer.from(base64, 'base64')
+  if (bytes.length < 32) throw new Error('시트를 WebP 로 굽지 못했습니다')
+  return bytes
+}
+
+/**
+ * 동작 한 바퀴를 프레임으로 나눠 찍어 격자 한 장으로 묶는다.
+ *
+ * 창은 **하나만** 띄우고 그 안에서 자세만 바꿔 가며 찍는다. 프레임마다 창을 새로
+ * 만들면 그때마다 첫 합성을 기다려야 해서 훨씬 느려진다.
+ */
+async function captureSheet(encoder, { shot, file, track, frames, columns, width, height }) {
+  const window = new BrowserWindow({
+    width,
+    height,
+    useContentSize: true,
+    show: true,
+    frame: false,
+    transparent: true,
+    backgroundColor: '#00000000',
+    resizable: false,
+    webPreferences: { backgroundThrottling: false },
+  })
+
+  await window.loadFile(PAGE, { search: `shot=${shot}` })
+  await waitForReady(window)
+  await wait(400)
+
+  // 한 바퀴 길이는 화면에 물어본다 — 스크립트가 숫자를 따로 갖고 있으면 동작을
+  // 손볼 때 한쪽만 고쳐진다.
+  const lap = await window.webContents.executeJavaScript(`window.__lapDuration('${track}')`)
+  if (!(lap > 0)) throw new Error(`${shot}: 동작 한 바퀴 길이를 못 읽었습니다 (${lap})`)
+
+  await beginSheet(encoder, { width, height, columns, frames })
+
+  for (let index = 0; index < frames; index += 1) {
+    // 마지막 칸을 한 바퀴로 꽉 채우지 않는다 — 그 자세는 첫 칸과 같아서 한 칸을 버리게 된다
+    const t = (lap * index) / frames
+    await window.webContents.executeJavaScript(`window.__poseAt('${track}', ${t}), true`)
+    // 자세를 바른 뒤 창에 실제로 합성될 틈을 준다 (정지 샷이 400ms 를 기다리는 것과 같은 이유)
+    await wait(150)
+
+    const image = await window.capturePage()
+    if (image.isEmpty()) throw new Error(`${shot} 의 ${index}번째 프레임이 비어 있습니다`)
+    await addSheetFrame(encoder, image.resize({ width, height, quality: 'best' }).toPNG(), {
+      index,
+      width,
+      height,
+      columns,
+    })
+  }
+
+  window.destroy()
+
+  const bytes = await encodeSheet(encoder)
+  const target = path.join(OUT_DIR, file)
+  fs.writeFileSync(target, bytes)
+  const rows = Math.ceil(frames / columns)
+  console.log(
+    `wrote ${path.relative(ROOT, target)}  (${frames}칸 ${columns}x${rows}, ` +
+      `${columns * width}x${rows * height}, ${kb(bytes.length)})`,
+  )
+}
+
+/**
  * 손으로 찍어 옮겨 둔 PNG 를 WebP 로 바꾸고 PNG 는 치운다.
  *
  * 치우는 이유는 **둘 다 남으면 어느 쪽이 지금 화면인지 알 수 없기 때문이다.**
@@ -211,6 +354,7 @@ void app.whenReady().then(async () => {
     await encoder.loadURL('about:blank')
 
     for (const spec of targets) await capture(encoder, spec)
+    for (const spec of sheetTargets) await captureSheet(encoder, spec)
     if (webpOnly) await convertHandMade(encoder)
     encoder.destroy()
     app.exit(0)

@@ -16,6 +16,8 @@ import * as THREE from 'three'
 import { CHARACTERS, getCharacter } from '@simsim-friends/shared/characters'
 import { createCritter, scaleToStandardHeight } from '../pet/critter'
 import { addLighting, createShadowCatcher } from '../pet/scene'
+import { createAnimator, DANCE_CYCLES } from '../pet/animations'
+import type { TrackName } from '../pet/animations'
 import type { CharacterSpec } from '@simsim-friends/shared/characters'
 
 /** 한 장면을 어떻게 세우고 어디서 볼지 (아래 주석에 항목별 뜻이 있다) */
@@ -60,6 +62,15 @@ const LAYOUTS: Record<string, ShotLayout> = {
    */
   'duo-cat': { specs: [getCharacter('cat')], spacing: 0, headroom: 1.3, lift: 0.0, yaw: 0 },
   'duo-bunny': { specs: [getCharacter('bunny')], spacing: 0, headroom: 1.3, lift: 0.0, yaw: 0 },
+
+  /*
+   * 춤 스프라이트 시트용. **`duo-bunny` 와 값이 같아야 한다.**
+   *
+   * 랜딩에서 이 그림이 정지 그림이 서 있던 바로 그 자리에 갈아 끼워지므로, 구도가
+   * 한 뼘이라도 다르면 춤이 시작되는 순간 캐릭터가 튄다. 값을 손볼 일이 생기면
+   * 위와 여기를 **함께** 고칠 것.
+   */
+  'duo-bunny-dance': { specs: [getCharacter('bunny')], spacing: 0, headroom: 1.3, lift: 0.0, yaw: 0 },
   characters: { specs: CHARACTERS, spacing: 2.3, headroom: 1.28, lift: 0.0, yaw: -0.2 },
   // 공유 카드는 캔버스 자체가 오른쪽 아래로 밀려 있다 (index.html 참고)
   og: { specs: CHARACTERS, spacing: 2.3, headroom: 1.24, lift: 0.0, yaw: -0.2 },
@@ -161,7 +172,8 @@ addLighting(scene)
  */
 if (!shot.startsWith('peek-')) scene.add(createShadowCatcher(30))
 
-LAYOUT.specs.forEach((spec, index) => {
+// 연속 촬영이 애니메이터를 물리려면 캐릭터를 손에 들고 있어야 해서 `map` 으로 받는다.
+const critters = LAYOUT.specs.map((spec, index) => {
   const critter = createCritter(spec)
   const stand = new THREE.Group()
   stand.position.x = (index - (LAYOUT.specs.length - 1) / 2) * LAYOUT.spacing
@@ -172,6 +184,7 @@ LAYOUT.specs.forEach((spec, index) => {
   stand.scale.setScalar(scaleToStandardHeight(critter))
   stand.add(critter.root)
   scene.add(stand)
+  return critter
 })
 
 const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 60)
@@ -198,6 +211,50 @@ function frame() {
   camera.lookAt(panX, 0.95 + LAYOUT.lift, 0)
   camera.updateProjectionMatrix()
   renderer.render(scene, camera)
+}
+
+/*
+ * 연속 촬영용 창구 — `scripts/make-site-images.js` 가 프레임마다 부른다.
+ *
+ * `scrub` 을 쓰는 것이 핵심이다. 시간을 굴리지 않고 그 시각의 자세를 곧바로 바르므로
+ * (`pet/animations.ts` 의 `scrub` 이 끝에서 `update(0)` 을 부른다) **렌더 루프가 없는
+ * 이 화면에서도** 쓸 수 있고, 무엇보다 같은 `t` 를 주면 언제나 같은 그림이 나온다.
+ * 커밋해 두는 산출물이라 다시 뜰 때마다 결과가 달라지면 안 된다.
+ *
+ * 같은 이유로 음표·먼지 같은 연출은 담지 않는다. 그것들은 물리로 흩어지는 것이라
+ * 시각 하나만으로 되돌릴 수 없다.
+ *
+ * 캐릭터가 하나인 샷에만 창구를 연다. 여럿이 선 샷은 누구를 움직일지가 정해지지
+ * 않아서, 부르면 `undefined` 로 실패하는 편이 조용히 엉뚱한 그림을 내는 것보다 낫다.
+ */
+declare global {
+  interface Window {
+    /** 그 동작의 `t` 초 자세로 세우고 한 장 그린다 */
+    __poseAt?: (track: TrackName, t: number) => void
+    /** 그 동작 **한 바퀴**의 길이(초). 스크립트가 프레임 간격을 이 값에서 셈한다 */
+    __lapDuration?: (track: TrackName) => number
+  }
+}
+
+if (critters.length === 1) {
+  const animator = createAnimator(critters[0])
+
+  window.__poseAt = (track, t) => {
+    animator.scrub(track, t)
+    frame()
+  }
+
+  /*
+   * 춤은 유닛 한 바퀴를 `DANCE_CYCLES` 번 이어 붙여 쓰므로 `durations.dance` 가
+   * 돌려주는 것은 **이어 붙인 전체 길이**다. 시트에는 한 바퀴만 담으니 여기서
+   * 나눠 준다. 나누는 수를 스크립트 쪽에 옮겨 적지 않는 이유는, 그러면 같은 숫자가
+   * 두 곳에 생겨 한쪽만 고쳐질 수 있기 때문이다.
+   *
+   * 폴짝도 `HOP_COUNT` 번 이어 붙이는 동작이라, 폴짝 시트를 만들게 되면 여기에
+   * 같은 처리를 더해야 한다.
+   */
+  window.__lapDuration = (track) =>
+    track === 'dance' ? animator.durations.dance / DANCE_CYCLES : animator.durations[track]
 }
 
 frame()
