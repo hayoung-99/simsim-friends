@@ -644,6 +644,70 @@ h3 { font-size: 1.02rem; font-weight: 700; letter-spacing: -0.005em; line-height
   opacity: 0;
 }
 
+/*
+ * 누르는 손. 동그라미가 번지는 그 자리를 가리키고 서 있다가 눌린다.
+ *
+ * 그림 파일을 들이지 않고 `clip-path` 로 그린다 — 위 `duo-arrow` 와 같은 방식이다.
+ * 데이터 URI 로 넣으면 CSP 의 `img-src` 를 건드리게 되고, 그건 `check-site.js` 가
+ * 보는 항목이다.
+ */
+.duo-cursor {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 13px;
+  height: 18px;
+  margin: 1px 0 0 1px; /* 링 한가운데가 아니라 살짝 아래 오른쪽에 선다 */
+  background: var(--ink);
+  opacity: 0;
+  clip-path: polygon(0 0, 0 78%, 26% 60%, 44% 100%, 62% 92%, 44% 54%, 78% 52%);
+}
+
+/*
+ * 받은 쪽에 떠오르는 음표.
+ *
+ * 앱의 것(`pet/notes.ts`)을 그대로 옮겨 온다 — **여섯 개**가 **0.18초씩** 늦게
+ * 나오고, 하나가 **1.6초**를 살며, 처음 16% 에 통 튀어나왔다가 **55% 지점부터**
+ * 흐려진다. 좌우로 살랑이는 것도 거기 있는 성질이다.
+ *
+ * **높이만 줄여서 옮겼다.** 앱은 캐릭터 키의 0.55배만큼 띄우는데, 그 비율을 그대로
+ * 쓰면 이 작은 창에서는 음표가 천장을 뚫고 나간다. 여기서는 창 안에 머무는 만큼만
+ * 띄운다 (`.duo-glass` 가 `overflow: hidden` 이라 넘치면 잘려 나가기도 한다).
+ *
+ * 모양도 `clip-path` 로 그린 8분음표다 — 머리·기둥·꼬리를 한 덩어리로 오려 낸다.
+ * 화면에서 12px 남짓이라 이 정도면 음표로 읽힌다.
+ */
+.duo-note {
+  position: absolute;
+  bottom: 34%;
+  width: 11px;
+  height: 16px;
+  background: #d8a92e; /* 앱의 음표색(#f0cf58)은 밝은 패널에서 묻혀 한 단계 진하게 쓴다 */
+  opacity: 0;
+  clip-path: polygon(
+    60% 6%, 76% 6%, 100% 28%, 76% 46%, 76% 70%,
+    70% 80%, 62% 92%, 46% 98%, 26% 94%, 14% 82%,
+    18% 66%, 34% 57%, 52% 56%, 60% 60%
+  );
+}
+
+@media (prefers-color-scheme: dark) {
+  /* 어두운 패널 위에서는 앱과 같은 색이 그대로 읽힌다 */
+  .duo-note { background: #f0cf58; }
+}
+
+/*
+ * 어느 음표가 어디서 언제 뜨는지. 앱은 몸통 좌우로 무작위하게 흩뿌리는데, 여기서는
+ * 그 인상만 남기고 자리를 고정한다 — 무작위는 자바스크립트가 있어야 하고, 이 장면은
+ * 한 줄도 쓰지 않기로 한 자리다.
+ */
+.duo-note:nth-of-type(1) { left: 30%; animation-delay: 0s; }
+.duo-note:nth-of-type(2) { left: 64%; animation-delay: 0.18s; }
+.duo-note:nth-of-type(3) { left: 22%; animation-delay: 0.36s; }
+.duo-note:nth-of-type(4) { left: 70%; animation-delay: 0.54s; }
+.duo-note:nth-of-type(5) { left: 38%; animation-delay: 0.72s; }
+.duo-note:nth-of-type(6) { left: 58%; animation-delay: 0.9s; }
+
 @media (prefers-reduced-motion: no-preference) {
   .duo.is-in .duo-tap { animation: duo-tap 3.4s 3 both; }
   /*
@@ -652,9 +716,20 @@ h3 { font-size: 1.02rem; font-weight: 700; letter-spacing: -0.005em; line-height
    * 실제로 그렇게 나갔고, 정지 화면으로는 보이지 않았다.
    */
   .duo.is-in .duo-glass img:not(.duo-dancer) { animation: duo-twitch 3.4s 3 both; }
-  .duo.is-in .duo-dancer { animation: duo-dance 3.4s 3 both; }
   .duo.is-in .duo-arrow { animation: duo-arrow 3.4s 3 both; }
+  .duo.is-in .duo-cursor { animation: duo-cursor 3.4s 3 both; }
+  .duo.is-in .duo-note { animation: duo-note 3.4s 3 both; }
 }
+
+/*
+ * `.duo-dancer` 는 이제 **아무 움직임도 받지 않는다.** 받은 쪽은 정지 그림 그대로 두고
+ * 음표만 떠오른다 — 한때 이 그림을 ±7° 로 기울여 춤을 흉내 냈는데, 정지 그림을 비트는
+ * 것은 앱이 실제로 하는 동작과 달라서 걷어냈다.
+ *
+ * **그래도 클래스는 남긴다.** 바로 위 `:not(.duo-dancer)` 가 이 이름으로 받은 쪽을
+ * 골라내기 때문이다. 지우면 받은 쪽 그림까지 움찔을 받는다 — 예전에 그 반대로 어긋나
+ * **춤춰야 할 쪽이 움찔을 받은** 적이 있고, 정지 화면으로는 보이지 않았다.
+ */
 
 /* 눌린 쪽 — 앱에서 내가 누를 때 나는 움찔 그대로다 (제자리에서 짧게 떤다) */
 @keyframes duo-twitch {
@@ -678,19 +753,34 @@ h3 { font-size: 1.02rem; font-weight: 700; letter-spacing: -0.005em; line-height
   34%, 100% { opacity: 0.35; }
 }
 
+/* 커서 — 들어와서 누르고, 신호가 건너간 뒤에 빠진다 */
+@keyframes duo-cursor {
+  0% { opacity: 0; transform: translate(7px, 9px); }
+  5% { opacity: 1; transform: translate(1px, 1px) scale(1); }
+  8% { opacity: 1; transform: translate(0, 0) scale(0.84); }
+  12% { opacity: 1; transform: translate(0, 0) scale(1); }
+  30% { opacity: 1; transform: translate(0, 0) scale(1); }
+  40%, 100% { opacity: 0; transform: translate(5px, 7px) scale(1); }
+}
+
 /*
- * 받은 쪽 — 앱의 '콕' 이 그렇듯 좌우로 흔들며 춤춘다.
+ * 음표 하나의 한살이.
  *
- * 왼쪽이 눌린 뒤(0.35초)에 시작한다. 앱의 춤 한 바퀴가 0.84초이고 두 바퀴를 도므로,
- * 여기서도 네 번 기울여 같은 박자를 낸다.
+ * **20% 에서 시작한다** — 왼쪽이 눌린 뒤 0.35초다. 시작이 늦어야 원인과 결과로
+ * 읽힌다는 것이 이 장면의 전부이고, 위 `duo-tap` 과 이 20% 가 그 간격을 만든다.
+ * 음표마다 `animation-delay` 가 0.18초씩 더 붙어 차례로 떠오른다.
+ *
+ * 20% → 67% 가 1.6초, 곧 앱에서 음표 하나가 사는 시간이다. 그 안에서 앱과 같은
+ * 순서를 밟는다 — 통 튀어나오고(0.6→1배), 떠오르며 좌우로 한 번 살랑이고,
+ * 중간을 지나 흐려진다.
  */
-@keyframes duo-dance {
-  0%, 20% { transform: translateX(-50%) rotate(0deg); }
-  26% { transform: translateX(-56%) rotate(-7deg); }
-  32% { transform: translateX(-44%) rotate(7deg); }
-  38% { transform: translateX(-56%) rotate(-7deg); }
-  44% { transform: translateX(-44%) rotate(7deg); }
-  50%, 100% { transform: translateX(-50%) rotate(0deg); }
+@keyframes duo-note {
+  0%, 20% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  23% { opacity: 0.95; transform: translate(2px, -7px) scale(1); }
+  36% { opacity: 0.95; transform: translate(-3px, -20px) scale(1); }
+  46% { opacity: 0.95; transform: translate(2px, -30px) scale(1); }
+  67% { opacity: 0; transform: translate(-1px, -46px) scale(0.9); }
+  100% { opacity: 0; transform: translate(-1px, -46px) scale(0.9); }
 }
 
 /*
@@ -701,10 +791,27 @@ h3 { font-size: 1.02rem; font-weight: 700; letter-spacing: -0.005em; line-height
 @media (prefers-reduced-motion: reduce) {
   .duo.is-in .duo-tap { animation: duo-tap-quiet 3.4s 3 both; }
   .duo.is-in .duo-arrow { animation: duo-arrow 3.4s 3 both; }
+  /*
+   * 커서와 음표도 **자리에 그대로 선 채 나타났다 사라지기만** 한다. 떠오르지도
+   * 눌리지도 않지만 "눌렀고, 저쪽에서 음표가 떴다" 는 순서는 남는다. 음표의
+   * `animation-delay` 는 위에서 준 것이 그대로 살아 있어 차례로 뜨는 것도 남는다.
+   */
+  .duo.is-in .duo-cursor { animation: duo-cursor-quiet 3.4s 3 both; }
+  .duo.is-in .duo-note { animation: duo-note-quiet 3.4s 3 both; }
   @keyframes duo-tap-quiet {
     0%, 7% { opacity: 0; }
     12%, 26% { opacity: 0.9; }
     34%, 100% { opacity: 0; }
+  }
+  @keyframes duo-cursor-quiet {
+    0%, 4% { opacity: 0; }
+    8%, 30% { opacity: 1; }
+    40%, 100% { opacity: 0; }
+  }
+  @keyframes duo-note-quiet {
+    0%, 20% { opacity: 0; }
+    24%, 46% { opacity: 0.95; }
+    67%, 100% { opacity: 0; }
   }
 }
 

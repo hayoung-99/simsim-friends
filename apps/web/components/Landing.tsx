@@ -217,6 +217,11 @@ export function Landing({ copy }: { copy: Copy }) {
                     />
                     {/* 누르는 순간에 번지는 동그라미. 뜻은 위 캡션이 지고, 이건 몸짓만 한다 */}
                     <span className="duo-tap" aria-hidden="true" />
+                    {/*
+                      누르는 손. 동그라미만 있으면 "저절로 번진 것" 으로도 읽혀서,
+                      **사람이 눌렀다**는 것을 커서가 맡는다.
+                    */}
+                    <span className="duo-cursor" aria-hidden="true" />
                   </span>
                   <figcaption>{copy.try.mine}</figcaption>
                 </figure>
@@ -234,6 +239,20 @@ export function Landing({ copy }: { copy: Copy }) {
                       loading="lazy"
                       decoding="async"
                     />
+                    {/*
+                      받은 쪽에 떠오르는 음표 여섯. 앱에서 콕(춤)에 **실제로 함께 뜨는
+                      것**이 이 음표다 (`pet/notes.ts`, 한 번에 여섯 개).
+
+                      여섯이 다 똑같은 빈 칸인 이유는, 어느 자리에서 언제 뜨는지를
+                      전부 CSS 가 정하기 때문이다 — 마크업에 번호를 박으면 개수를
+                      바꿀 때 두 곳을 고쳐야 한다.
+                    */}
+                    <span className="duo-note" aria-hidden="true" />
+                    <span className="duo-note" aria-hidden="true" />
+                    <span className="duo-note" aria-hidden="true" />
+                    <span className="duo-note" aria-hidden="true" />
+                    <span className="duo-note" aria-hidden="true" />
+                    <span className="duo-note" aria-hidden="true" />
                   </span>
                   <figcaption>{copy.try.theirs}</figcaption>
                 </figure>
