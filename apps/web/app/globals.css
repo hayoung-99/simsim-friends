@@ -670,6 +670,11 @@ h3 { font-size: 1.02rem; font-weight: 700; letter-spacing: -0.005em; line-height
  * 나오고, 하나가 **1.6초**를 살며, 처음 16% 에 통 튀어나왔다가 **55% 지점부터**
  * 흐려진다. 좌우로 살랑이는 것도 거기 있는 성질이다.
  *
+ * **떠오르는 것만으로는 "두둥실" 이 되지 않는다.** 앱에서 이 연출을 살리는 것은
+ * 높이가 아니라 **흔들림과 갸웃거림**이다 — 떠오르는 내내 좌우로 한 번 크게
+ * 살랑이고(키의 0.08배), 동시에 몸을 ±7° 쯤 갸웃거린다. 회전이 빠지면 같은 높이를
+ * 올라가도 그냥 위로 미끄러지는 네모로 보인다.
+ *
  * **높이만 줄여서 옮겼다.** 앱은 캐릭터 키의 0.55배만큼 띄우는데, 그 비율을 그대로
  * 쓰면 이 작은 창에서는 음표가 천장을 뚫고 나간다. 여기서는 창 안에 머무는 만큼만
  * 띄운다 (`.duo-glass` 가 `overflow: hidden` 이라 넘치면 잘려 나가기도 한다).
@@ -701,12 +706,21 @@ h3 { font-size: 1.02rem; font-weight: 700; letter-spacing: -0.005em; line-height
  * 그 인상만 남기고 자리를 고정한다 — 무작위는 자바스크립트가 있어야 하고, 이 장면은
  * 한 줄도 쓰지 않기로 한 자리다.
  */
-.duo-note:nth-of-type(1) { left: 30%; animation-delay: 0s; }
-.duo-note:nth-of-type(2) { left: 64%; animation-delay: 0.18s; }
-.duo-note:nth-of-type(3) { left: 22%; animation-delay: 0.36s; }
-.duo-note:nth-of-type(4) { left: 70%; animation-delay: 0.54s; }
-.duo-note:nth-of-type(5) { left: 38%; animation-delay: 0.72s; }
-.duo-note:nth-of-type(6) { left: 58%; animation-delay: 0.9s; }
+/*
+ * 기본 기울기와 크기는 `transform` 이 아니라 **`rotate`·`scale` 속성**으로 준다.
+ * 아래 keyframes 가 `transform` 을 쓰고 있어서, 같은 자리에 적으면 덮어써진다.
+ * 이 둘은 따로 계산되어 keyframes 의 회전 위에 얹히므로, **음표마다 다른 기울기로
+ * 시작해 저마다 갸웃거리는** 모양이 된다.
+ *
+ * 크기를 조금씩 다르게 준 것은 앱이 음표를 **앞뒤로도 흩뿌리기** 때문이다. 원근으로
+ * 크기가 갈리는 것을 여기서는 숫자로 흉내 낸다.
+ */
+.duo-note:nth-of-type(1) { left: 28%; bottom: 32%; rotate: -10deg; scale: 0.95; animation-delay: 0s; }
+.duo-note:nth-of-type(2) { left: 66%; bottom: 28%; rotate: 8deg; scale: 1.06; animation-delay: 0.18s; }
+.duo-note:nth-of-type(3) { left: 19%; bottom: 38%; rotate: 6deg; scale: 0.84; animation-delay: 0.36s; }
+.duo-note:nth-of-type(4) { left: 73%; bottom: 36%; rotate: -7deg; scale: 0.9; animation-delay: 0.54s; }
+.duo-note:nth-of-type(5) { left: 37%; bottom: 26%; rotate: 11deg; scale: 1.0; animation-delay: 0.72s; }
+.duo-note:nth-of-type(6) { left: 57%; bottom: 34%; rotate: -6deg; scale: 0.87; animation-delay: 0.9s; }
 
 @media (prefers-reduced-motion: no-preference) {
   .duo.is-in .duo-tap { animation: duo-tap 3.4s 3 both; }
@@ -775,12 +789,13 @@ h3 { font-size: 1.02rem; font-weight: 700; letter-spacing: -0.005em; line-height
  * 중간을 지나 흐려진다.
  */
 @keyframes duo-note {
-  0%, 20% { opacity: 0; transform: translate(0, 0) scale(0.6); }
-  23% { opacity: 0.95; transform: translate(2px, -7px) scale(1); }
-  36% { opacity: 0.95; transform: translate(-3px, -20px) scale(1); }
-  46% { opacity: 0.95; transform: translate(2px, -30px) scale(1); }
-  67% { opacity: 0; transform: translate(-1px, -46px) scale(0.9); }
-  100% { opacity: 0; transform: translate(-1px, -46px) scale(0.9); }
+  0%, 20% { opacity: 0; transform: translate(0, 0) scale(0.55) rotate(0deg); }
+  24% { opacity: 0.95; transform: translate(4px, -10px) scale(1) rotate(7deg); }
+  33% { opacity: 0.95; transform: translate(-6px, -24px) scale(1) rotate(-6deg); }
+  43% { opacity: 0.95; transform: translate(7px, -38px) scale(1) rotate(6deg); }
+  53% { opacity: 0.8; transform: translate(-5px, -52px) scale(0.99) rotate(-5deg); }
+  67% { opacity: 0; transform: translate(3px, -70px) scale(0.9) rotate(3deg); }
+  100% { opacity: 0; transform: translate(3px, -70px) scale(0.9) rotate(3deg); }
 }
 
 /*
