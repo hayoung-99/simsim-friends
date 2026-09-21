@@ -8,8 +8,8 @@ export const metadata = buildMetadata(en)
 
 export const viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#a9a5bd' },
-    { media: '(prefers-color-scheme: dark)', color: '#14121a' },
+    { media: '(prefers-color-scheme: light)', color: '#f6eddc' },
+    { media: '(prefers-color-scheme: dark)', color: '#231a13' },
   ],
 }
 

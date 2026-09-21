@@ -1,52 +1,93 @@
 import type { Copy } from './copy'
 import { RELEASES_PAGE } from './site'
 
-/** 한국어판. 문장은 예전 `site/index.html` 에서 그대로 옮겨 왔다. */
+/**
+ * 한국어판. 설치 안내 · 궁금한 것 · 받기 화면 문장은 예전 `site/index.html` 에서 옮겨 온
+ * 그대로이고, 나머지는 2026-09 베이지 랜딩 시안의 문장이다.
+ */
 export const ko: Copy = {
   locale: 'ko',
   other: { href: '/en/', lang: 'en', short: 'EN', long: 'English' },
 
   skipToContent: '본문으로 건너뛰기',
-  nav: { download: '다운로드' },
+  nav: { signals: '신호', friends: '친구들', start: '시작하기', download: '다운로드' },
 
   hero: {
-    lead: '친구에게 말 대신,',
-    emphasis: '콕콕!',
-    tail: '',
-    sub: (
-      <>
-        내 방을 만들고, 멤버를 초대하고, 내 캐릭터를 골라요.
-        <br />
-        불필요한 말 없이, 오직 나와 친구의 캐릭터로 소통해요.
-      </>
-    ),
+    lead: '톡 누르면,',
+    tail: '친구 화면에서 ',
+    emphasis: '춤춰요',
+    sub: '바탕화면에 사는 작은 동물 친구로, 답장할 필요 없는 안부를 보내요.',
     download: '받기',
+    howTo: '어떻게 시작해요?',
     warns: '처음 열 때 경고가 한 번 떠요.',
     warnsLink: '넘기는 법 보기',
-    note: '무료 · 가입 없음 · macOS와 Windows',
-    imageAlt: '바탕화면 위에 서 있는 흰 고양이 캐릭터',
+    note: '친구도 함께 받아야 시작돼요. 무료이고 가입도 없어요.',
   },
 
-  shot: {
-    headingTop: '받고 나면',
-    headingBottom: '이 창이 열려요',
-    body: '방을 만들면 여섯 글자 코드가 나와요. 멤버가 그 코드를 넣으면 시작이에요.',
-    imageAlt: '방 목록이 열려 있는 SimSim Friends 창. 나오리와 친구들 한 개에 멤버 한 명이 접속해 있다.',
+  demo: {
+    mine: '내 화면',
+    theirs: '민지 화면',
+    hint: '눌러 보세요',
+    pokeLabel: '내 고양이 톡 누르기. 민지 화면의 강아지가 춤춰요',
+    sender: '나영',
+    altMine: '내 화면 구석에 서 있는 흰 고양이',
+    altTheirs: '민지 화면 구석에 서 있는 갈색 강아지',
   },
 
-  characters: {
-    label: '캐릭터',
-    heading: '다섯 마리 중에 한 마리',
-    sub: '방마다 한 마리씩 골라요. 다른 동물로 골라 두면 어느 방에서 온 신호인지 한눈에 보여요.',
-    imageAlt: '샤이 캣, 크레이지 독, 코지 판다, 위스키 덕, 저스트 버니 다섯 캐릭터가 나란히 서 있는 모습',
-    facts: [
-      {
-        term: '클릭이 통과해요',
-        detail: '캐릭터 옆 빈 자리를 누르면 바탕화면이 눌려요. 아이콘을 가리지 않아요.',
-      },
-      { term: '자리를 기억해요', detail: '끌어서 옮긴 자리도, 키운 크기도 다음에 그대로예요.' },
-      { term: '조용해요', detail: '소리는 나지 않고, 메뉴 막대에서 한 번에 숨길 수 있어요.' },
+  quiet: {
+    heading: '말 걸기엔 시시하고, 안 걸자니 아쉬울 때',
+    stickers: ['읽음 1', '답장 언제 해?', '띠링!', '안 읽은 알림 12'],
+    bodyStrong: '읽음 표시도, 답장도, 소리도 없어요.',
+    body: '화면 구석에서 누가 잠깐 움직이고, 그게 나였다는 것만 전해져요.',
+  },
+
+  signals: {
+    heading: '몸짓은 다섯 가지, 방마다 하나',
+    sub: '누르는 건 하나뿐이라, 고른 몸짓이 곧 그 사람의 인사법이 돼요.',
+    pickerLabel: '몸짓 고르기',
+    items: [
+      { id: 'poke', name: '콕', meaning: '나 여기 있어', motion: '좌우로 흔들며 춤춰요', alt: '음표 사이에서 춤추는 강아지' },
+      { id: 'hop', name: '폴짝', meaning: '반가워, 신나', motion: '제자리에서 통통 뛰어요', alt: '제자리에서 뛰어오르는 고양이' },
+      { id: 'wave', name: '손 흔들기', meaning: '안녕', motion: '한쪽 팔을 들어 흔들어요', alt: '한쪽 팔을 들어 흔드는 판다' },
+      { id: 'heart', name: '하트', meaning: '고마워, 좋아해', motion: '하트를 띄우고 수줍어해요', alt: '하트 말풍선 아래에서 수줍어하는 오리' },
+      { id: 'sulk', name: '앙탈', meaning: '날 좀 봐줘', motion: '털썩 주저앉아 보채요', alt: '털썩 주저앉아 보채는 토끼' },
     ],
+  },
+
+  friends: {
+    heading: '다섯 친구 중 누구를 데려갈까요',
+    sub: '방마다 다른 친구를 두면, 어느 방에서 온 신호인지 한눈에 알아요.',
+    items: [
+      { id: 'cat', name: '샤이 캣', trait: '낯가림 담당' },
+      { id: 'dog', name: '크레이지 독', trait: '늘 신나 있음' },
+      { id: 'panda', name: '코지 판다', trait: '느긋함 그 자체' },
+      { id: 'duck', name: '위스키 덕', trait: '어딘가 멍함' },
+      { id: 'bunny', name: '저스트 버니', trait: '그냥 토끼' },
+    ],
+  },
+
+  start: {
+    heading: '가입 없이, 초대코드 하나면 끝',
+    steps: [
+      { title: '받아서 켜기', body: '내 컴퓨터에 맞는 파일 하나만 받으면 돼요.' },
+      { title: '방 만들고 코드 나누기', body: '닉네임만 적으면 방이 생겨요. 나온 코드를 멤버에게 보내 주세요.' },
+      { title: '톡 눌러 보기', body: '멤버가 들어오면 바탕화면에 한 마리가 더 나타나요.' },
+    ],
+    codeSample: 'K7QX2MPA',
+    codeNote: '24시간 동안 쓸 수 있어요',
+  },
+
+  room: {
+    members: { big: '5명', title: '딱 친한 사이만큼', body: '한 방에 다섯 명까지. 서른 명이 서로 찌르는 화면은 끄고 싶어지니까요.' },
+    rooms: { big: '3개', title: '방은 셋까지', body: '친구방, 가족방, 우리 둘 방.' },
+    sleep: { title: '조용히 하고 싶으면 재우기', body: '재운 방의 친구는 웅크려 자요. 내 신호는 그대로 나가요.' },
+    clear: { title: '바탕화면을 가리지 않아요', body: '친구 옆 빈 자리는 클릭이 그대로 통과해요. 가만히 있을 땐 배터리도 아껴요.' },
+  },
+
+  final: {
+    headingTop: '오늘은 누구를',
+    headingBottom: '톡 찔러 볼까요?',
+    note: 'macOS와 Windows에서 무료예요. 한국어, English, 日本語, 中文을 지원해요.',
   },
 
   download: {
@@ -121,7 +162,7 @@ export const ko: Copy = {
         id: 'faq-teammates',
         question: '멤버도 받아야 하나요?',
         answer:
-          '네. 서로의 바탕화면에 캐릭터가 있어야 신호가 오가요. 한 사람이 방을 만들면 여섯 글자 초대코드가 나오고, 나머지는 그 코드만 넣으면 돼요.',
+          '네. 서로의 바탕화면에 캐릭터가 있어야 신호가 오가요. 한 사람이 방을 만들면 8자리 초대코드가 나오고, 나머지는 그 코드만 넣으면 돼요.',
       },
       {
         id: 'faq-free',
@@ -149,17 +190,6 @@ export const ko: Copy = {
     ],
   },
 
-  try: {
-    label: '해 보면',
-    heading: '여기서 누르면 저기서 춤춰요',
-    sub: '보내는 쪽은 한 번 누르는 것이 전부이고, 받는 쪽은 아무것도 하지 않아도 돼요.',
-    mine: '내 화면',
-    theirs: '친구 화면',
-    altMine: '내 화면 속 하얀 고양이 캐릭터',
-    altTheirs: '친구 화면 속 분홍 토끼 캐릭터',
-    cta: '받으러 가기',
-  },
-
   footer: {
     github: 'GitHub',
     releases: '릴리스',
@@ -179,7 +209,7 @@ export const ko: Copy = {
     featureList: [
       '바탕화면 위에 3D 동물 캐릭터가 떠 있어요',
       '내 캐릭터를 누르면 같은 방 사람들 화면에서 캐릭터가 춤을 춰요',
-      '가입 없이 닉네임과 여섯 글자 코드로 방에 들어가요',
+      '가입 없이 닉네임과 8자리 초대코드로 방에 들어가요',
       '캐릭터 옆 빈 자리는 클릭이 그대로 바탕화면으로 통과해요',
       '끌어서 옮긴 자리와 키운 크기를 기억해요',
       '소리가 나지 않고, 메뉴 막대에서 한 번에 숨길 수 있어요',
@@ -191,7 +221,7 @@ export const ko: Copy = {
   meta: {
     title: 'SimSim Friends · 친구들과 함께 쓰는 무료 바탕화면 캐릭터 앱',
     description:
-      '바탕화면에 3D 동물 친구를 띄우고, 내 캐릭터를 누르면 멤버들 화면에서 캐릭터가 춤을 춰요. macOS·Windows 무료. 가입 없이 닉네임과 여섯 글자 코드로 시작해요.',
+      '바탕화면에 3D 동물 친구를 띄우고, 내 캐릭터를 누르면 멤버들 화면에서 캐릭터가 춤을 춰요. macOS·Windows 무료. 가입 없이 닉네임과 8자리 초대코드로 시작해요.',
     ogDescription:
       '내 캐릭터를 누르면 멤버들 화면에서 캐릭터가 춤을 춰요. 말을 걸지 않고도 나 여기 있어를 전하는 가장 가벼운 방법.',
     imageAlt: '크림색 배경 위에 선 고양이, 강아지, 판다, 오리, 토끼 캐릭터 다섯 마리',

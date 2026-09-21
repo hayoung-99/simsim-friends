@@ -1,53 +1,94 @@
 import type { Copy } from './copy'
 import { RELEASES_PAGE } from './site'
 
-/** 영어판. 문장은 예전 `site/en/index.html` 에서 그대로 옮겨 왔다. */
+/**
+ * 영어판. 설치 안내 · 궁금한 것 · 받기 화면 문장은 예전 `site/en/index.html` 에서 옮겨 온
+ * 그대로이고, 나머지는 2026-09 베이지 랜딩 시안을 옮긴 것이다. 부르는 말은 기획서대로
+ * team · teammate 다.
+ */
 export const en: Copy = {
   locale: 'en',
   other: { href: '/', lang: 'ko', short: '한국어', long: '한국어' },
 
   skipToContent: 'Skip to content',
-  nav: { download: 'Download' },
+  nav: { signals: 'Signals', friends: 'Friends', start: 'Get started', download: 'Download' },
 
   hero: {
-    lead: 'No words for your friend,',
-    emphasis: 'poke poke!',
-    tail: '',
-    sub: 'Give your teammates a poke. Tap your character and theirs dances on their screen.',
+    lead: 'Tap yours,',
+    tail: 'and theirs ',
+    emphasis: 'dances',
+    sub: 'A tiny animal lives on your desktop. Poke your teammates without a single message to answer.',
     download: 'Download',
-    warns: 'Your Mac will warn you once, the first time.',
+    howTo: 'How it works',
+    warns: 'Your computer will warn you once, the first time.',
     warnsLink: 'How to get past it',
-    note: 'Free · No sign up · macOS and Windows',
-    imageAlt: 'A white cat character standing on a desktop',
+    note: 'Your teammates need it too. Free, no sign up.',
   },
 
-  shot: {
-    headingTop: 'This is what',
-    headingBottom: 'opens up',
-    body: 'Create a team and you get a six character code. Your teammates type it in, and that is it.',
-    imageAlt: 'The SimSim Friends window with a team list open, showing one team with one teammate online.',
+  demo: {
+    mine: 'Your screen',
+    theirs: "Mina's screen",
+    hint: 'Tap me',
+    pokeLabel: "Tap your cat. The dog on Mina's screen dances",
+    sender: 'Nayoung',
+    altMine: 'A white cat standing in the corner of your screen',
+    altTheirs: "A brown dog standing in the corner of Mina's screen",
   },
 
-  characters: {
-    label: 'Characters',
-    heading: 'Pick one of five',
-    sub: 'Every team gets its own. Choose a different animal per team and you can tell at a glance which team a nudge came from.',
-    imageAlt: 'Five characters standing in a row: a cat, a dog, a panda, a duck and a bunny',
-    facts: [
-      {
-        term: 'Clicks pass through',
-        detail:
-          'The empty space around the character belongs to your desktop. Your icons stay reachable.',
-      },
-      {
-        term: 'It remembers',
-        detail: 'Where you dragged it and how big you made it, next time too.',
-      },
-      {
-        term: 'It stays quiet',
-        detail: 'It makes no sound, and the menu bar icon hides every character at once.',
-      },
+  quiet: {
+    heading: 'Too small for a message, too nice to skip',
+    stickers: ['Read', 'You there?', 'Ding!', '12 unread'],
+    bodyStrong: 'No read receipts, no replies, no sounds.',
+    body: 'Something moves in the corner of their screen for a moment, and they know it was you.',
+  },
+
+  signals: {
+    heading: 'Five moves, one per team',
+    sub: 'You only ever tap once, so the move you pick becomes your way of saying hi.',
+    pickerLabel: 'Pick a move',
+    items: [
+      { id: 'poke', name: 'Nudge', meaning: "I'm here", motion: 'Sways and dances', alt: 'A dog dancing among music notes' },
+      { id: 'hop', name: 'Hop', meaning: 'Hey, yay!', motion: 'Bounces on the spot', alt: 'A cat jumping on the spot' },
+      { id: 'wave', name: 'Wave', meaning: 'Hello', motion: 'Lifts an arm and waves', alt: 'A panda waving one arm' },
+      { id: 'heart', name: 'Heart', meaning: 'Thanks, love you', motion: 'Pops a heart and blushes', alt: 'A duck blushing under a heart bubble' },
+      { id: 'sulk', name: 'Sulk', meaning: 'Look at me', motion: 'Flops down and flails', alt: 'A bunny flopped down and fussing' },
     ],
+  },
+
+  friends: {
+    heading: 'Which one comes home with you?',
+    sub: 'Give each team a different animal and you can tell where a signal came from at a glance.',
+    items: [
+      { id: 'cat', name: 'Shy Cat', trait: 'A little bashful' },
+      { id: 'dog', name: 'Crazy Dog', trait: 'Always excited' },
+      { id: 'panda', name: 'Cozy Panda', trait: 'Takes it easy' },
+      { id: 'duck', name: 'Whisky Duck', trait: 'Slightly spaced out' },
+      { id: 'bunny', name: 'Just Bunny', trait: 'Just a bunny' },
+    ],
+  },
+
+  start: {
+    heading: 'No sign up, just one invite code',
+    steps: [
+      { title: 'Download and open', body: 'Grab the one file that fits your computer.' },
+      { title: 'Create a team, share the code', body: 'Pick a nickname and your team is ready. Send the code to your teammates.' },
+      { title: 'Give it a tap', body: 'When a teammate joins, one more animal shows up on your desktop.' },
+    ],
+    codeSample: 'K7QX2MPA',
+    codeNote: 'Works for 24 hours',
+  },
+
+  room: {
+    members: { big: '5', title: 'Just your people', body: 'Up to five per team. Thirty people poking each other is a screen you would switch off.' },
+    rooms: { big: '3', title: 'Up to three teams', body: 'Friends, family, just the two of you.' },
+    sleep: { title: 'Need quiet? Let it sleep', body: "A sleeping team's animal curls up. Your own signals still go out." },
+    clear: { title: 'Never in your way', body: 'Clicks around the animal pass straight through, and it saves battery when idle.' },
+  },
+
+  final: {
+    headingTop: 'Who will you',
+    headingBottom: 'poke today?',
+    note: 'Free on macOS and Windows. In English, 한국어, 日本語 and 中文.',
   },
 
   download: {
@@ -123,7 +164,7 @@ export const en: Copy = {
         id: 'faq-teammates',
         question: 'Do my teammates need it too?',
         answer:
-          'Yes. The character has to be on their desktop for the nudge to land. One person creates a team, gets a six character code, and everyone else types it in.',
+          'Yes. The character has to be on their desktop for the nudge to land. One person creates a team, gets an eight character invite code, and everyone else types it in.',
       },
       {
         id: 'faq-free',
@@ -151,17 +192,6 @@ export const en: Copy = {
     ],
   },
 
-  try: {
-    label: 'In practice',
-    heading: 'Tap here, they dance there',
-    sub: 'One tap is all you do, and the other side does not have to do anything at all.',
-    mine: 'Your screen',
-    theirs: 'Their screen',
-    altMine: 'A white cat character on your screen',
-    altTheirs: 'A pink bunny character on their screen',
-    cta: 'Get it',
-  },
-
   footer: {
     github: 'GitHub',
     releases: 'Releases',
@@ -181,7 +211,7 @@ export const en: Copy = {
     featureList: [
       'A 3D animal character lives on your desktop',
       'Tap your own character and everyone on that team sees theirs dance',
-      'No sign up: join with a nickname and a six character code',
+      'No sign up: join with a nickname and an eight character invite code',
       'Clicks in the empty space around the character pass through to the desktop',
       'Remembers where you dragged it and how big you made it',
       'Makes no sound, and the menu bar icon hides every character at once',

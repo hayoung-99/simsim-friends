@@ -2,7 +2,7 @@
  * 랜딩 페이지에 넣을 그림을 만든다.
  *
  *   npm run site-images                    전부 다시 뜬다
- *   npm run site-images -- peek-panda      하나만 다시 뜬다
+ *   npm run site-images -- characters      하나만 다시 뜬다
  *   npm run site-images -- --webp-only     뜨지 않고 WebP 만 다시 만든다
  *
  * 앱과 같은 캐릭터 코드로 그리므로(`src/renderer/site-assets/`), 캐릭터가 바뀌면
@@ -44,14 +44,7 @@ const READY_TIMEOUT_MS = 15000
  * 어떤 그림을 어느 크기로 뜰지.
  *
  * **화면에 걸릴 크기의 두 배로 뜬다.** 요즘 노트북은 대부분 화소가 두 배라, 걸릴
- * 크기 그대로 만들면 가장자리가 뭉개져 보인다. 빼꼼 그림은 1900px 이상에서 가장
- * 크게 걸리므로(`globals.css` 의 두 번째 구간) 그 폭의 두 배가 기준이다.
- *
- *   판다·강아지·고양이 300px → 612    토끼 370px → 748    오리 335px → 680
- *
- * 가로세로 비는 340:460, 즉 17:23 이어야 한다. `.peek` 이 `aspect-ratio: 340/460`
- * 칸에 `background-size: contain` 으로 넣기 때문에, 비가 어긋나면 남는 쪽에 여백이
- * 생기면서 캐릭터가 그만큼 작아진다. 그래서 크기는 17과 23의 배수로만 고른다.
+ * 크기 그대로 만들면 가장자리가 뭉개져 보인다.
  *
  * **확장자가 곧 형식이다.** `.webp` 면 WebP 로, `.png` 면 PNG 로 저장한다.
  * 두 배로 뜨면 PNG 는 넉 배로 무거워지는데, WebP 로 담으면 5분의 1 안팎이라
@@ -62,21 +55,40 @@ const READY_TIMEOUT_MS = 15000
  * 못 읽는 곳이 아직 있어서, 공유 카드는 가장 무던한 형식으로 둔다.
  */
 const SHOTS = [
-  { shot: 'hero', file: 'hero-cat.webp', width: 760, height: 900, transparent: true },
+  /*
+   * 둘 다 랜딩 화면에는 걸리지 않는다. 구조화 데이터(`lib/jsonld.ts`)가 앱을 설명하는
+   * 그림으로 가리키고, `og.png` 는 링크 미리보기다. 랜딩 화면의 캐릭터 그림은 아래
+   * `HAND_MADE` 에 있다.
+   */
   { shot: 'characters', file: 'characters.webp', width: 1760, height: 460, transparent: true },
-  // "눌러 보면 이렇게 돼요" 장면의 두 창. 화면에 130px 안팎으로 걸리므로 두 배로 뜬다
-  { shot: 'duo-cat', file: 'duo-cat.webp', width: 320, height: 380, transparent: true },
-  { shot: 'duo-bunny', file: 'duo-bunny.webp', width: 320, height: 380, transparent: true },
   { shot: 'og', file: 'og.png', width: 1200, height: 630, transparent: false },
-  { shot: 'peek-panda', file: 'peek-panda.webp', width: 612, height: 828, transparent: true },
-  { shot: 'peek-bunny', file: 'peek-bunny.webp', width: 748, height: 1012, transparent: true },
-  { shot: 'peek-dog', file: 'peek-dog.webp', width: 612, height: 828, transparent: true },
-  { shot: 'peek-duck', file: 'peek-duck.webp', width: 680, height: 920, transparent: true },
-  { shot: 'peek-cat', file: 'peek-cat.webp', width: 612, height: 828, transparent: true },
 ]
 
-/** 앱을 띄워 손으로 찍어 온 것들. 여기서는 형식만 바꿔 준다 (`--webp-only`). */
-const HAND_MADE = ['team-window', 'team-window-en']
+/**
+ * 손으로 찍어 온 것들. 여기서는 형식만 바꿔 준다 (`--webp-only`).
+ *
+ * 방 창 스크린샷은 진짜 앱을 띄워 찍는다(맨 위 주석). `friend-*`·`signal-*` 는 캐릭터
+ * 촬영장(`npm run preview -- --studio`)에서 1600x2000 으로 찍은 것을, 투명 여백을
+ * 잘라 내고 화면에 걸릴 크기의 두 배(서 있는 것 긴 변 520 · 몸짓 760)로 줄여 옮긴다.
+ * 촬영장은 앱과 같은 캐릭터 코드로 그리므로 앱에 뜨는 모습과 다르지 않다.
+ *
+ *   friend-cat · dog · panda · duck · bunny   다섯 친구가 가만히 선 모습
+ *   signal-poke · hop · wave · heart · sulk 몸짓 다섯 가지 (콕 · 폴짝 · 손 흔들기 · 하트 · 앙탈)
+ */
+const HAND_MADE = [
+  'team-window',
+  'team-window-en',
+  'friend-cat',
+  'friend-dog',
+  'friend-panda',
+  'friend-duck',
+  'friend-bunny',
+  'signal-poke',
+  'signal-hop',
+  'signal-wave',
+  'signal-heart',
+  'signal-sulk',
+]
 
 /** 무손실이 아니다. 0.9 면 캐릭터의 부드러운 면에서 티가 나지 않는다. */
 const WEBP_QUALITY = 0.9

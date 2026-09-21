@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import type { Copy } from '../lib/copy'
+import { displayFont } from '../lib/fonts'
 import { buildJsonLd } from '../lib/jsonld'
 
 /**
@@ -21,7 +22,7 @@ export function RootHtml({ copy, children }: { copy: Copy; children: ReactNode }
   const jsonLd = buildJsonLd(copy)
 
   return (
-    <html lang={copy.locale}>
+    <html lang={copy.locale} className={displayFont.variable}>
       <body>
         {children}
         <script
