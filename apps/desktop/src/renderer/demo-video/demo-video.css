@@ -1,0 +1,161 @@
+/*
+ * 데모 영상 장면의 모양.
+ *
+ * 영상을 꽉 채운 운영체제 바탕화면 두 장(내 것 · 친구 것)이다 — 배경화면, 맨 위 메뉴 막대,
+ * 아래 Dock, 오른쪽 위의 폴더·파일이 있고, 캐릭터는 앱이 실제로 서는 자리(오른쪽 아래
+ * 구석)에 선다. 두 장은 macOS 에서 데스크톱을 넘길 때처럼 어두운 틈을 두고 옆으로 붙어
+ * 있고, 카메라(`#world`)가 그 사이를 오간다. 말풍선과 이름표는 앱의 캐릭터 창
+ * (`pet/main.tsx` · `pet/nameplate.ts`)을 그대로 옮겼다.
+ *
+ * 장면은 640x440 으로 그리고 화면 배율 2 로 찍어 1280x880 영상이 된다.
+ */
+
+:root {
+  --ink: #4a3223;
+  --app-ink: #4a3f33;
+  --card: #fffaf0;
+  /*
+   * 신호의 색. 랜딩의 노랑(`--accent` #ffc83d)을 그대로 쓰면 내 바탕화면(같은 노랑) 위에서
+   * 궤적이 사라진다. 한 단 짙은 꿀색이라 노랑 위에서도 모래색 위에서도 보인다.
+   */
+  --signal: #f08a1c;
+  --ui: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 640px; height: 440px; overflow: hidden; }
+
+/* 바탕은 데스크톱 사이의 틈 색이다. 넘어가는 동안 "다른 화면" 으로 건너간다는 것이 보인다 */
+#scene { position: relative; width: 640px; height: 440px; overflow: hidden; background: #111; }
+
+/* 카메라. `demo-video.ts` 가 옮기고 키운다 */
+#world { position: absolute; inset: 0; transform-origin: 0 0; }
+
+.screen { position: absolute; top: 0; width: 640px; height: 440px; overflow: hidden; }
+.screen.mine { left: 0; }
+.screen.theirs { left: 664px; }
+
+/*
+ * **배경화면은 단색이다.** 사진 배경도 떠 봤는데, 물결 같은 잔무늬가 카메라가 움직일
+ * 때마다 전부 새 화면이 되어 영상이 5~7배 무거워졌다 (WebM 3.6MB 대 0.64MB). 내 화면은
+ * 랜딩 디자인 시스템의 노란 포인트 색(`--accent`)이고, 친구 화면은 노을 진 모래색이다.
+ */
+.wallpaper { position: absolute; inset: 0; }
+.mine .wallpaper { background: #ffc83d; }
+.theirs .wallpaper { background: #e3b98f; }
+
+/* 메뉴 막대. 오른쪽의 고양이 아이콘은 이 앱의 트레이 아이콘(`assets/trayTemplate@2x.png`)이다 */
+.bar {
+  position: absolute; inset: 0 0 auto 0; height: 15px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 8px; background: rgba(255, 255, 255, 0.28); backdrop-filter: blur(12px) saturate(1.4);
+}
+.menus { display: flex; gap: 5px; align-items: center; }
+.menus i { display: block; height: 5px; width: 16px; border-radius: 2px; background: rgba(20, 20, 20, 0.55); }
+.menus i:first-child { width: 7px; height: 7px; border-radius: 50%; }
+.menus i:last-child { width: 20px; }
+.tray { display: flex; align-items: center; gap: 8px; }
+.tray-app {
+  display: block; width: 11px; height: 11px; background: rgba(20, 20, 20, 0.85);
+  -webkit-mask: url('../../../assets/trayTemplate@2x.png') center / contain no-repeat;
+}
+.clock { font-family: var(--ui); font-size: 7.5px; font-weight: 600; color: rgba(20, 20, 20, 0.85); letter-spacing: 0.02em; }
+
+.dock {
+  display: flex; gap: 2px; position: absolute; left: 50%; bottom: 4px; transform: translateX(-50%);
+  padding: 2px 4px; border-radius: 10px;
+  background: rgba(255, 255, 255, 0.3); box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.6), 0 4px 14px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(14px) saturate(1.5);
+}
+.dock i { display: block; width: 26px; height: 26px; background: center / contain no-repeat; }
+/*
+ * macOS 기본 앱 아이콘. 이 맥의 앱 묶음(`/System/Applications/*.app` 의 AppIcon.icns)에서
+ * 128px PNG 로 꺼낸 것이다. 실제 바탕화면처럼 보이게 하려고 쓴 것이고, 아이콘의 권리는
+ * Apple 에 있다.
+ */
+.dock i:nth-child(1) { background-image: url('./dock/finder.png'); }
+.dock i:nth-child(2) { background-image: url('./dock/safari.png'); }
+.dock i:nth-child(3) { background-image: url('./dock/messages.png'); }
+.dock i:nth-child(4) { background-image: url('./dock/photos.png'); }
+.dock i:nth-child(5) { background-image: url('./dock/notes.png'); }
+.dock i:nth-child(6) { background-image: url('./dock/music.png'); }
+.dock i:nth-child(7) { background-image: url('./dock/appstore.png'); }
+
+/*
+ * 바탕화면 오른쪽 위의 폴더 · 파일 아이콘. macOS 가 바탕화면에 놓인 것을 늘어놓는 자리
+ * 그대로다. 폴더와 문서 그림은 이 맥의 시스템 아이콘(`CoreTypes.bundle` 의
+ * GenericFolderIcon · GenericDocumentIcon)에서 꺼냈고, 스크린샷은 작은 그림으로 흉내 냈다.
+ * 이름은 짙은 글씨로 둔다. macOS 는 흰 글자에 그림자를 쓰지만 이 장면의 바탕화면은 노랑과
+ * 모래색이라 흰 글자가 묻혀 읽히지 않았다.
+ */
+.desk-icons {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  position: absolute; top: 22px; right: 10px; width: 52px; list-style: none;
+}
+.desk-icons li { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 52px; }
+.desk-icons i { display: block; width: 30px; height: 30px; background: center / contain no-repeat; }
+.desk-icons .folder i { background-image: url('./desk/folder.png'); }
+.desk-icons .document i { background-image: url('./desk/document.png'); }
+.desk-icons .shot i {
+  width: 30px; height: 20px; margin-block: 5px; border: 1.5px solid #fff; border-radius: 1px;
+  background: linear-gradient(180deg, #9ccbe8 0 45%, #f3d9a8 45% 70%, #e8b07c 70%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+.desk-icons span {
+  max-width: 52px; padding: 0 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: var(--ui); font-size: 7.5px; font-weight: 600; line-height: 1.2; color: var(--ink);
+}
+
+/*
+ * 캐릭터 창. 앱처럼 화면 오른쪽 아래 구석, Dock 위에 선다. 크기는 앱 창(280x384)을
+ * 1440x900 화면에 띄웠을 때의 비율을 이 장면 크기로 줄인 것이다.
+ */
+.stage { position: absolute; right: 6px; bottom: 30px; width: 137px; height: 188px; display: block; }
+
+/* 머리 위 말풍선 — 앱의 `BUBBLE` 클래스 묶음과 같은 모양 */
+.bubble {
+  position: absolute; left: 0; top: 0; transform-origin: 50% 100%;
+  padding: 7px 13px; border-radius: 14px; background: var(--card); color: var(--app-ink);
+  font-family: var(--ui); font-size: 13px; font-weight: 700; line-height: normal; letter-spacing: 0.02em; white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(74, 63, 51, 0.22); opacity: 0;
+}
+.bubble::after {
+  content: ''; position: absolute; left: 50%; bottom: -5px; width: 11px; height: 11px; margin-left: -5.5px;
+  background: var(--card); transform: rotate(45deg); border-radius: 2px;
+}
+
+/* 누른 자리에 번지는 물결 */
+.ripple {
+  position: absolute; left: 0; top: 0; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.95); opacity: 0;
+}
+
+/* 신호가 닿은 자리의 반짝임 */
+.landing-ring {
+  position: absolute; left: 0; top: 0; width: 70px; height: 70px; margin: -35px 0 0 -35px; border-radius: 50%;
+  border: 3px solid var(--signal); opacity: 0;
+}
+
+/* 발밑 이름표 — 앱의 `nameplate.ts` 의 `CHIP` 과 같은 모양 */
+.nameplate {
+  position: absolute; left: 0; top: 0; transform-origin: 50% 0;
+  padding: 3px 11px; border-radius: 999px; background: rgba(255, 250, 240, 0.94); color: var(--app-ink);
+  font-family: var(--ui); font-size: 12px; font-weight: 700; line-height: normal; white-space: nowrap;
+  box-shadow: 0 2px 9px rgba(74, 63, 51, 0.2); opacity: 0;
+}
+
+/* 신호 궤적. 두 바탕화면 전체(640 + 틈 24 + 640)에 걸쳐 그린다 */
+.flight { position: absolute; left: 0; top: 0; width: 1304px; height: 440px; overflow: visible; pointer-events: none; }
+.flight .trail { fill: none; stroke: url(#trail-fade); stroke-width: 4.5; stroke-linecap: round; }
+/*
+ * 신호 머리 — 작은 꿀색 점 둘레로 옅은 고리 둘이 번갈아 퍼졌다 사라진다("숨 쉬는 고리").
+ * 예전의 흰 테두리 + 빛 번짐은 노란 바탕에서 하얗게 떠 보였다. 고리는 "부르고 있다" 는
+ * 느낌을 주면서 바탕을 가리지 않는다.
+ */
+.flight .dot { fill: var(--signal); }
+.flight .pulse { fill: none; stroke: var(--signal); stroke-width: 1.8; }
+
+.cursor {
+  position: absolute; left: 0; top: 0; width: 30px; height: 30px; transform-origin: 5px 2.5px;
+  filter: drop-shadow(0 3px 4px rgba(60, 40, 20, 0.35));
+}
+.cursor path { fill: #fff; stroke: #2b2118; stroke-width: 1.4; stroke-linejoin: round; }

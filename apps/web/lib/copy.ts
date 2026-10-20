@@ -28,11 +28,6 @@ export type Step = StepPart[]
 export const stepText = (step: Step): string =>
   step.map((part) => (typeof part === 'string' ? part : part.strong)).join('')
 
-export interface Fact {
-  term: string
-  detail: string
-}
-
 export interface DownloadRow {
   /** `releases.ts` 가 릴리스 자산을 짝지을 때 쓰는 열쇠 */
   asset: 'mac-arm64' | 'mac-x64' | 'windows'
@@ -49,55 +44,101 @@ export interface Question {
   answer: string
 }
 
+/** 몸짓 다섯 가지. 그림 파일 이름(`signal-*.webp`)과 CSS 가 이 열쇠를 함께 쓴다. */
+export type SignalId = 'poke' | 'hop' | 'wave' | 'heart' | 'sulk'
+
+/** 다섯 친구. 그림 파일 이름(`friend-*.webp`)이 이 열쇠를 쓴다. */
+export type FriendId = 'cat' | 'dog' | 'panda' | 'duck' | 'bunny'
+
 export interface Copy {
   locale: Locale
   /** 다른 언어로 건너가는 곳 */
   other: { href: string; lang: Locale; short: string; long: string }
 
   skipToContent: string
-  /** 제목줄의 유일한 안쪽 링크 — 캐릭터·처음 열 때·궁금한 것 앵커는 더 이상 안 건다 */
-  nav: { download: string }
+  /** 윗줄 내비. `download` 는 `/download` 로 가는 단추이자 맨 끝 받기 칸의 단추 글자다 */
+  nav: { signals: string; friends: string; start: string; download: string }
 
   hero: {
-    /** 제목은 세 조각이다 — 앞줄, 강조, 뒷조각 */
+    /** 제목은 두 줄이다 — 앞줄과, 강조가 끝에 붙는 뒷줄 */
     lead: string
-    emphasis: string
     tail: string
-    /**
-     * 제목 바로 아래 문단. 방 만들기 → 멤버 초대 → 캐릭터 고르기 순서를 먼저
-     * 짚어서, 둘 이상이어야 시작된다는 것을 **받기 전에** 알려 준다 — 방이 없으면
-     * 캐릭터도 뜨지 않기 때문이다(기획서 "알고 둔 선택"). 예전에는 이 사실을
-     * 알리는 문장(`needsTwo`)이 따로 있었는데, 지금은 이 문단이 그 역할까지 한다.
-     */
-    sub: ReactNode
+    emphasis: string
+    sub: string
+    /** 히어로의 받기 단추. `DownloadButtons` 가 OS 에 맞춰 바꿔 단다 */
+    download: string
+    /** 받기 옆 두 번째 단추 — 시작하는 법으로 내려간다 */
+    howTo: string
     /**
      * 받기 버튼 바로 아래 한 줄. 처음 열 때 경고가 뜬다는 것을 **누르기 전에** 알려 준다.
      *
-     * macOS 빌드에 서명이 없어서 첫 실행에 경고가 한 번 뜨는데, 넘기는 법은 두 판
-     * 아래 "처음 열 때" 에 있다. 받기 버튼은 파일을 내려받고 **페이지를 떠나므로**,
-     * 그 안내가 있다는 사실 자체를 여기서 알려 주지 않으면 아무도 다시 찾아오지 않는다.
+     * 받기 버튼은 파일을 내려받고 **페이지를 떠나므로**, 넘기는 법이 아래에 있다는
+     * 사실 자체를 여기서 알려 주지 않으면 아무도 다시 찾아오지 않는다.
      */
     warns: string
-    /** 그 안내로 가는 링크의 글자 */
     warnsLink: string
-    download: string
+    /**
+     * 그 아래 한 줄. **혼자서는 시작되지 않는다는 것**을 받기 전에 알린다 — 방이 없으면
+     * 캐릭터도 뜨지 않기 때문이다(기획서 "방이 없으면 캐릭터도 없다").
+     */
     note: string
-    imageAlt: string
   }
 
-  shot: {
-    headingTop: string
-    headingBottom: string
-    body: string
-    imageAlt: string
-  }
-
-  characters: {
+  /**
+   * 히어로 오른쪽의 데모 영상. 영상 속 글씨(화면 이름 · 보낸 사람)는 구워져 있어서
+   * 여기가 아니라 `apps/desktop/src/renderer/demo-video/demo-video.ts` 의 `TEXT` 에 있다.
+   */
+  demo: {
+    /** 영상과, 움직임을 줄인 사람에게 대신 보여 주는 한 장의 설명. 낭독기가 읽는다 */
     label: string
+  }
+
+  /** 말 걸기엔 시시하고 — 이 제품이 무엇을 일부러 안 하는지 */
+  quiet: {
+    heading: string
+    /** 줄을 그어 지우는 메신저의 흔적들 */
+    stickers: string[]
+    /** 굵게 보일 앞부분과 이어지는 뒷부분 */
+    bodyStrong: string
+    body: string
+  }
+
+  signals: {
     heading: string
     sub: string
-    imageAlt: string
-    facts: Fact[]
+    /** 몸짓 목록 전체의 이름 (낭독기용) */
+    pickerLabel: string
+    items: { id: SignalId; name: string; meaning: string; motion: string; alt: string }[]
+  }
+
+  friends: {
+    heading: string
+    sub: string
+    items: { id: FriendId; name: string; trait: string }[]
+  }
+
+  start: {
+    heading: string
+    /** 순서가 곧 내용인 세 단계 — 받기, 방 만들고 코드 나누기, 눌러 보기 */
+    steps: { title: string; body: string }[]
+    /** 두 번째 단계 안에 그리는 예시 코드. 자릿수가 실제와 같아야 한다 */
+    codeSample: string
+    codeNote: string
+  }
+
+  /** 방 규칙 네 칸 */
+  room: {
+    members: { big: string; title: string; body: string }
+    rooms: { big: string; title: string; body: string }
+    sleep: { title: string; body: string }
+    clear: { title: string; body: string }
+  }
+
+  /** 맨 끝 받기 칸. 단추 글자는 `nav.download` 를 함께 쓴다 */
+  final: {
+    headingTop: string
+    headingBottom: string
+    note: string
   }
 
   /**
@@ -138,27 +179,6 @@ export interface Copy {
     sub: string
     macos: { title: string; howToName: string; steps: Step[] }
     windows: { title: string; howToName: string; steps: Step[]; hint: string }
-  }
-
-  /**
-   * 맨 끝의 "해 보면 이래요" 장면.
-   *
-   * 이 제품의 단 하나뿐인 마법(내가 누르면 상대가 춤춘다)이 지금까지 **글자로만**
-   * 있었다. 화면 둘을 나란히 놓고 실제로 그 일이 일어나는 것을 보여 주는 자리이고,
-   * 마지막 받기 버튼도 여기 있다 — 그 전까지는 꼬리말 앞 3,000px 동안 누를 것이
-   * 하나도 없었다.
-   */
-  try: {
-    label: string
-    heading: string
-    sub: string
-    /** 왼쪽 창(내 화면)·오른쪽 창(친구 화면)에 붙는 이름 */
-    mine: string
-    theirs: string
-    altMine: string
-    altTheirs: string
-    /** 받기 구역으로 돌려보내는 마지막 단추 */
-    cta: string
   }
 
   faq: {

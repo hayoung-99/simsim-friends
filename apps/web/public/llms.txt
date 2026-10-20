@@ -3,7 +3,7 @@
 > SimSim Friends is a free desktop app for macOS and Windows that keeps a 3D
 > animal character on your desktop. Tap your own character and every teammate on
 > that team sees their character dance on their screen. There is no sign up: you
-> join a team with a nickname and a six character invite code.
+> join a team with a nickname and an eight character invite code.
 
 Written by GitHub user hayoung-99, built with Electron, MIT licensed. The name is
 two capitalised words: SimSim Friends. Korean and English use it verbatim;
@@ -18,7 +18,7 @@ itself runs in Korean, English, Japanese and Chinese.
 - Platforms: macOS on Apple Silicon and Intel (.dmg), Windows 64-bit (.exe installer).
 - Account: none. No email, no password. A device identifier created at install
   time is the only identity.
-- Joining a team: one person creates a team and receives a six character invite
+- Joining a team: one person creates a team and receives an eight character invite
   code made of letters and digits, with 0, O, 1 and I excluded. The code expires
   24 hours after it is issued and can be reissued at any time.
 - Limits: one person can belong to up to 3 teams; each team holds up to 5 people.
@@ -58,7 +58,7 @@ itself runs in Korean, English, Japanese and Chinese.
 
 SimSim Friends는 바탕화면에 3D 동물 캐릭터를 띄워 두는 macOS·Windows 무료 앱입니다.
 내 캐릭터를 누르면 같은 방 사람들의 화면에서 캐릭터가 춤을 춥니다. 가입하지 않고,
-닉네임과 여섯 글자 초대코드로 방에 들어갑니다. 초대코드는 영문과 숫자를 섞은 여섯
+닉네임과 8자리 초대코드로 방에 들어갑니다. 초대코드는 영문과 숫자를 섞은 여덟
 글자이고 24시간 뒤 만료됩니다. 한 사람이 최대 3개 방, 방 하나에 최대 5명이며
 방마다 캐릭터가 한 마리씩 뜹니다. 오가는 것은 누가 눌렀다는 신호와 이름뿐이고,
 화면 내용이나 파일은 어디로도 가지 않습니다. 처음 열 때 확인 창이 한 번 뜨고,

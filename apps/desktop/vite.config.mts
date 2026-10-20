@@ -36,10 +36,11 @@ export default defineConfig({
         size: renderer('size', 'index.html'),
 
         // 배포본에는 들어가지 않지만(package.json 의 build.files 참고) 개발용 명령이
-        // 이 산출물을 연다 — npm run preview · app-icon · site-images.
+        // 이 산출물을 연다 — npm run preview · app-icon · site-images · demo-video.
         preview: renderer('preview', 'index.html'),
         icon: renderer('icon', 'index.html'),
         siteAssets: renderer('site-assets', 'index.html'),
+        demoVideo: renderer('demo-video', 'index.html'),
       },
     },
   },

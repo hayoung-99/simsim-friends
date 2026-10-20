@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 import type { Copy, DownloadRow } from '../lib/copy'
 import type { ReleaseEntry } from '../lib/releases'
-import { BRAND } from '../lib/site'
 import { SiteFooter } from './SiteFooter'
+import { SiteHeader } from './SiteHeader'
 
 /**
  * `/download`(영어는 `/en/download`) — 버전 히스토리로 받는 화면.
@@ -16,7 +16,7 @@ import { SiteFooter } from './SiteFooter'
  * `app/download/page.tsx` 가 `lib/device.ts` 로 미리 가른다.
  */
 
-/** 창 크롬(제목줄·꼬리말)은 목록 화면과 폰 안내 화면이 똑같이 쓴다 */
+/** 윗줄·꼬리말은 목록 화면과 폰 안내 화면이 똑같이 쓴다 */
 function Chrome({
   copy,
   homeHref,
@@ -29,28 +29,13 @@ function Chrome({
   children: ReactNode
 }) {
   return (
-    <div className="stage">
-      <div className="window">
-        <header className="titlebar">
-          <svg className="lights" viewBox="0 0 56 12" aria-hidden="true" focusable="false">
-            <circle cx="6" cy="6" r="6" fill="#ff5f57" />
-            <circle cx="26" cy="6" r="6" fill="#febc2e" />
-            <circle cx="46" cy="6" r="6" fill="#28c840" />
-          </svg>
-          <span className="title">{BRAND}</span>
-          <nav>
-            <a href={homeHref}>{copy.download.backHome}</a>
-            <a className="lang" href={other.href} hrefLang={other.lang} lang={other.lang}>
-              {other.short}
-            </a>
-          </nav>
-        </header>
-
-        <main id="main">{children}</main>
-
-        <SiteFooter copy={copy} />
-      </div>
-    </div>
+    <>
+      <SiteHeader copy={copy} homeHref={homeHref} other={other} />
+      <main id="main" className="download-main">
+        {children}
+      </main>
+      <SiteFooter copy={copy} />
+    </>
   )
 }
 
@@ -120,7 +105,7 @@ export function DownloadPage({
 }: {
   copy: Copy
   releases: ReleaseEntry[]
-  /** 창 제목줄의 '돌아가기' 가 향하는 곳 — 그 나라말의 랜딩 */
+  /** 윗줄의 로고가 돌아가는 곳 — 그 나라말의 랜딩 */
   homeHref: string
   /** 언어 바꾸기 — 이 화면(다운로드)의 반대쪽 나라말 주소로, 라벨은 `copy.other` 그대로 */
   other: Copy['other']

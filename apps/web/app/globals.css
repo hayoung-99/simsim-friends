@@ -1,88 +1,108 @@
 /*
- * SimSim Friends 랜딩 페이지 — 창(The Window).
+ * SimSim Friends 랜딩과 받기 화면 — 베이지 방 (2026-09).
  *
- * 앱이 창 안에 사니, 랜딩페이지가 그 창이면 된다. 페이지 전체가 벽지 위에
- * 떠 있는 창 한 장이고, 캐릭터는 벽지 위에 서서 창틀을 넘어온다.
+ * 베이지 바탕 · 고동색 글자 · 노란 단추. 포근하고 장난스러운 쪽으로 간다. 어드민은 이
+ * 파일을 부르지 않는다(`app/(admin)/admin.css` 가 혼자 선다).
  *
- * 벽지가 페리윙클인 이유는 취향이 아니라 계산이다. 캐릭터는 따뜻한 색이라
- * 따뜻한 바닥에서는 묻힌다. 예전 크림색 배경에서 히어로 고양이의 ΔE 는 1.1 —
- * 사람 눈이 같은 색으로 보는 구간이었다. 이 벽지에서는 30.8 이고 명도비도
- * 1.89 다. 바닥색을 따뜻한 쪽으로 되돌릴 생각이라면 이 숫자부터 다시 재야 한다.
- *
- * 창틀이 한 번 쓰고 마는 장치가 되지 않게 두 가지를 지킨다 — 캐릭터가 창을
- * 넘어오게 해서 갇힌 상자로 안 보이게 하고, 900px 아래에서는 창틀을 아예 없앤다.
+ * **캐릭터는 맨 베이지 위에 세우지 않는다.** 한때 크림색 바탕에서 흰 고양이의 ΔE 가
+ * 1.1 이었다 — 사람 눈이 같은 색으로 보는 구간이라 고양이가 바탕에 녹아 사라졌다.
+ * 그래서 캐릭터가 서는 자리마다 꿀색 · 캐러멜색처럼 **한 단 짙은 판**을 깔고 발밑
+ * 그림자를 준다. 새 자리에 캐릭터를 세울 때는 `--honey` 계열 위에 두고, 바탕을 바꿀
+ * 생각이면 그 뒤의 ΔE 를 다시 재자(DESIGN.md 에 잰 값이 있다).
  *
  * 모서리 규칙
- *   창        14px
- *   판 · 카드  10~12px
- *   버튼       8px
+ *   누르는 것 (단추 · 몸짓 목록 · 이름표)   알약 999px
+ *   판 (화면 · 칸 · 카드)                   28px
+ *   판 안의 작은 판 (초대코드 표)            18px
  *
- * 바깥에서 받아오는 글꼴이나 스크립트가 하나도 없다. 첫 화면이 빨리 뜨는 것이
- * 이 페이지에서 가장 중요한 일이고, CSP 가 애초에 막아 두기도 했다.
+ * 색은 강조 하나 — 노랑. 노랑은 **단추의 바탕으로만** 쓴다. 베이지 위의 노란 글자는
+ * 읽히지 않으므로, 글자로 강조할 때는 짙은 꿀색(`--accent-text`)을 쓴다.
+ *
+ * 움직임은 전부 CSS 다. 자바스크립트로 도는 것은 받기 단추 하나뿐이다.
  */
 
 :root {
-  --wall-a: #a9a5bd;
-  --wall-b: #cbbfc0;
-  --panel: #f7f5f1;
-  --sunk: #eae6de; /* 리듬을 끊는 판 하나에만 쓴다 */
-  --ink: #2b2733;
-  --ink-soft: #615c6e; /* 창 안에서만 쓴다 — 5.9:1 */
-  --accent: #9a5d18;
-  --line: rgba(43, 39, 51, 0.1);
-  --window-edge: 1px solid rgba(43, 39, 51, 0.06);
-  --peek-shadow: rgba(43, 39, 51, 0.22);
+  --ground: #f6eddc;
+  --surface: #fff9ef;
+  --ink: #4a3223;
+  --ink-soft: #735843; /* 바탕 위 5.6:1 */
+  --line: #e4d3b8;
+  --accent: #ffc83d;
+  --accent-ink: #3f2a1c;
+  --accent-text: #8c5410; /* 바탕 위 5.3:1 — 작은 링크에도 쓴다 */
+  --accent-soft: #ffedb5;
 
-  --r-window: 14px;
-  --pane: min(940px, 100% - 2.5rem);
+  /* 캐릭터가 서는 판. 흰 고양이가 묻히지 않을 만큼 짙다 */
+  --honey: #f7d898;
+  --honey-deep: #f0c77c;
+  --caramel: #eec393;
+  --latte: #ead6ba;
+  --peach: #f5d3bb;
+
+  --wall-a1: #fbe2a6;
+  --wall-a2: #f2cd88;
+  --wall-b1: #efd9bb;
+  --wall-b2: #e2c49c;
+
+  --shadow: 0 18px 40px -18px rgba(110, 72, 36, 0.38);
+  --drop: rgba(90, 58, 30, 0.22);
+
+  --gutter: clamp(16px, 4vw, 40px);
+  --width: min(1180px, 100% - 2 * var(--gutter));
+  --r-pill: 999px;
+  --r-panel: 28px;
+  --r-inner: 18px;
+
+  --display: var(--font-display), 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  /* 본문은 Pretendard 를 우리 도메인에서 내보낸다(`pretendard.css`). 못 받으면 운영체제 글꼴로 */
+  --body: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+    'Segoe UI', 'Malgun Gothic', sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --wall-a: #14121a;
-    --wall-b: #241d24;
-    --panel: #221f2b;
-    --sunk: #1b1825;
-    --ink: #ece9f2;
-    --ink-soft: #a49eb4;
-    --accent: #e8b06a;
-    --line: rgba(236, 233, 242, 0.12);
-    /* 어두우면 창과 벽지의 밝기 차가 1.15:1 뿐이다. 테두리가 없으면 창이 사라진다. */
-    --window-edge: 1px solid rgba(236, 233, 242, 0.12);
-    --peek-shadow: rgba(0, 0, 0, 0.5);
+    --ground: #231a13;
+    --surface: #30251c;
+    --ink: #f6ead6;
+    --ink-soft: #cdb89d;
+    --line: #4a3a2c;
+    --accent: #ffc83d;
+    --accent-ink: #2a1c10;
+    --accent-text: #ffcf5e;
+    --accent-soft: #4b3a1c;
+
+    --honey: #4d3b1f;
+    --honey-deep: #5a4422;
+    --caramel: #4b3421;
+    --latte: #3b2e23;
+    --peach: #45302a;
+
+    --wall-a1: #4d3b1f;
+    --wall-a2: #3e2c1c;
+    --wall-b1: #3a2d22;
+    --wall-b2: #2e221a;
+
+    --shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.6);
+    --drop: rgba(0, 0, 0, 0.4);
   }
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 /*
- * 가로로는 넘친 것을 잘라 낸다.
- *
- * 창 모서리를 밟고 선 고양이(`.escapee`)는 창 밖으로 나가라고 절대배치해 둔 것이라,
- * 화면이 좁아지면 그 **상자**가 화면 오른쪽을 넘어간다 — 1024px 에서 67px, 1280px 에서
- * 27px 만큼 진짜 가로 스크롤바가 생긴다. 스크롤해 보면 가운데 있던 창이 통째로 왼쪽으로
- * 밀려 구도가 무너진다.
- *
- * **잘라 내도 잃는 것이 없다.** 넘어가는 부분은 그림의 투명 여백(오른쪽 32%)이고
- * 고양이 자신은 어느 폭에서나 화면 안에 남는다 — `.escapee` 의 오프셋이 애초에 그
- * 여백까지 계산에 넣고 잡혀 있다.
- *
- * **`hidden` 이 아니라 `clip` 이다.** `hidden` 은 스크롤 컨테이너를 만들어서, 빼꼼이
- * 기대는 배치 좌표(`offsetTop`)와 위치 기준이 함께 달라진다. `clip` 은 잘라 주기만 하고
- * 컨테이너를 만들지 않는다 (같은 이유가 아래 `.peekers` 에도 적혀 있다).
+ * 가로로 넘친 것은 잘라 낸다. 기울여 놓은 화면 두 장과 마지막 칸의 캐릭터 더미가
+ * 좁은 화면에서 몇 px 넘어가는데, 그걸로 페이지 전체에 가로 스크롤이 생기면 안 된다.
+ * `hidden` 이 아니라 `clip` 인 것은 스크롤 컨테이너를 만들지 않기 위해서다.
  */
-html { overflow-x: clip; }
-
-html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+html { overflow-x: clip; scroll-behavior: smooth; scroll-padding-top: 1.5rem; -webkit-text-size-adjust: 100%; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 body {
-  background: linear-gradient(170deg, var(--wall-a), var(--wall-b)) fixed;
+  background: var(--ground);
   color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Pretendard',
-    'Segoe UI', 'Malgun Gothic', sans-serif;
-  font-size: 16.5px;
-  line-height: 1.66;
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   word-break: keep-all;
   overflow-wrap: break-word;
@@ -92,205 +112,406 @@ body {
 img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
 
-/*
- * 가는 제목에 한 구절만 굵게. 글꼴을 못 바꾸는 대신 굵기 대비로 성격을 낸다.
- * Windows 한국어(Malgun Gothic)에는 300 이 없어 400 으로 떨어진다 — 알고 쓰는 것.
- */
-h1 { font-size: clamp(2.2rem, 4.6vw, 3.3rem); font-weight: 300; letter-spacing: -0.025em; line-height: 1.14; text-wrap: balance; }
-h1 em { font-style: normal; font-weight: 800; letter-spacing: -0.03em; }
-h2 { font-size: clamp(1.5rem, 2.8vw, 2rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.25; }
-h3 { font-size: 1.02rem; font-weight: 700; letter-spacing: -0.005em; line-height: 1.35; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.18; letter-spacing: -0.01em; text-wrap: balance; }
+h1 { font-size: clamp(2.5rem, 5.4vw, 4.2rem); }
+h1 em { font-style: normal; color: var(--accent-text); display: inline-block; }
+h2 { font-size: clamp(1.85rem, 3.6vw, 2.75rem); }
+h3 { font-size: 1.45rem; }
+.sub { margin-top: 12px; max-width: 40ch; color: var(--ink-soft); }
 
-/*
- * 작은 글자는 **세 단뿐이다** — 0.94 / 0.9 / 0.85rem.
- *
- * 한때 0.82 에서 0.96 사이에 서로 다른 단이 열 개 흩어져 있었다. 0.5px 차이라 화면에서는
- * 구별되지 않으면서, 새 줄을 만들 때마다 "옆엣것과 몇 rem 이었더라" 를 다시 재게 만들었다.
- * 하나로 모으면서 움직인 폭이 가장 큰 것도 0.03rem(0.5px)이라 화면은 그대로다.
- *
- *   0.94rem  줄 제목과 버튼 — 본문 다음으로 무거운 것
- *   0.9rem   딸린 설명 — 사실 목록의 설명, 설치 단계
- *   0.85rem  꼬리표성 글자 — 창 제목, 메타, 힌트, 꼬리말
- */
-.label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
-
-.skip { position: absolute; left: -9999px; top: 0; background: var(--ink); color: var(--panel); padding: 0.75rem 1.25rem; z-index: 30; }
+.skip { position: absolute; left: -9999px; top: 0; background: var(--ink); color: var(--ground); padding: 0.75rem 1.25rem; z-index: 30; }
 .skip:focus { left: 0; }
 
-:where(a, button):focus-visible { outline: 2.5px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+:where(a, button, summary, label):focus-visible { outline: 3px solid var(--accent-text); outline-offset: 3px; border-radius: 12px; }
 
-/*
- * 손가락으로 누르는 화면에서는 누를 것을 44px 로 키운다.
- *
- * 제목줄과 꼬리말의 링크는 글자 높이 그대로라 23px 이었다 — 권장치의 절반이다.
- * 두 조건을 함께 건다. `pointer: coarse` 가 뜻으로는 맞는 조건이지만(입력 장치를
- * 보는 것이지 화면 폭을 보는 것이 아니다) **자동화된 브라우저는 대개 `fine` 으로
- * 답해서 그것만으로는 고쳤는지 확인할 길이 없다.** 창틀이 이미 사라진 900px 아래를
- * 함께 걸어 두면 손으로도 재어 볼 수 있고, 좁은 창을 띄운 데스크톱이 조금 헐거워지는
- * 것은 잃을 것이 없다.
- */
-@media (pointer: coarse), (max-width: 900px) {
-  .titlebar nav a,
-  .window footer nav a { padding-block: 11px; }
-  .window footer nav { margin-block: -11px; } /* 늘어난 만큼 줄 높이가 자라지 않게 되돌린다 */
-}
+/* 한 줄 숨김 — 누를 수는 있어야 하는 입력 칸(몸짓 고르기)에 쓴다 */
+.signal-input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 
-/* ── 창 ───────────────────────────────────────────────── */
+main > section,
+.site-header,
+body > footer,
+.download-main { width: var(--width); margin-inline: auto; }
 
-.stage { padding-block: 64px 96px; }
-
-.window {
-  position: relative;
-  width: var(--pane);
-  margin-inline: auto;
-  background: var(--panel);
-  border: var(--window-edge);
-  border-radius: var(--r-window);
-  box-shadow: 0 40px 90px -30px rgba(20, 18, 26, 0.45), 0 2px 6px rgba(20, 18, 26, 0.1);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .window { animation: window-in 420ms cubic-bezier(0.2, 0.9, 0.3, 1) both; }
-  @keyframes window-in {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: none; }
-  }
-}
-
-.titlebar {
-  position: sticky;
-  top: 0;
-  z-index: 12;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 0 22px;
-  height: 52px;
-  background: color-mix(in srgb, var(--panel) 88%, transparent);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--line);
-  border-radius: var(--r-window) var(--r-window) 0 0;
-}
-.lights { width: 42px; flex: none; }
-.titlebar .title { font-size: 0.85rem; font-weight: 700; letter-spacing: -0.01em; }
-.titlebar nav { margin-left: auto; display: flex; gap: 1.3rem; font-size: 0.85rem; }
-.titlebar nav a { text-decoration: none; color: var(--ink-soft); }
-.titlebar nav a:hover { color: var(--ink); }
-/* 언어 바꾸기는 같은 페이지 안을 오가는 링크가 아니다. 선을 그어 구분한다. */
-.titlebar nav a.lang { color: var(--ink); border-left: 1px solid var(--line); padding-left: 1.3rem; }
-
-/* ── 판 (섹션) ────────────────────────────────────────── */
-
-.pane { padding: 46px 40px; }
-.pane + .pane, main > .pane ~ .pane { border-top: 1px solid var(--line); }
-.pane > .label + h2 { margin-top: 8px; }
-.sub { margin-top: 10px; max-width: 46ch; color: var(--ink-soft); }
-
-/* 폰 안내 화면(`DownloadMobileGate`) — 그 화면 하나뿐이라 위아래 여백을 더 준다 */
-.pane.gate { padding-block: 72px 60px; }
-
-.hero { padding-block: 62px 54px; }
-/*
- * 문장이 <br/> 로 두 줄을 직접 끊어 둔다 — 한 줄이 그 자체로 뜻을 이루는 절이라서다.
- * 28ch 는 예전의 짧은 한 문장에 맞춘 폭이었는데, 그 폭으로 지금 문장을 또 접으면
- * 이미 끊어 둔 한 줄이 두 번 더 접혀 넉 줄이 된다. 두 줄 중 긴 쪽이 그대로 한 줄에
- * 들어가는 폭으로 넉넉히 잡는다.
- */
-.hero .lead { margin-top: 18px; font-size: 1.06rem; color: var(--ink-soft); max-width: 44ch; }
-.actions { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 10px; }
-.hero .note { margin-top: 16px; font-size: 0.85rem; color: var(--ink-soft); }
-/* 두 줄이 잇달아 오므로 뒤엣것은 바짝 붙인다 — 한 덩어리로 읽혀야 한다 */
-.hero .note + .note { margin-top: 6px; }
-.hero .note a { color: var(--accent); }
-
-/*
- * 창 모서리를 밟고 서는 고양이. 이 한 장이 컨셉을 다 설명하므로 진짜로 넘어와야 한다.
- *
- * hero-cat.webp 는 오른쪽 32%가 투명 여백이다(알파 기준 x 0.15~0.68). 그래서
- * right 를 그냥 -70px 주면 그림 상자만 넘어가고 고양이는 창 안에 머문다.
- * 실제로 70px 넘기려면 70 + 0.32 x width 만큼 밀어야 한다.
- */
-.escapee {
-  position: absolute;
-  right: -198px; /* 70 + 0.32 x 400 */
-  top: 40px;
-  width: 400px;
-  z-index: 2;
-  filter: drop-shadow(0 18px 30px rgba(20, 18, 26, 0.28));
-  pointer-events: none;
-}
-
-.strip { margin-top: 26px; width: 100%; }
-.facts { margin-top: 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px; }
-.facts dt { font-weight: 700; font-size: 0.94rem; }
-.facts dd { margin-top: 5px; font-size: 0.9rem; color: var(--ink-soft); }
-
-/* ── 버튼 ─────────────────────────────────────────────── */
+/* ── 단추 ─────────────────────────────────────────────── */
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
-  white-space: nowrap; font: inherit; font-weight: 700; font-size: 0.94rem;
-  text-decoration: none; padding: 0.68rem 1.35rem;
-  border-radius: 8px; border: 1px solid transparent;
-  background: var(--ink); color: var(--panel);
-  cursor: pointer; transition: transform 120ms ease, opacity 150ms ease;
+  white-space: nowrap; font-family: var(--display); font-size: 1.2rem; line-height: 1.2;
+  text-decoration: none; padding: 0.72em 1.4em;
+  border-radius: var(--r-pill); border: 0;
+  background: var(--accent); color: var(--accent-ink);
+  /* 아래로 두툼하게 — 누르면 그만큼 꺼진다 */
+  box-shadow: 0 5px 0 -1px #d99a16;
+  cursor: pointer; transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 220ms;
 }
-.btn:hover { opacity: 0.9; }
-.btn:active { transform: translateY(1px); }
-.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
-.btn.ghost:hover { border-color: var(--ink-soft); opacity: 1; }
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(3px); box-shadow: 0 1px 0 -1px #d99a16; }
+.btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--line); }
+.btn.ghost:hover { box-shadow: inset 0 0 0 2px var(--ink-soft); }
+.btn.ghost:active { transform: translateY(1px); }
+.btn-small { font-size: 1rem; padding: 0.5em 1.1em; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.note { margin-top: 14px; font-size: 0.9rem; color: var(--ink-soft); }
+.note + .note { margin-top: 4px; }
+.note a { color: var(--accent-text); font-weight: 600; }
+
+/* ── 윗줄 ─────────────────────────────────────────────── */
+
+.site-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px; }
+.logo { display: flex; align-items: center; gap: 0.45em; font-family: var(--display); font-size: 1.45rem; text-decoration: none; }
+/* 로고의 고양이도 맨 베이지 위에 두지 않는다(맨 위 주석) — 꿀색 동그라미에 앉힌다 */
+/* 빼꼼 마크. 받침대까지 포함한 그림이 글자 높이보다 살짝 크게 서야 "로고" 로 읽힌다 */
+.logo svg { width: 40px; height: auto; flex: none; overflow: visible; }
+.site-header nav { display: flex; align-items: center; gap: 26px; font-size: 0.95rem; font-weight: 600; }
+.site-header nav a:not(.btn) { text-decoration: none; color: var(--ink-soft); }
+.site-header nav a:not(.btn):hover { color: var(--ink); }
+/* 언어 바꾸기는 같은 페이지 안을 오가는 링크가 아니다. 선을 그어 구분한다 */
+.site-header .lang { padding-left: 26px; border-left: 2px solid var(--line); }
+/* 받기 화면에는 섹션 링크가 없어서 언어가 맨 앞이다 — 그때는 가를 것이 없다 */
+.site-header nav > .lang:first-child { padding-left: 0; border-left: 0; }
+@media (max-width: 760px) {
+  /* 폰에서는 섹션 링크를 걷는다 — 굴리면 다 지나가지만, 언어와 받기는 여기 말고 갈 길이 없다 */
+  .site-header .section-link { display: none; }
+  .site-header nav { gap: 16px; }
+  .site-header .lang { padding-left: 0; border-left: 0; }
+}
+@media (max-width: 380px) { .logo span { display: none; } }
+
+/* ── 히어로 ───────────────────────────────────────────── */
+
+.hero {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(28px, 4vw, 56px); align-items: center;
+  padding-block: clamp(24px, 5vw, 64px) clamp(56px, 8vw, 104px);
+}
+.hero .lead { margin-top: 20px; font-size: clamp(1.05rem, 1.5vw, 1.2rem); color: var(--ink-soft); max-width: 30ch; }
+@media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+
+/*
+ * ── 데모: 누르면 친구 화면에서 춤춘다 ──
+ *
+ * 영상 한 편이다. 앱의 캐릭터 코드로 그려 찍은 것이라(`npm run demo-video`) 누를 때의
+ * 움찔 · 말풍선, 받을 때의 춤 · 음표 · 수줍음 · 하트 · 이름표가 앱에 뜨는 그대로다. 두 사람의
+ * 바탕화면을 카메라가 왕복하고, 소리 없이 저절로 반복되며 끝 장면이 첫 장면으로 이어진다.
+ *
+ * **영상의 바탕은 구워져 있어서 페이지 바탕을 따라가지 않는다.** 그래서 이음매를 숨기려
+ * 하지 않고 둥근 카드(바탕화면 한 장)로 내건다 — 다크 모드에서도 그대로 읽힌다.
+ *
+ * 움직임을 줄인 사람에게는 영상 대신 춤이 한창인 한 장을 보여 준다. `autoplay` 는 그
+ * 설정을 따르지 않기 때문이다.
+ */
+.demo { margin: 0; }
+.demo-video,
+.demo-still {
+  display: block; width: 100%; height: auto; aspect-ratio: 1280 / 880;
+  /* 포스터가 들어오기 전에 비는 칸. 영상 첫 장면인 내 바탕화면의 색이다 */
+  border-radius: var(--r-panel); background: var(--accent); box-shadow: var(--shadow);
+}
+.demo-still { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .demo-video { display: none; }
+  .demo-still { display: block; }
+}
+
+/* ── 말 걸기엔 시시하고 ───────────────────────────────── */
+
+.quiet { padding-block: clamp(56px, 8vw, 112px); text-align: center; }
+.quiet h2 { max-width: 18ch; margin-inline: auto; }
+.stickers { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 18px; margin-block: 36px; }
+.stickers li {
+  position: relative; font-family: var(--display); font-size: clamp(1.1rem, 2vw, 1.4rem);
+  padding: 0.55em 1.15em; border-radius: 22px 22px 22px 6px;
+  background: var(--surface); color: var(--ink-soft);
+  box-shadow: inset 0 0 0 2px var(--line), 0 10px 18px -14px #6e482466;
+}
+/* 알약이 아니라 메신저 말풍선이라야 "말 걸기" 이야기로 읽힌다. 짝수는 받은 쪽처럼 모서리를 뒤집는다 */
+.stickers li:nth-child(even) { border-radius: 22px 22px 6px 22px; background: var(--accent-soft); box-shadow: 0 10px 18px -14px #6e482466; }
+.stickers li:nth-child(1) { transform: rotate(-4deg); }
+.stickers li:nth-child(2) { transform: rotate(3deg) translateY(6px); }
+.stickers li:nth-child(3) { transform: rotate(-2deg); }
+.stickers li:nth-child(4) { transform: rotate(5deg) translateY(-4px); }
+/* 지우는 줄. 글자가 아니라 그림이라 어느 나라말이든 같은 자리에 그어진다 */
+.stickers li::after { content: ''; position: absolute; left: 8%; right: 8%; top: 50%; height: 4px; border-radius: 4px; background: var(--accent-text); transform: rotate(-6deg); }
+.quiet p { max-width: 36ch; margin-inline: auto; font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: var(--ink-soft); }
+.quiet p strong { color: var(--ink); font-weight: 700; }
+
+/*
+ * ── 몸짓: 라디오 다섯 개로 고른다 ──
+ *
+ * 라디오가 이 칸의 맨 앞 형제라서 `:checked ~` 로 뒤의 목록(고른 줄 들어 올리기)과
+ * 그림판(해당 그림 켜기)을 함께 고른다. 줄 수가 다섯으로 고정이라 규칙도 다섯 줄씩이다.
+ * 몸짓이 늘면 `copy.ts` 의 `SignalId` 와 여기를 함께 늘린다.
+ */
+.signals {
+  position: relative;
+  display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(24px, 4vw, 64px); align-items: center;
+  padding-block: clamp(48px, 7vw, 96px);
+}
+.picker { display: flex; flex-direction: column; gap: 8px; margin-top: 28px; }
+.picker label {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  padding: 0.6em 1.3em; border-radius: var(--r-pill); cursor: pointer;
+  transition: background 250ms, transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 250ms;
+}
+.picker b { font-family: var(--display); font-weight: 400; font-size: 1.45rem; }
+.picker span { color: var(--ink-soft); font-size: 0.95rem; }
+.picker label:hover { background: color-mix(in srgb, var(--surface) 70%, transparent); }
+
+#signal-poke:checked ~ .signals-copy [data-signal='poke'],
+#signal-hop:checked ~ .signals-copy [data-signal='hop'],
+#signal-wave:checked ~ .signals-copy [data-signal='wave'],
+#signal-heart:checked ~ .signals-copy [data-signal='heart'],
+#signal-sulk:checked ~ .signals-copy [data-signal='sulk'] { background: var(--surface); box-shadow: var(--shadow); transform: translateX(6px); }
+#signal-poke:checked ~ .signals-copy [data-signal='poke'] b,
+#signal-hop:checked ~ .signals-copy [data-signal='hop'] b,
+#signal-wave:checked ~ .signals-copy [data-signal='wave'] b,
+#signal-heart:checked ~ .signals-copy [data-signal='heart'] b,
+#signal-sulk:checked ~ .signals-copy [data-signal='sulk'] b { color: var(--accent-text); }
+#signal-poke:focus-visible ~ .signals-copy [data-signal='poke'],
+#signal-hop:focus-visible ~ .signals-copy [data-signal='hop'],
+#signal-wave:focus-visible ~ .signals-copy [data-signal='wave'],
+#signal-heart:focus-visible ~ .signals-copy [data-signal='heart'],
+#signal-sulk:focus-visible ~ .signals-copy [data-signal='sulk'] { outline: 3px solid var(--accent-text); outline-offset: 3px; }
+
+.stage { position: relative; aspect-ratio: 1 / 1; border-radius: var(--r-panel); overflow: hidden; }
+.stage figure { display: none; position: absolute; inset: 0; place-items: center; }
+#signal-poke:checked ~ .stage [data-signal='poke'],
+#signal-hop:checked ~ .stage [data-signal='hop'],
+#signal-wave:checked ~ .stage [data-signal='wave'],
+#signal-heart:checked ~ .stage [data-signal='heart'],
+#signal-sulk:checked ~ .stage [data-signal='sulk'] { display: grid; }
+.stage [data-signal='poke'] { background: var(--honey); }
+.stage [data-signal='hop'] { background: var(--caramel); }
+.stage [data-signal='wave'] { background: var(--latte); }
+.stage [data-signal='heart'] { background: var(--peach); }
+.stage [data-signal='sulk'] { background: var(--honey-deep); }
+.stage img { width: auto; max-width: 70%; max-height: 74%; object-fit: contain; filter: drop-shadow(0 14px 10px var(--drop)); }
+.stage figcaption { position: absolute; left: 26px; right: 26px; bottom: 20px; font-family: var(--display); font-size: clamp(1.3rem, 2.4vw, 1.8rem); }
+@media (prefers-reduced-motion: no-preference) {
+  /* 그림이 켜질 때(display 가 바뀔 때)마다 새로 돈다 */
+  .stage img { animation: pop 500ms cubic-bezier(0.16, 1, 0.3, 1); }
+}
+@keyframes pop { from { transform: scale(0.85) rotate(-4deg); opacity: 0.4; } to { transform: none; opacity: 1; } }
+@media (max-width: 860px) {
+  .signals { grid-template-columns: 1fr; }
+  #signal-poke:checked ~ .signals-copy [data-signal='poke'],
+  #signal-hop:checked ~ .signals-copy [data-signal='hop'],
+  #signal-wave:checked ~ .signals-copy [data-signal='wave'],
+  #signal-heart:checked ~ .signals-copy [data-signal='heart'],
+  #signal-sulk:checked ~ .signals-copy [data-signal='sulk'] { transform: none; }
+}
+
+/* ── 다섯 친구 ─────────────────────────────────────────── */
+
+.friends { padding-block: clamp(48px, 7vw, 96px); }
+.friends .sub { max-width: 44ch; }
+.lineup {
+  list-style: none; margin-top: 36px;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;
+  padding: clamp(24px, 3vw, 40px) clamp(16px, 3vw, 36px) 24px;
+  background: var(--honey); border-radius: var(--r-panel);
+}
+.lineup li { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.lineup img { height: clamp(120px, 16vw, 200px); width: auto; transform-origin: 50% 100%; filter: drop-shadow(0 10px 8px var(--drop)); }
+.lineup li:nth-child(odd) img { translate: 0 -6px; }
+.lineup .name { font-family: var(--display); font-size: clamp(1.05rem, 1.7vw, 1.35rem); line-height: 1.2; text-align: center; }
+.lineup .name small { display: block; font-family: var(--body); font-size: 0.82rem; color: var(--ink-soft); margin-top: 3px; }
+@media (prefers-reduced-motion: no-preference) {
+  .lineup li:hover img { animation: hop 600ms cubic-bezier(0.16, 1, 0.3, 1); }
+}
+@keyframes hop {
+  0%, 100% { transform: translateY(0) scale(1); }
+  20% { transform: scale(1.08, 0.9); }
+  50% { transform: translateY(-26px) scale(0.96, 1.05); }
+  80% { transform: scale(1.05, 0.95); }
+}
+@media (max-width: 760px) {
+  /* 폰에서는 옆으로 넘겨 본다 — 다섯을 한 줄에 욱여넣으면 이름이 두 줄로 부서진다 */
+  .lineup { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 40%; overflow-x: auto; scroll-snap-type: x mandatory; }
+  .lineup li { scroll-snap-align: center; }
+}
+
+/* ── 시작하기 ─────────────────────────────────────────── */
+
+.start { padding-block: clamp(48px, 7vw, 96px); }
+.steps { list-style: none; counter-reset: step; margin-top: 36px; display: grid; grid-template-columns: 1fr 1.25fr 1fr; gap: 18px; }
+.step { counter-increment: step; padding: 28px; border-radius: var(--r-panel); background: var(--surface); }
+.step::before {
+  content: counter(step); display: grid; place-items: center; width: 40px; height: 40px; margin-bottom: 18px;
+  border-radius: var(--r-pill); background: var(--accent-soft); color: var(--accent-text);
+  font-family: var(--display); font-size: 1.25rem;
+}
+.step p { margin-top: 8px; color: var(--ink-soft); font-size: 0.95rem; }
+.step-code { background: var(--latte); }
+.ticket {
+  margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 14px 18px; border-radius: var(--r-inner); background: var(--surface); border: 2px dashed var(--line);
+}
+.ticket code { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: clamp(1.25rem, 2.4vw, 1.6rem); font-weight: 600; letter-spacing: 0.18em; }
+.ticket span { font-size: 0.82rem; color: var(--ink-soft); }
+@media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
+
+/* ── 방 규칙 네 칸 ────────────────────────────────────── */
+
+.room {
+  display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 18px;
+  padding-block: clamp(24px, 4vw, 48px) clamp(48px, 7vw, 96px);
+}
+.tile { position: relative; overflow: hidden; min-height: 200px; padding: 28px; border-radius: var(--r-panel); display: flex; flex-direction: column; justify-content: flex-end; }
+.tile h3 { font-size: clamp(1.45rem, 2.5vw, 1.95rem); }
+.tile p { margin-top: 6px; max-width: 30ch; font-size: 0.95rem; color: var(--ink-soft); }
+.big { font-family: var(--display); font-size: clamp(4rem, 8vw, 6.5rem); line-height: 1; }
+.tile-members { grid-row: span 2; justify-content: space-between; background: var(--honey); }
+.crowd { display: flex; align-items: flex-end; margin-bottom: 12px; }
+.crowd img { width: 21%; margin-right: -4%; filter: drop-shadow(0 8px 6px var(--drop)); }
+.crowd img:nth-child(even) { translate: 0 -10px; }
+.tile-rooms { background: var(--surface); }
+.tile-sleep { background: var(--latte); }
+.zz { position: absolute; right: 24px; top: 18px; font-family: var(--display); font-size: 2.1rem; color: var(--ink-soft); }
+.zz i { display: inline-block; font-style: normal; }
+.zz i:nth-child(2) { font-size: 0.75em; }
+.zz i:nth-child(3) { font-size: 0.55em; }
+@media (prefers-reduced-motion: no-preference) {
+  .zz i { animation: float 2.4s ease-in-out infinite; }
+  .zz i:nth-child(2) { animation-delay: 0.4s; }
+  .zz i:nth-child(3) { animation-delay: 0.8s; }
+}
+@keyframes float { 0%, 100% { transform: translateY(0); opacity: 0.5; } 50% { transform: translateY(-8px); opacity: 1; } }
+.tile-clear { grid-column: span 2; flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 20px; background: var(--peach); }
+.tile-clear img { width: clamp(80px, 11vw, 130px); flex: none; filter: drop-shadow(0 8px 6px var(--drop)); }
+@media (max-width: 860px) {
+  .room { grid-template-columns: 1fr 1fr; }
+  .tile-members { grid-row: auto; grid-column: span 2; }
+}
+@media (max-width: 520px) {
+  .room { grid-template-columns: 1fr; }
+  .tile-members, .tile-clear { grid-column: auto; }
+}
+
+/* ── 처음 열 때 ───────────────────────────────────────── */
+
+.install { padding-block: clamp(40px, 6vw, 80px); }
+.guides { margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+.guide { padding: 28px; border-radius: var(--r-panel); background: var(--surface); }
+.guide ol { list-style: none; counter-reset: guide; margin-top: 16px; display: grid; gap: 12px; }
+/* 번호는 줄 밖에 띄운다. 문장 안에 굵은 조각이 섞여 있어서 줄 자체를 격자로 만들면 조각마다 칸이 갈라진다 */
+.guide li { counter-increment: guide; position: relative; padding-left: 42px; min-height: 30px; font-size: 0.95rem; color: var(--ink-soft); }
+.guide li::before {
+  content: counter(guide); position: absolute; left: 0; top: -2px; display: grid; place-items: center; width: 30px; height: 30px; border-radius: var(--r-pill);
+  background: var(--honey); color: var(--ink); font-family: var(--display); font-size: 1rem;
+}
+.guide li strong { color: var(--ink); font-weight: 700; }
+.guide .hint { margin-top: 16px; }
+.hint { font-size: 0.9rem; color: var(--ink-soft); }
+.hint a { color: var(--accent-text); font-weight: 600; }
+.hint strong { color: var(--ink); }
+
+/* ── 궁금한 것 ────────────────────────────────────────── */
+
+.faq { padding-block: clamp(40px, 6vw, 80px); }
+/* 카드 여섯 장 대신 한 판 위에 줄로 늘어놓는다. 질문만 훑어 내려가는 자리라 칸마다 테두리가
+   생기면 눈이 칸을 세느라 글을 놓친다 */
+.qa-list {
+  margin-top: 32px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; align-items: start;
+  padding: 8px 32px; border-radius: var(--r-panel); background: var(--surface);
+}
+.qa { border-bottom: 1px solid var(--line); }
+.qa summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 24px 0; font-weight: 700; transition: color 200ms ease-out;
+}
+.qa summary:hover { color: var(--accent-text); }
+.qa summary::-webkit-details-marker { display: none; }
+/* 더하기 표시. 글자가 아니라 막대 둘로 그려 글꼴에 따라 굵기가 흔들리지 않게 한다. 펴면 돌아서 곱하기가 된다 */
+.qa summary::after {
+  content: ''; flex: none; width: 22px; height: 22px;
+  background:
+    linear-gradient(currentColor, currentColor) center / 12px 2px no-repeat,
+    linear-gradient(currentColor, currentColor) center / 2px 12px no-repeat;
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.qa[open] summary::after { transform: rotate(45deg); }
+.qa p { padding: 0 32px 22px 0; color: var(--ink-soft); font-size: 0.95rem; }
+@media (max-width: 720px) {
+  .qa-list { grid-template-columns: 1fr; padding: 4px 20px; }
+}
+
+/* ── 마지막 받기 칸 ───────────────────────────────────── */
+
+.final {
+  position: relative; overflow: hidden; margin-block: clamp(32px, 5vw, 64px) 40px;
+  display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center;
+  padding: clamp(36px, 6vw, 80px) clamp(24px, 5vw, 72px);
+  border-radius: 36px; background: var(--caramel);
+}
+.final h2 { font-size: clamp(2rem, 4.4vw, 3.4rem); }
+/* 캐러멜 위에서 `--ink-soft` 는 4.0:1 로 작은 글씨에 모자란다. 이 칸만 짙은 글자를 쓴다 */
+.final .note { color: var(--ink); }
+.pile { position: relative; height: 100%; min-height: 240px; }
+.pile img { position: absolute; width: 36%; filter: drop-shadow(0 12px 10px var(--drop)); }
+.pile img:nth-child(1) { left: 2%; bottom: -16%; rotate: -8deg; }
+.pile img:nth-child(2) { left: 32%; bottom: -6%; width: 40%; }
+.pile img:nth-child(3) { right: 0; bottom: -18%; rotate: 9deg; }
+@media (max-width: 860px) {
+  .final { grid-template-columns: 1fr; }
+  .pile { min-height: 220px; }
+}
+
+/* ── 꼬리말 ───────────────────────────────────────────── */
+
+body > footer { display: flex; justify-content: flex-end; padding-block: 20px 44px; font-size: 0.88rem; color: var(--ink-soft); }
+body > footer nav { display: flex; gap: 1.4rem; }
+body > footer a { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+body > footer a:hover { color: var(--ink); }
+body > footer a svg { width: 15px; height: 15px; flex: none; }
+
+/*
+ * 손가락으로 누르는 화면에서는 누를 것을 44px 로 키운다. `pointer: coarse` 만으로는
+ * 자동화된 브라우저가 대개 `fine` 으로 답해서 확인할 길이 없으므로 좁은 폭도 함께 건다.
+ */
+@media (pointer: coarse), (max-width: 760px) {
+  .site-header nav a:not(.btn),
+  body > footer nav a { padding-block: 11px; }
+  body > footer nav { margin-block: -11px; }
+}
 
 /* ── 받기 화면(/download) ─────────────────────────────── */
 
-.pane-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
-.tag { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.download-main { padding-block: clamp(24px, 5vw, 56px) clamp(40px, 6vw, 72px); }
+.pane { padding: clamp(28px, 5vw, 48px); border-radius: var(--r-panel); background: var(--surface); }
+.pane.gate { padding-block: 64px 56px; }
+.pane .sub { max-width: 46ch; }
+.label { font-family: var(--display); font-size: 1rem; color: var(--accent-text); }
+.pane > .label + h1 { margin-top: 6px; }
+.pane h1 { font-size: clamp(2rem, 4vw, 3rem); }
 
-.hint { margin-top: 18px; font-size: 0.85rem; color: var(--ink-soft); max-width: 62ch; }
-.hint a { color: var(--accent); }
-.hint strong { color: var(--ink); font-weight: 700; }
+.pane-head { display: flex; align-items: baseline; justify-content: flex-start; gap: 12px; }
+.pane-head h2 { font-size: 1.8rem; }
+.pane-head .tag { font-family: var(--display); font-size: 0.95rem; padding: 0.1em 0.8em; border-radius: var(--r-pill); background: var(--accent); color: var(--accent-ink); }
 
 .versions { margin-top: 30px; }
-
-/*
- * macOS · Windows 를 나란한 카드로 — OS 가 늘어도 auto-fit 이 알아서 접는다.
- * 카드 안은 채움색 없이 테두리만 준다 — `--sunk` 는 "리듬을 끊는 판 하나"에만
- * 쓰기로 해 둔 값이라 여기서 또 쓰면 그 뜻이 흐려진다.
- */
-.dl-groups { margin-top: 22px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
-.dl-group { border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
-.dl-group h3 { font-size: 0.94rem; font-weight: 700; }
-
-/* 환경 이름 한 줄 + 받기 화살표뿐이다 — "요즘 맥" 같은 설명은 여기 붙이지 않는다 */
-.dl-list { margin-top: 10px; }
-.dl-row {
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  padding: 13px 0; border-bottom: 1px solid var(--line);
-}
+.dl-groups { margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+.dl-group { padding: 18px 22px; border-radius: var(--r-inner); background: var(--ground); }
+.dl-group h3 { font-size: 1.2rem; }
+.dl-list { margin-top: 8px; }
+.dl-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 12px 0; border-bottom: 2px solid var(--line); }
 .dl-row:last-child { border-bottom: none; padding-bottom: 0; }
-.dl-row:first-child { padding-top: 0; }
-.dl-row .name { font-size: 0.94rem; }
-
+.dl-row .name { font-size: 0.95rem; }
 .dl-icon-btn {
   display: inline-flex; align-items: center; justify-content: center; flex: none;
-  width: 32px; height: 32px; border-radius: 8px; color: var(--ink-soft);
-  transition: background 120ms ease, color 120ms ease;
+  width: 38px; height: 38px; border-radius: var(--r-pill); background: var(--accent); color: var(--accent-ink);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .dl-icon-btn svg { width: 18px; height: 18px; }
-.dl-icon-btn:hover { background: var(--line); color: var(--ink); }
+.dl-icon-btn:hover { transform: translateY(-2px); }
 
-.release-notes { display: inline-block; margin-top: 18px; font-size: 0.9rem; font-weight: 700; color: var(--accent); text-decoration: none; }
+.release-notes { display: inline-block; margin-top: 18px; font-size: 0.92rem; font-weight: 700; color: var(--accent-text); text-decoration: none; }
 .release-notes:hover { text-decoration: underline; }
 
-/*
- * 옛 버전은 `<details>` 하나로 접고 편다 — 자바스크립트 없이 브라우저가 그냥 해 준다.
- * `summary` 의 기본 화살표(`::marker`)를 지우고 오른쪽에 우리 것을 그린다. 회전은
- * `[open]` 상태를 그대로 타므로 스크립트가 필요 없다.
- */
-.version-older { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line); }
-.version-older summary {
-  cursor: pointer; font-size: 1.1rem; font-weight: 700; list-style: none;
-  display: flex; align-items: center; justify-content: space-between;
-}
+/* 옛 버전은 `<details>` 하나로 접고 편다 — 스크립트 없이 브라우저가 해 준다 */
+.version-older { margin-top: 24px; padding-top: 20px; border-top: 2px solid var(--line); }
+.version-older summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; font-family: var(--display); font-size: 1.35rem; }
 .version-older summary::-webkit-details-marker { display: none; }
 .version-older summary::after {
   content: ''; width: 9px; height: 9px; flex: none;
@@ -298,414 +519,5 @@ h3 { font-size: 1.02rem; font-weight: 700; letter-spacing: -0.005em; line-height
   transform: rotate(45deg); transition: transform 150ms ease;
 }
 .version-older[open] summary::after { transform: rotate(-135deg); }
-.version-older .version-body { margin-top: 18px; }
-
-/* ── 처음 열 때 ───────────────────────────────────────── */
-
-.guides { margin-top: 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-.guides ol { margin-top: 12px; padding-left: 1.1rem; display: grid; gap: 8px; font-size: 0.9rem; color: var(--ink-soft); }
-.guides li::marker { color: var(--accent); font-weight: 800; }
-.guides li strong { color: var(--ink); font-weight: 700; }
-
-/* ── 궁금한 것 ────────────────────────────────────────── */
-
-/*
- * 여섯 개를 한 줄로 세우면 창 아래쪽이 평평하게 길어진다. 두 칸으로 접어
- * 눈이 한 번에 훑을 수 있게 한다. 좁아지면 알아서 한 칸으로 돌아간다.
- */
-.qa-list {
-  margin-top: 26px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 22px 34px;
-  align-items: start;
-}
-.qa { border-top: 1px solid var(--line); padding-top: 16px; }
-.qa p { margin-top: 6px; font-size: 0.94rem; color: var(--ink-soft); }
-
-/* ── 받고 나면 이 창이 열려요 (리듬을 끊는 판) ─────────── */
-
-.shot-pane {
-  background: var(--sunk);
-  border-top: none; /* 바닥색이 바뀌는 것으로 이미 나뉜다 */
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  align-items: center;
-  gap: 40px;
-  padding-block: 40px;
-}
-
-/* 진짜 앱 창처럼 보이게 — 페이지를 감싼 창과 같은 모서리, 같은 그림자 결 */
-.app-frame {
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  box-shadow: 0 18px 40px -18px rgba(20, 18, 26, 0.42);
-}
-/* 원본이 800x1400 으로 아주 길다. 방 목록이 끝나는 데서 끊는다. */
-.app-shot {
-  width: 100%;
-  aspect-ratio: 3 / 2.75; /* 언어 고르는 줄 바로 아래에서 끊는다 */
-  object-fit: cover;
-  object-position: top center;
-}
-
-.shot-copy h2 { font-size: clamp(1.4rem, 2.4vw, 1.85rem); }
-.shot-copy p { margin-top: 14px; color: var(--ink-soft); max-width: 32ch; }
-
-/* ── 꼬리말 ───────────────────────────────────────────── */
-
-/* 태그라인과 언어 바꾸기를 뺀 뒤로는 이 nav 하나뿐이라, 오른쪽에 붙여 둔다 */
-.window footer {
-  display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: flex-end;
-  padding: 22px 40px 26px; border-top: 1px solid var(--line);
-  font-size: 0.85rem; color: var(--ink-soft);
-}
-.window footer nav { display: flex; gap: 1.2rem; }
-.window footer a { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
-.window footer a:hover { color: var(--ink); }
-.window footer a svg { width: 15px; height: 15px; flex: none; }
-
-/* ── 좁은 화면: 창틀을 없앤다 ─────────────────────────── */
-
-/*
- * 좁은 화면에서는 제목줄에 **언어 바꾸기만** 남긴다.
- *
- * 내비가 줄바꿈도 축소도 하지 않는 한 줄이라, 영어판에서는 그 자체가 317px 이다.
- * 390px 짜리 화면에서 쓸 수 있는 자리가 220px 남짓이라 그대로 두면 제목줄이 화면을
- * 넘어가고, 페이지 전체에 가로 스크롤이 생긴다 (320px 에서 146px 넘쳤다). 한국어는
- * 글자가 짧아 320px 에서만 걸리지만, 같은 자리에서 나는 같은 고장이다.
- *
- * **지우는 것은 안쪽으로 가는 링크 셋이다.** 이 폭에서는 페이지가 한 줄로 이어진
- * 스크롤이라 굴리면 다 지나가지만, 언어 바꾸기는 여기 말고 갈 길이 꼬리말뿐이다.
- * 남길 것을 고르면 그쪽이다.
- */
-@media (max-width: 560px) {
-  .titlebar nav a:not(.lang) { display: none; }
-  .titlebar nav a.lang { border-left: 0; padding-left: 0; }
-}
-
-@media (max-width: 900px) {
-  .shot-pane { grid-template-columns: 1fr; gap: 26px; }
-  .shot-copy { order: -1; }
-  .stage { padding: 0; }
-  .window { width: 100%; border: none; border-radius: 0; box-shadow: none; animation: none; }
-  .titlebar { border-radius: 0; padding-inline: 20px; }
-  .pane { padding: 36px 20px; }
-  .window footer { padding: 20px; }
-
-  /*
-   * 창이 없으면 넘어올 창틀도 없다. 그렇다고 고양이까지 지우지는 않는다.
-   *
-   * 한동안 `display: none` 이었는데, 그러면 **폰으로 들어온 사람은 캐릭터를 한 마리도
-   * 못 본 채로 1,358px 을 내려가야** 캐릭터 줄을 만난다. 이 제품이 퍼지는 길이 친구가
-   * 보낸 링크이고 그 링크는 대개 폰에서 열리므로, 그 화면이 곧 첫인상이다.
-   *
-   * 그래서 자리만 바꾼다 — 창틀 대신 **화면 오른쪽 가장자리를 넘어오게** 두고,
-   * 글과 부딪히지 않도록 히어로 다음 줄로 내려 세운다. 그림은 어차피 받고 있었다
-   * (`fetchPriority="high"` 로 먼저 받는다). 숨겨 두는 동안은 그 값을 버리고 있었다.
-   */
-  .escapee {
-    position: static;
-    display: block;
-    width: min(230px, 62%);
-    margin: -6px -34px 0 auto; /* 오른쪽으로 흘러넘친다. html 의 overflow-x: clip 이 받는다 */
-  }
-}
-
-@media (max-width: 1180px) {
-  /* 같은 계산: 20 + 0.32 x 280 */
-  .escapee { right: -110px; width: 280px; }
-}
-
-/* ── 빼꼼 ───────────────────────────────────────────── */
-/*
- * 페이지 양옆에서 캐릭터 다섯이 모서리 뒤로 몸을 기울여 얼굴을 비스듬히 내민다.
- * 왼쪽 → 오른쪽 → 왼쪽 순으로 지그재그이고, 히어로부터 설치 안내까지 페이지
- * 전체에 흩어져 있어서 스크롤할 때마다 한 마리씩 나타난다.
- *
- * 기우는 방향은 그림에 이미 구워져 있다. 왼쪽에 서는 판다·강아지·고양이는
- * 오른쪽으로, 오른쪽에 서는 토끼·오리는 왼쪽으로 눕혀 렌더했으므로 좌우를
- * 바꾸면 화면 바깥을 보고 자세가 무너진다.
- *
- * 그림에는 캐릭터가 통째로 들어 있고 어느 모서리에도 닿지 않는다. 화면에 내미는
- * 것은 얼굴이 있는 쪽 절반 남짓이고 나머지는 화면 밖으로 밀어 둔다. 그래서
- * 잘리는 선은 화면 가장자리 하나, 세로선뿐이다. 몸통이 가로로 뚝 잘려 보이면
- * 그건 그림이 프레임에 걸렸다는 뜻이니 CSS 가 아니라 렌더를 고쳐야 한다
- * (`npm run site-images -- peek-duck` 뒤 알파 여백을 확인할 것).
- *
- * 크기를 키울 때는 width 와 left/right 를 같은 비율로 키운다. 그래야 얼굴이
- * 잘리지 않는 이 비율이 유지된다.
- *
- * **물리는 깊이는 눈이 정한다.** 아래 값은 다섯 마리 모두 바깥쪽 눈이 화면
- * 안으로 20px 들어오는 자리다. 얼굴이 반쯤 잘린 캐릭터는 빼꼼한 게 아니라
- * 그냥 표정을 잃은 것이라, 더 깊이 물릴 수 있어도 여기서 멈춘다. 결과가
- * 몸의 4분의 3쯤 보이는 상태이고, 그 정도만 되어도 세로선에 물려 있는
- * 것은 충분히 읽힌다.
- *
- * 눈은 그림마다 다른 자리에 있다 (판다는 그림 폭의 0.37, 강아지 0.41,
- * 고양이 0.42 지점). 그래서 **px 을 똑같이 주면 안 되고** 그림마다 따로
- * 역산해야 한다. 화면 폭이 아니라 걸어 둔 width 에서 나오는 값이므로,
- * width 가 같은 구간끼리는 값도 같다. 비율로 적어 둔 이유는 원본 크기가
- * 바뀌어도 이 값은 그대로이기 때문이다.
- *
- * **그림을 다시 뜨면 이 값도 다시 재야 한다.** 눈 위치가 조금만 움직여도
- * 곧바로 눈을 밟는다. 한번은 그림만 새로 뜨고 이 값을 그대로 뒀다가
- * 다섯 마리가 모두 한쪽 눈을 잃은 채로 나간 적이 있다.
- *
- * 1440px 아래에서는 나오지 않는다. 본문 칸 바깥 여백이 그보다 좁으면 글과
- * 부딪힌다. 있으면 좋은 것이지 없으면 안 되는 것이 아니다.
- *
- * 좁은 화면이라고 캐릭터를 줄이지는 않는다. 크기는 그대로 두고, 어느 폭에서나
- * 같은 만큼 물린다. 맥북 14"(1512px)·13"(1470px)가 이 구간이라 여기서
- * 사라지면 안 된다.
- *
- * **원본은 가장 크게 걸리는 폭의 두 배로 떠 있다** (아래 1900px 구간 기준으로
- * 판다·강아지·고양이 612px, 토끼 748px, 오리 680px). 화소가 두 배인 화면에서
- * 뭉개지지 않게 하려는 것이라, width 를 키우면 `make-site-images.js` 의 크기도
- * 함께 키워야 한다. 형식은 WebP 다 — 두 배로 뜨면 PNG 는 넉 배로 무거워지는데,
- * WebP 로 담으면 예전 PNG 한 장보다도 가볍다.
- */
-
-.peekers { display: none; }
-
-@media (min-width: 1440px) {
-  .peekers {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    /* 맨 아래 고양이와 그 그림자까지 담는 높이. 모자라면 여기서 잘린다. */
-    height: 2680px;
-    /*
-     * hidden 이 아니라 clip 이다. hidden 은 스크롤 컨테이너를 만들어서, 아래
-     * view() 타임라인이 페이지가 아니라 이 칸을 기준으로 잡히고 결국 아무것도
-     * 움직이지 않는다. clip 은 잘라 주기만 하고 컨테이너를 만들지 않는다.
-     */
-    overflow: clip;
-    z-index: 5; /* 머리말(10)보다 뒤 */
-    pointer-events: none;
-  }
-
-  .peek {
-    position: absolute;
-    aspect-ratio: 340 / 460;
-    background-repeat: no-repeat;
-    background-size: contain;
-    filter: drop-shadow(0 12px 20px var(--peek-shadow));
-  }
-
-  /*
-   * 토끼와 오리가 크게 걸려 있는 것은 실수가 아니다. 토끼는 귀 때문에, 오리는
-   * 부리 때문에 그림 안에서 차지하는 폭이 좁다. 화면에서 다섯 얼굴이 같은
-   * 크기로 보이는 쪽을 택했다.
-   */
-  .peek-panda { top: 120px; left: -68px; width: 240px; background-image: url('/assets/peek-panda.webp'); }
-  .peek-bunny { top: 560px; right: -136px; width: 300px; background-image: url('/assets/peek-bunny.webp'); }
-  .peek-dog { top: 1020px; left: -77px; width: 240px; background-image: url('/assets/peek-dog.webp'); }
-  .peek-duck { top: 1600px; right: -131px; width: 270px; background-image: url('/assets/peek-duck.webp'); }
-  .peek-cat { top: 2160px; left: -80px; width: 240px; background-image: url('/assets/peek-cat.webp'); }
-}
-
-/*
- * 창이 940px 뿐이라 넓은 화면에서는 여백이 남는다. 그렇다고 더 내밀지는
- * 않는다 — 깊이는 눈이 정하는 것이라 화면이 넓어졌다고 달라질 것이 없다.
- * 남는 여백은 캐릭터를 키우는 데에 쓴다. width 가 커진 만큼 물리는 값도
- * 같은 비율로 커진다.
- */
-@media (min-width: 1900px) {
-  .peek-panda { top: 116px; left: -91px; width: 300px; }
-  .peek-bunny { top: 560px; right: -172px; width: 370px; }
-  .peek-dog { top: 1030px; left: -101px; width: 300px; }
-  .peek-duck { top: 1610px; right: -168px; width: 335px; }
-  .peek-cat { top: 2175px; left: -105px; width: 300px; }
-}
-
-/*
- * 스크롤을 따라 한 마리씩 미끄러져 들어온다. 한 번 나오면 그대로 머문다 —
- * `is-in` 은 peekers.js 가 붙이고 다시는 떼지 않는다.
- *
- * 스크롤 타임라인(animation-timeline: view())을 쓰지 않는 이유가 둘이다.
- * 하나, 그건 스크롤 위치에 연동되는 것이라 위로 되감으면 캐릭터도 되감겨
- * 사라진다. 둘, 처음부터 화면에 있는 맨 위 두 마리는 이미 구간이 끝난 상태라
- * 등장 자체가 없다. 시간 기반 전환이면 둘 다 해결된다.
- *
- * 느리게 나오는 것이 이 연출의 전부다. 빠르면 그냥 튀어나오는 것이고,
- * 느려야 모서리 뒤에서 조심스럽게 내다보는 것이 된다.
- */
-
-.peek { transform: translateX(var(--peek-from)); }
-
-/*
- * 전환(transition)이 아니라 애니메이션이다. 전환은 "바뀌기 전 모습"이 한 번
- * 그려져야 일어나는데, 처음부터 화면에 있는 맨 위 두 마리는 스크립트가 곧바로
- * is-in 을 붙이는 바람에 그 그려질 틈이 없어 미끄러지지 않고 그냥 도착해 있었다.
- * 애니메이션은 붙는 순간 스스로 재생되므로 그 조건이 없다.
- */
-.peek.is-in {
-  animation: peek-in 1200ms cubic-bezier(0.16, 0.84, 0.3, 1) both;
-}
-
-@keyframes peek-in {
-  from { transform: translateX(var(--peek-from)); }
-  to { transform: translateX(0); }
-}
-
-.from-left { --peek-from: -104%; }
-.from-right { --peek-from: 104%; }
-
-/* 맨 위 둘은 화면을 열자마자 함께 나온다. 시차를 줘야 둘이 같이 튀지 않는다. */
-.peek-panda.is-in { animation-delay: 220ms; }
-.peek-bunny.is-in { animation-delay: 620ms; }
-
-/*
- * 모션을 줄이기로 한 사람에게는 미끄러지지 않고 처음부터 제자리에 있다.
- * peekers.js 가 is-in 을 붙이든 말든 결과가 같다.
- */
-@media (prefers-reduced-motion: reduce) {
-  .peek { transform: none; }
-  .peek.is-in { animation: none; }
-}
-
-/* ── 해 보면 (맨 끝) ──────────────────────────────────── */
-
-/*
- * 이 제품의 단 하나뿐인 마법을 **실제로 일어나게** 보여 주는 장면.
- *
- * 화면 둘을 나란히 놓고, 왼쪽에서 누르면 오른쪽이 춤춘다. 그게 전부이고, 그 하나를
- * 위해 자바스크립트는 한 줄도 늘리지 않았다 — 움직임은 아래 키프레임뿐이고 시작
- * 신호만 빼꼼이 쓰는 `is-in` 을 같이 얻어 쓴다 (`components/Peekers.tsx`).
- *
- * **무한 반복이 아니다.** 화면에 들어올 때 시작해 세 번 돌고 멈춘다. 늘 움직이는
- * 것은 읽고 있는 사람 곁에서 깜빡이는 것이 되고, 배터리도 계속 쓴다.
- *
- * 타이밍이 이 장면의 뜻을 진다 — 누르는 것이 먼저고 춤이 **그 뒤에** 와야 원인과
- * 결과로 읽힌다. 0.35초 늦게 시작하는 것이 그 간격이다. 둘이 동시에 움직이면
- * 그냥 둘 다 흔들리는 그림이 된다.
- */
-
-.duo {
-  margin-top: 30px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: clamp(14px, 4vw, 40px);
-}
-
-.duo-screen { flex: 0 1 210px; text-align: center; }
-
-/* 진짜 앱 창과 같은 결 — 페이지를 감싼 창의 모서리와 선을 그대로 쓴다 */
-.duo-glass {
-  position: relative;
-  display: block;
-  aspect-ratio: 4 / 3.4;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--sunk);
-  overflow: hidden;
-}
-.duo-glass img {
-  position: absolute;
-  left: 50%;
-  bottom: 4%;
-  width: 62%;
-  transform: translateX(-50%);
-}
-
-.duo-screen figcaption {
-  margin-top: 9px;
-  font-size: 0.85rem;
-  color: var(--ink-soft);
-}
-
-/* 두 창 사이의 화살표. 글자가 아니라 그려서, 나라말이 바뀌어도 흔들리지 않는다 */
-.duo-arrow {
-  flex: none;
-  align-self: center;
-  margin-top: -22px; /* 창 높이의 가운데. 아래 이름표 몫을 빼 준다 */
-  width: 22px;
-  height: 22px;
-  background: var(--ink-soft);
-  opacity: 0.35;
-  clip-path: polygon(0 38%, 58% 38%, 58% 16%, 100% 50%, 58% 84%, 58% 62%, 0 62%);
-}
-
-/* 누르는 순간 번지는 동그라미 */
-.duo-tap {
-  position: absolute;
-  left: 50%;
-  top: 46%;
-  width: 46px;
-  height: 46px;
-  margin: -23px 0 0 -23px;
-  border: 2px solid var(--accent);
-  border-radius: 50%;
-  opacity: 0;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .duo.is-in .duo-tap { animation: duo-tap 3.4s 3 both; }
-  /*
-   * `:not(.duo-dancer)` 가 꼭 있어야 한다. `.duo-glass img` 는 타입 선택자를 하나 더
-   * 가져서 `.duo-dancer` 보다 명시도가 높고, 그냥 두면 **춤춰야 할 쪽이 움찔을 받는다.**
-   * 실제로 그렇게 나갔고, 정지 화면으로는 보이지 않았다.
-   */
-  .duo.is-in .duo-glass img:not(.duo-dancer) { animation: duo-twitch 3.4s 3 both; }
-  .duo.is-in .duo-dancer { animation: duo-dance 3.4s 3 both; }
-  .duo.is-in .duo-arrow { animation: duo-arrow 3.4s 3 both; }
-}
-
-/* 눌린 쪽 — 앱에서 내가 누를 때 나는 움찔 그대로다 (제자리에서 짧게 떤다) */
-@keyframes duo-twitch {
-  0%, 8% { transform: translateX(-50%) scale(1, 1); }
-  11% { transform: translateX(-50%) scale(1.08, 0.93); }
-  15% { transform: translateX(-50%) scale(0.97, 1.04); }
-  19%, 100% { transform: translateX(-50%) scale(1, 1); }
-}
-
-@keyframes duo-tap {
-  0%, 7% { opacity: 0; transform: scale(0.5); }
-  10% { opacity: 0.9; transform: scale(0.8); }
-  24% { opacity: 0; transform: scale(1.7); }
-  100% { opacity: 0; transform: scale(1.7); }
-}
-
-/* 건너간 신호 */
-@keyframes duo-arrow {
-  0%, 12% { opacity: 0.35; }
-  18% { opacity: 1; }
-  34%, 100% { opacity: 0.35; }
-}
-
-/*
- * 받은 쪽 — 앱의 '콕' 이 그렇듯 좌우로 흔들며 춤춘다.
- *
- * 왼쪽이 눌린 뒤(0.35초)에 시작한다. 앱의 춤 한 바퀴가 0.84초이고 두 바퀴를 도므로,
- * 여기서도 네 번 기울여 같은 박자를 낸다.
- */
-@keyframes duo-dance {
-  0%, 20% { transform: translateX(-50%) rotate(0deg); }
-  26% { transform: translateX(-56%) rotate(-7deg); }
-  32% { transform: translateX(-44%) rotate(7deg); }
-  38% { transform: translateX(-56%) rotate(-7deg); }
-  44% { transform: translateX(-44%) rotate(7deg); }
-  50%, 100% { transform: translateX(-50%) rotate(0deg); }
-}
-
-/*
- * 모션을 줄이기로 한 사람에게는 **움직임 대신 밝기로** 같은 것을 말한다.
- * 원인과 결과라는 뜻이 사라지면 이 장면이 있을 이유가 없으므로, 아무것도 안 하는
- * 것이 아니라 옮길 수 있는 데까지 옮긴다.
- */
-@media (prefers-reduced-motion: reduce) {
-  .duo.is-in .duo-tap { animation: duo-tap-quiet 3.4s 3 both; }
-  .duo.is-in .duo-arrow { animation: duo-arrow 3.4s 3 both; }
-  @keyframes duo-tap-quiet {
-    0%, 7% { opacity: 0; }
-    12%, 26% { opacity: 0.9; }
-    34%, 100% { opacity: 0; }
-  }
-}
-
-.try .actions { margin-top: 30px; justify-content: center; }
+.version-older .version-body { margin-top: 16px; }
+.pane > .hint { margin-top: 18px; max-width: 62ch; }

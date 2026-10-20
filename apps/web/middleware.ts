@@ -81,6 +81,10 @@ export function middleware(request: NextRequest) {
   const csp = [
     "default-src 'none'",
     "img-src 'self'",
+    // 히어로의 데모 영상. `default-src 'none'` 이라 이 줄이 없으면 영상이 오류 없이 빈 칸으로 남는다
+    "media-src 'self'",
+    // 제목 글꼴(Jua). `next/font` 가 빌드 때 받아 우리 도메인에서 내보낸다 (`lib/fonts.ts`)
+    "font-src 'self'",
     `style-src ${style.join(' ')}`,
     // 구워 둔 HTML 안의 인라인 스크립트(Next 의 RSC 페이로드)를 허용한다. 위 주석 참고.
     `script-src ${script.join(' ')}`,
