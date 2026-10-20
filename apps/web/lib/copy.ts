@@ -84,18 +84,13 @@ export interface Copy {
     note: string
   }
 
-  /** 히어로 오른쪽, 누르면 친구 화면에서 춤추는 두 화면 */
+  /**
+   * 히어로 오른쪽의 데모 영상. 영상 속 글씨(화면 이름 · 보낸 사람)는 구워져 있어서
+   * 여기가 아니라 `apps/desktop/src/renderer/demo-video/demo-video.ts` 의 `TEXT` 에 있다.
+   */
   demo: {
-    mine: string
-    theirs: string
-    /** 내 캐릭터 옆에 뜨는 "눌러 보세요" */
-    hint: string
-    /** 누르는 칸(숨긴 체크박스)의 이름. 낭독기가 읽는 것은 이 동작 이름이다 */
-    pokeLabel: string
-    /** 춤추는 동안 발밑에 붙는, 누가 찔렀는지 알려 주는 이름표 */
-    sender: string
-    altMine: string
-    altTheirs: string
+    /** 영상과, 움직임을 줄인 사람에게 대신 보여 주는 한 장의 설명. 낭독기가 읽는다 */
+    label: string
   }
 
   /** 말 걸기엔 시시하고 — 이 제품이 무엇을 일부러 안 하는지 */

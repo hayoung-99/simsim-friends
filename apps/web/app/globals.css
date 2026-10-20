@@ -123,8 +123,7 @@ h3 { font-size: 1.45rem; }
 
 :where(a, button, summary, label):focus-visible { outline: 3px solid var(--accent-text); outline-offset: 3px; border-radius: 12px; }
 
-/* 한 줄 숨김 — 누를 수는 있어야 하는 입력 칸(데모 · 몸짓)에 쓴다 */
-.poke-input,
+/* 한 줄 숨김 — 누를 수는 있어야 하는 입력 칸(몸짓 고르기)에 쓴다 */
 .signal-input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 
 main > section,
@@ -189,149 +188,26 @@ body > footer,
 /*
  * ── 데모: 누르면 친구 화면에서 춤춘다 ──
  *
- * 스크립트 없이 도는 상태 기계다. 숨긴 체크박스(`.poke-input`)가 누를 때마다 켜졌다
- * 꺼졌다 하고, **켜짐에는 `-a`, 꺼짐에는 `-b` 라는 이름만 다른 같은 애니메이션**을 건다.
- * 애니메이션 이름이 바뀌면 브라우저가 처음부터 다시 돌리므로 몇 번을 눌러도 매번 돈다.
+ * 영상 한 편이다. 앱의 캐릭터 코드로 그려 찍은 것이라(`npm run demo-video`) 고양이의
+ * 움찔 · 말풍선, 강아지의 춤 · 음표 · 이름표가 앱에 뜨는 그대로다. 소리 없이 저절로
+ * 반복되고, 끝 장면이 첫 장면으로 이어지게 떠 두었다.
  *
- * 꺼짐 상태는 페이지가 열릴 때의 상태이기도 해서, 누르기 전에 한 번 저절로 돈다
- * (1.2초 뒤 — 그림이 다 들어온 다음). 누른 뒤에 다시 꺼짐으로 돌아올 때는 그 기다림이
- * 없어야 하므로, 칸에 포커스가 있으면 지연을 0 으로 둔다. (사파리는 눌러도 체크박스에
- * 포커스를 주지 않아서 두 번째 누름마다 1.2초를 기다린다 — 알고 둔 것)
+ * **영상의 바탕은 구워져 있어서 페이지 바탕을 따라가지 않는다.** 그래서 이음매를 숨기려
+ * 하지 않고 둥근 카드로 내건다 — 다크 모드에서도 밝은 카드 한 장으로 읽힌다.
  *
- * 한 바퀴 2.4초: 0~14% 고양이 움찔 → 8~32% 신호가 건너감 → 33~96% 강아지가 춤
- * (앱에서 신호 한 번이 1.7초 안팎인 것과 맞춘다).
+ * 움직임을 줄인 사람에게는 영상 대신 춤이 한창인 한 장을 보여 준다. `autoplay` 는 그
+ * 설정을 따르지 않기 때문이다.
  */
-/*
- * 신호가 건너간 뒤 그 점은 투명해진 채 오른쪽 끝에 남는다. 그대로 두면 폰에서 문서 폭이
- * 100px 가까이 늘어나므로 칸 밖은 잘라 낸다. 여백(`overflow-clip-margin`)을 두는 것은
- * 기울여 놓은 화면 두 장의 모서리와 그림자까지 잘리지 않게 하기 위해서다.
- */
-.demo { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; overflow: clip; overflow-clip-margin: 32px; }
-.screen { position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-panel); overflow: hidden; box-shadow: var(--shadow); }
-.screen.mine { background: linear-gradient(160deg, var(--wall-a1), var(--wall-a2)); transform: rotate(-2deg); }
-.screen.theirs { background: linear-gradient(160deg, var(--wall-b1), var(--wall-b2)); transform: rotate(2deg) translateY(28px); }
-/* 화면 맨 위의 메뉴 막대 한 줄. 이게 있어야 판이 아니라 "누군가의 바탕화면"으로 읽힌다 */
-.screen::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 24px; background: color-mix(in srgb, var(--surface) 55%, transparent); }
-.who { position: absolute; top: 36px; left: 16px; font-family: var(--display); font-size: 1rem; padding: 0.15em 0.8em; border-radius: var(--r-pill); background: var(--surface); }
-
-.critter { position: absolute; right: 10%; bottom: 6%; width: 58%; transform-origin: 50% 100%; }
-.critter img { width: 100%; filter: drop-shadow(0 10px 8px var(--drop)); transform-origin: 50% 100%; }
-.mine .critter { cursor: pointer; }
-.theirs .critter .dancing { position: absolute; left: -8%; bottom: 0; width: 125%; max-width: none; opacity: 0; }
-
-.theirs .tag {
-  position: absolute; left: 50%; bottom: -4px; translate: -50% 0;
-  font-family: var(--display); font-size: 0.95rem; white-space: nowrap;
-  background: var(--ink); color: var(--ground); padding: 0.1em 0.75em; border-radius: var(--r-pill);
-  opacity: 0;
+.demo { margin: 0; }
+.demo-video,
+.demo-still {
+  display: block; width: 100%; height: auto; aspect-ratio: 1280 / 880;
+  border-radius: var(--r-panel); background: #f6eddc; box-shadow: var(--shadow);
 }
-.poke-hint {
-  position: absolute; left: 10%; bottom: 36%;
-  font-family: var(--display); font-size: 1.05rem;
-  background: var(--surface); padding: 0.3em 0.9em; border-radius: var(--r-pill); box-shadow: var(--shadow);
-  pointer-events: none; transition: opacity 300ms;
-}
-.poke-input:checked ~ .mine .poke-hint,
-.poke-input:focus ~ .mine .poke-hint { opacity: 0; }
-.poke-input:focus-visible ~ .mine .critter { outline: 3px solid var(--accent-text); outline-offset: 6px; border-radius: 24px; }
-
-/* 신호가 건너가는 길. 폭이 고양이 가운데에서 강아지 가운데까지다 */
-.flight { position: absolute; left: 30%; right: 19%; top: 52%; height: 0; pointer-events: none; }
-.flight-x { position: absolute; inset: 0; opacity: 0; }
-.spark {
-  position: absolute; left: -11px; top: -11px; width: 22px; height: 22px; border-radius: var(--r-pill);
-  background: var(--accent); box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 35%, transparent);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .mine .critter img, .theirs .still { animation: breathe 3.2s ease-in-out infinite; }
-  .poke-hint { animation: nudge 1.6s ease-in-out infinite; }
-
-  .poke-input ~ .mine .critter { animation: poke-cat-b 2.4s 1.2s both; }
-  .poke-input ~ .flight .flight-x { animation: flight-x-b 2.4s 1.2s both; }
-  .poke-input ~ .flight .spark { animation: flight-y-b 2.4s 1.2s both; }
-  .poke-input ~ .theirs .still { animation: breathe 3.2s ease-in-out infinite, still-b 2.4s 1.2s both; }
-  .poke-input ~ .theirs .dancing { animation: dance-b 2.4s 1.2s both; }
-  .poke-input ~ .theirs .tag { animation: tag-b 2.4s 1.2s both; }
-
-  /* 원래 규칙보다 한 단 더 구체적이어야 지연을 덮는다 (클래스 넷) */
-  .poke-input:focus ~ .mine .critter,
-  .poke-input:focus ~ .flight .flight-x,
-  .poke-input:focus ~ .flight .spark,
-  .poke-input:focus ~ .theirs .dancing,
-  .poke-input:focus ~ .theirs .tag { animation-delay: 0s; }
-  .poke-input:focus ~ .theirs .still { animation-delay: 0s, 0s; }
-
-  .poke-input:checked ~ .mine .critter { animation: poke-cat-a 2.4s both; }
-  .poke-input:checked ~ .flight .flight-x { animation: flight-x-a 2.4s both; }
-  .poke-input:checked ~ .flight .spark { animation: flight-y-a 2.4s both; }
-  .poke-input:checked ~ .theirs .still { animation: breathe 3.2s ease-in-out infinite, still-a 2.4s both; }
-  .poke-input:checked ~ .theirs .dancing { animation: dance-a 2.4s both; }
-  .poke-input:checked ~ .theirs .tag { animation: tag-a 2.4s both; }
-}
-
-/* 움직임을 줄인 사람에게는 상태만 보여 준다 — 누르면 춤추는 그림과 이름표가 켜진 채로 남는다 */
+.demo-still { display: none; }
 @media (prefers-reduced-motion: reduce) {
-  .poke-hint { display: none; }
-  .poke-input:checked ~ .theirs .still { opacity: 0; }
-  .poke-input:checked ~ .theirs .dancing,
-  .poke-input:checked ~ .theirs .tag { opacity: 1; }
-}
-
-@keyframes breathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.02, 0.98); } }
-@keyframes nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(8px); } }
-
-@keyframes poke-cat-a { 0%, 14%, 100% { transform: scale(1); } 6% { transform: scale(1.12, 0.84); } }
-@keyframes poke-cat-b { 0%, 14%, 100% { transform: scale(1); } 6% { transform: scale(1.12, 0.84); } }
-
-@keyframes flight-x-a {
-  0%, 8% { transform: translateX(0); opacity: 0; }
-  10% { opacity: 1; }
-  30% { opacity: 1; }
-  32%, 100% { transform: translateX(100%); opacity: 0; }
-}
-@keyframes flight-x-b {
-  0%, 8% { transform: translateX(0); opacity: 0; }
-  10% { opacity: 1; }
-  30% { opacity: 1; }
-  32%, 100% { transform: translateX(100%); opacity: 0; }
-}
-/* 가로와 세로의 빠르기를 다르게 주면 곧은 선이 아니라 포물선으로 난다 */
-@keyframes flight-y-a { 0%, 8% { transform: translateY(0); } 20% { transform: translateY(-90px); animation-timing-function: ease-in; } 32%, 100% { transform: translateY(0); } }
-@keyframes flight-y-b { 0%, 8% { transform: translateY(0); } 20% { transform: translateY(-90px); animation-timing-function: ease-in; } 32%, 100% { transform: translateY(0); } }
-
-@keyframes still-a { 0%, 32% { opacity: 1; } 33%, 96% { opacity: 0; } 100% { opacity: 1; } }
-@keyframes still-b { 0%, 32% { opacity: 1; } 33%, 96% { opacity: 0; } 100% { opacity: 1; } }
-
-@keyframes dance-a {
-  0%, 32% { opacity: 0; transform: rotate(0); }
-  33% { opacity: 1; transform: rotate(-8deg); }
-  43% { transform: rotate(8deg) translateY(-6px); }
-  53% { transform: rotate(-8deg); }
-  63% { transform: rotate(8deg) translateY(-6px); }
-  73% { transform: rotate(-8deg); }
-  83% { transform: rotate(8deg) translateY(-6px); }
-  95% { opacity: 1; transform: rotate(0); }
-  97%, 100% { opacity: 0; }
-}
-@keyframes dance-b {
-  0%, 32% { opacity: 0; transform: rotate(0); }
-  33% { opacity: 1; transform: rotate(-8deg); }
-  43% { transform: rotate(8deg) translateY(-6px); }
-  53% { transform: rotate(-8deg); }
-  63% { transform: rotate(8deg) translateY(-6px); }
-  73% { transform: rotate(-8deg); }
-  83% { transform: rotate(8deg) translateY(-6px); }
-  95% { opacity: 1; transform: rotate(0); }
-  97%, 100% { opacity: 0; }
-}
-@keyframes tag-a { 0%, 32% { opacity: 0; transform: translateY(8px); } 38%, 92% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; } }
-@keyframes tag-b { 0%, 32% { opacity: 0; transform: translateY(8px); } 38%, 92% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; } }
-
-@media (max-width: 520px) {
-  .demo { gap: 10px; }
-  .who { font-size: 0.82rem; top: 32px; left: 10px; }
-  .poke-hint { font-size: 0.9rem; left: 6%; }
+  .demo-video { display: none; }
+  .demo-still { display: block; }
 }
 
 /* ── 말 걸기엔 시시하고 ───────────────────────────────── */

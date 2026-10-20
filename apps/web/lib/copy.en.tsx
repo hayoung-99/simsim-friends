@@ -26,13 +26,7 @@ export const en: Copy = {
   },
 
   demo: {
-    mine: 'Your screen',
-    theirs: "Mina's screen",
-    hint: 'Tap me',
-    pokeLabel: "Tap your cat. The dog on Mina's screen dances",
-    sender: 'Nayoung',
-    altMine: 'A white cat standing in the corner of your screen',
-    altTheirs: "A brown dog standing in the corner of Mina's screen",
+    label: "Tap the white cat on your screen and a signal flies over. The brown dog on Mina's screen dances with music notes",
   },
 
   quiet: {

@@ -38,6 +38,29 @@ const SIGNAL_SIZE = {
   sulk: [396, 760],
 } as const
 
+/** 데모 영상의 크기. `apps/desktop/scripts/make-demo-video.js` 의 `FRAME` 과 같다 */
+const DEMO_SIZE = [1280, 880] as const
+
+const escapeAttr = (value: string) =>
+  value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
+/**
+ * 히어로 데모 영상. WebM(VP9)이 더 가벼워 앞에 두고, 그것을 못 트는 사파리는 MP4 로 간다.
+ * `playsinline` 이 없으면 아이폰이 전체 화면으로 열려 하고, `muted` 가 없으면 아예 저절로
+ * 돌지 않는다.
+ */
+function demoVideoHtml(locale: string, label: string) {
+  const base = `/assets/demo-${locale}`
+  return (
+    `<video class="demo-video" width="${DEMO_SIZE[0]}" height="${DEMO_SIZE[1]}" ` +
+    `poster="${base}-poster.webp" autoplay muted loop playsinline preload="auto" ` +
+    `aria-label="${escapeAttr(label)}">` +
+    `<source src="${base}.webm" type="video/webm">` +
+    `<source src="${base}.mp4" type="video/mp4">` +
+    `</video>`
+  )
+}
+
 export function Landing({ copy }: { copy: Copy }) {
   const downloadHref = copy.locale === 'en' ? DOWNLOAD_PATHS.en : DOWNLOAD_PATHS.ko
   const [firstStep, codeStep, lastStep] = copy.start.steps
@@ -91,58 +114,31 @@ export function Landing({ copy }: { copy: Copy }) {
 
           {/*
             누르면 친구 화면에서 춤추는 두 화면. 이 제품의 단 하나뿐인 마법을 글보다 먼저
-            해 보게 한다.
+            보게 한다.
 
-            스크립트 없이 돈다. 숨긴 체크박스를 누를 때마다 켜짐·꺼짐이 바뀌고, 두 상태에
-            **이름만 다른 같은 애니메이션**을 걸어 두어 어느 쪽으로 바뀌든 처음부터 다시
-            돈다. 꺼진 상태의 애니메이션은 페이지가 열릴 때도 한 번 돌아서, 누르기 전에
-            무슨 일이 일어나는지 먼저 보여 준다.
+            앱의 캐릭터 코드로 그려 찍은 영상이다 (`apps/desktop/src/renderer/demo-video/`,
+            `npm run demo-video`). 글씨가 구워져 있어 언어마다 한 벌씩이다.
+
+            영상 태그를 JSX 가 아니라 HTML 그대로 내보낸다. React 는 `muted` 를 속성이 아니라
+            DOM 값으로만 다뤄서 서버가 그린 HTML 에 남기지 않는데, 이 페이지는 이 부분을
+            다시 그리지 않으므로 그 값이 끝내 들어가지 않는다. `muted` 가 HTML 에 없으면
+            브라우저가 자동 재생을 막아 포스터만 남는다.
           */}
-          <div className="demo">
-            <input className="poke-input" type="checkbox" id="poke" aria-label={copy.demo.pokeLabel} />
-            <div className="screen mine">
-              <span className="who">{copy.demo.mine}</span>
-              <label className="critter" htmlFor="poke">
-                <img
-                  src="/assets/friend-cat.webp"
-                  alt={copy.demo.altMine}
-                  width={FRIEND_SIZE.cat[0]}
-                  height={FRIEND_SIZE.cat[1]}
-                  fetchPriority="high"
-                />
-              </label>
-              <span className="poke-hint" aria-hidden="true">
-                {copy.demo.hint}
-              </span>
-            </div>
-            <div className="screen theirs">
-              <span className="who">{copy.demo.theirs}</span>
-              <div className="critter">
-                <img
-                  className="still"
-                  src="/assets/friend-dog.webp"
-                  alt={copy.demo.altTheirs}
-                  width={FRIEND_SIZE.dog[0]}
-                  height={FRIEND_SIZE.dog[1]}
-                />
-                <img
-                  className="dancing"
-                  src="/assets/signal-poke.webp"
-                  alt=""
-                  width={SIGNAL_SIZE.poke[0]}
-                  height={SIGNAL_SIZE.poke[1]}
-                />
-                <span className="tag" aria-hidden="true">
-                  {copy.demo.sender}
-                </span>
-              </div>
-            </div>
-            <span className="flight" aria-hidden="true">
-              <span className="flight-x">
-                <span className="spark" />
-              </span>
-            </span>
-          </div>
+          <figure className="demo">
+            <div
+              // 우리가 고른 고정된 경로와 사전 문구만 들어간다. 사전 문구는 escapeAttr 를 거친다
+              dangerouslySetInnerHTML={{ __html: demoVideoHtml(copy.locale, copy.demo.label) }}
+            />
+            <img
+              className="demo-still"
+              src={`/assets/demo-${copy.locale}-still.webp`}
+              alt={copy.demo.label}
+              width={DEMO_SIZE[0]}
+              height={DEMO_SIZE[1]}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
         </section>
 
         {/* ── 말 걸기엔 시시하고 ── */}

@@ -25,13 +25,7 @@ export const ko: Copy = {
   },
 
   demo: {
-    mine: '내 화면',
-    theirs: '민지 화면',
-    hint: '눌러 보세요',
-    pokeLabel: '내 고양이 톡 누르기. 민지 화면의 강아지가 춤춰요',
-    sender: '나영',
-    altMine: '내 화면 구석에 서 있는 흰 고양이',
-    altTheirs: '민지 화면 구석에 서 있는 갈색 강아지',
+    label: '내 화면의 흰 고양이를 톡 누르면 신호가 건너가, 민지 화면의 갈색 강아지가 음표를 띄우며 춤춰요',
   },
 
   quiet: {
