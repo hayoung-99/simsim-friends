@@ -157,7 +157,7 @@ body > footer,
 /* ── 윗줄 ─────────────────────────────────────────────── */
 
 .site-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px; }
-.logo { display: flex; align-items: center; gap: 0.45em; font-family: var(--display); font-size: 1.45rem; text-decoration: none; }
+.logo { display: flex; align-items: center; gap: 0.45em; font-family: var(--font-brand), var(--display); font-weight: 700; font-size: 1.45rem; text-decoration: none; }
 /* 로고의 고양이도 맨 베이지 위에 두지 않는다(맨 위 주석) — 꿀색 동그라미에 앉힌다 */
 /* 빼꼼 마크. 받침대까지 포함한 그림이 글자 높이보다 살짝 크게 서야 "로고" 로 읽힌다 */
 .logo svg { width: 40px; height: auto; flex: none; overflow: visible; }

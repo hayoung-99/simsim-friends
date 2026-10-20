@@ -1,4 +1,5 @@
 import { Jua } from 'next/font/google'
+import localFont from 'next/font/local'
 
 /**
  * 제목 글꼴 하나 — Jua.
@@ -22,4 +23,25 @@ export const displayFont = Jua({
   preload: false,
   variable: '--font-display',
   fallback: ['Apple SD Gothic Neo', 'Malgun Gothic', 'sans-serif'],
+})
+
+/**
+ * 로고 글자 — 학교안심 둥근미소 Bold. 데스크톱 앱 화면이 쓰는 글꼴이라, 랜딩 윗줄의
+ * 이름도 앱과 같은 얼굴로 보이게 한다.
+ *
+ * **"SimSim Friends" 에 쓰이는 글자만 잘라 넣었다** (1.2KB). 원본은 한글까지 들어 217KB 라
+ * 이름 한 줄 때문에 받기에는 무겁다. 그래서 로고가 아닌 곳에 이 글꼴을 쓰면 글자가 빠진다 —
+ * 다른 글자가 필요하면 원본(`apps/desktop/src/renderer/assets/fonts/`)에서 다시 자른다.
+ *
+ *   pyftsubset hakgyoansim-dunggeunmiso-bold.woff2 --text="SimSim Friends" \
+ *     --flavor=woff2 --output-file=hakgyoansim-brand.woff2
+ *
+ * SIL OFL 1.1 이라 잘라 쓰고 함께 내보내도 된다 (같은 폴더의 LICENSE). 작아서 미리 받는다.
+ */
+export const brandFont = localFont({
+  src: './fonts/hakgyoansim-brand.woff2',
+  weight: '700',
+  display: 'swap',
+  variable: '--font-brand',
+  fallback: ['var(--font-display)', 'Apple SD Gothic Neo', 'sans-serif'],
 })
