@@ -2,7 +2,7 @@
  * SimSim Friends 로고 — "빼꼼" 마크.
  *
  * 모니터 화면 오른쪽 아래에서 고양이가 귀와 눈만 내밀고 있다. 앱 아이콘 · macOS 다크 모드
- * 아이콘 · 랜딩 파비콘이 전부 여기서 나온다 (`scripts/make-app-icon.js`). 모양을 고칠 일이
+ * 아이콘 · 메뉴바(트레이) 아이콘 · 랜딩 파비콘이 전부 여기서 나온다 (`scripts/make-app-icon.js`). 모양을 고칠 일이
  * 생기면 이 파일만 고치고 `npm run app-icon` 을 다시 돌린다.
  *
  * Three.js 도 DOM 도 부르지 않는 순수 함수라 `test/logo.test.ts` 가 브라우저 없이 지킨다.
@@ -68,13 +68,13 @@ export const MARK_BOUNDS = { x: 7, y: 11, width: 86, height: 81 }
  *
  * 고양이는 화면 안쪽 가장자리(테두리 선 6 의 안쪽)를 따라 잘라 테두리 밖으로 새지 않는다.
  */
-export function markBody(colors: MarkColors, id: string) {
-  const eyes = EYES.map(({ cx, cy, r }) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#000"/>`).join('')
+export function markBody(colors: MarkColors, id: string, { stroke = 6, eye = 2.7 } = {}) {
+  const eyes = EYES.map(({ cx, cy }) => `<circle cx="${cx}" cy="${cy}" r="${eye}" fill="#000"/>`).join('')
   return (
     `<defs><clipPath id="screen-${id}"><rect x="13" y="17" width="74" height="56" rx="13"/></clipPath>` +
     `<mask id="eyes-${id}"><rect width="100" height="100" fill="#fff"/>${eyes}</mask></defs>` +
-    `<rect x="10" y="14" width="80" height="62" rx="16" fill="none" stroke="${colors.ink}" stroke-width="6"/>` +
-    `<path d="M38 89 H62" stroke="${colors.ink}" stroke-width="6" stroke-linecap="round"/>` +
+    `<rect x="10" y="14" width="80" height="62" rx="16" fill="none" stroke="${colors.ink}" stroke-width="${stroke}"/>` +
+    `<path d="M38 89 H62" stroke="${colors.ink}" stroke-width="${stroke}" stroke-linecap="round"/>` +
     `<g clip-path="url(#screen-${id})"><path d="${CAT_PATH}" fill="${colors.cat}" mask="url(#eyes-${id})"/></g>`
   )
 }
@@ -180,6 +180,27 @@ export function faviconSvg() {
     markBody({ ink: 'currentColor', cat: 'currentColor' }, 'favicon')
       .replace(/stroke="currentColor"/g, 'class="ink"')
       .replace(/fill="currentColor"/g, 'class="cat"') +
+    `</g></svg>`
+  )
+}
+
+/** 메뉴바 아이콘의 캔버스(포인트). 맥 메뉴바 아이콘의 관례 크기다 */
+export const TRAY = 22
+
+/**
+ * 메뉴바(트레이) 아이콘 — 마크를 22 칸에 한 가지 색으로 줄인 것.
+ *
+ * 앱 아이콘과 같은 그림이지만 **선을 굵히고(6 → 7.5) 눈을 키운다(2.7 → 3.4).** 22px 로
+ * 줄이면 원래 굵기의 테두리는 1.3px 이 되어 흐려지고, 눈 구멍은 메워져 고양이가 덩어리로
+ * 보였다. 색은 하나뿐이다 — 맥은 이것을 템플릿으로 써서 메뉴바 색에 맞춰 스스로 뒤집고,
+ * 윈도우 · 리눅스는 검정과 흰색 두 벌을 시스템 테마에 따라 고른다 (`main/tray-icon.ts`).
+ */
+export function trayMarkSvg(color: string, id = 'tray') {
+  const scale = 0.226
+  return (
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${TRAY} ${TRAY}" width="${TRAY}" height="${TRAY}">` +
+    `<g transform="translate(-0.3 -0.6) scale(${scale})">` +
+    markBody({ ink: color, cat: color }, id, { stroke: 7.5, eye: 3.4 }) +
     `</g></svg>`
   )
 }

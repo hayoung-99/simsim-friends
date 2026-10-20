@@ -23,7 +23,6 @@
     "dev": "vite build --config vite.config.mts --watch",
     "preview": "npm run ensure-electron && npm run build && electron scripts/preview.js",
     "image-capture-studio": "npm run ensure-electron && npm run build && electron scripts/preview.js --studio",
-    "tray-icon": "node scripts/make-tray-icon.js",
     "app-icon": "npm run ensure-electron && npm run build && electron scripts/make-app-icon.js",
     "site-images": "npm run ensure-electron && npm run build && electron scripts/make-site-images.js",
     "demo-video": "npm run ensure-electron && npm run build && electron scripts/make-demo-video.js",
