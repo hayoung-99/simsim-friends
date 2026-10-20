@@ -40,7 +40,7 @@
     "tray-icon": "npm run tray-icon -w simsim-friends"
   },
   "devDependencies": {
-    "oxlint": "^1.82.0",
+    "oxlint": "^1.88.0",
     "oxlint-tsgolint": "^7.0.2001",
     "typescript": "^7.0.2"
   }
