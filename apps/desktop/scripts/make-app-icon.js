@@ -173,8 +173,8 @@ function composerColor(hex) {
  * 판은 묶음이 칠하고(밝을 때 노랑 · 어두울
  * 때 검정), 그 위에 마크 한 겹을 올린다. 마크도 모습마다 색이 달라서 그림을 둘 둔다.
  *
- * Liquid Glass 의 유리 효과(반투명 · 그림자)는 끈다 — 마크가 선 그림이라 유리처럼 비치면
- * 테두리가 흐려진다.
+ * Liquid Glass 의 유리 효과(반투명 · 그림자 · 반사광)는 끈다 — 마크가 평면 그림이라 유리처럼
+ * 빚으면 테두리 모서리가 고르지 않아 보이고, 랜딩 로고 · 메뉴바 아이콘과 따로 논다.
  */
 function writeIconComposer(sources) {
   const bundle = path.join(BUILD_DIR, 'Icon.icon')
@@ -192,6 +192,9 @@ function writeIconComposer(sources) {
         layers: [
           {
             name: 'mark',
+            // 이 겹은 유리로 빚지 않는다. 유리 효과(입체 테두리 · 반사광)를 켜 두면 테두리
+            // 모서리가 깎인 듯 두꺼워 보이고 고양이 눈이 팔각형으로 번쩍였다
+            glass: false,
             'image-name-specializations': [
               { value: 'mark-light.svg' },
               { appearance: 'dark', value: 'mark-dark.svg' },
@@ -200,6 +203,7 @@ function writeIconComposer(sources) {
         ],
         shadow: { kind: 'none', opacity: 0.5 },
         translucency: { enabled: false, value: 0.5 },
+        specular: false,
       },
     ],
     'supported-platforms': { squares: ['macOS'] },
