@@ -113,10 +113,11 @@ export function Landing({ copy }: { copy: Copy }) {
           </div>
 
           {/*
-            누르면 친구 화면에서 춤추는 두 화면. 이 제품의 단 하나뿐인 마법을 글보다 먼저
-            보게 한다.
+            누르면 친구 화면에서 반응한다. 이 제품의 단 하나뿐인 마법을 글보다 먼저 보게 한다.
+            내 고양이를 누르면 신호를 따라 친구 바탕화면으로 건너가 강아지가 춤추고, 친구가
+            강아지를 누르면 돌아와 내 고양이가 수줍어하는 왕복 영상이다.
 
-            앱의 캐릭터 코드로 그려 찍은 영상이다 (`apps/desktop/src/renderer/demo-video/`,
+            앱의 캐릭터 코드로 그려 찍었다 (`apps/desktop/src/renderer/demo-video/`,
             `npm run demo-video`). 글씨가 구워져 있어 언어마다 한 벌씩이다.
 
             영상 태그를 JSX 가 아니라 HTML 그대로 내보낸다. React 는 `muted` 를 속성이 아니라

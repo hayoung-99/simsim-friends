@@ -26,7 +26,7 @@ export const en: Copy = {
   },
 
   demo: {
-    label: "Tap the white cat on your screen and a signal flies over. The brown dog on Mina's screen dances with music notes",
+    label: "Tap the white cat on your desktop and the brown dog on your friend's desktop dances. When your friend taps the dog, your cat blushes with a little heart",
   },
 
   quiet: {
