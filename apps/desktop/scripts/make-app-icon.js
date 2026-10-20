@@ -3,30 +3,40 @@
  *
  *   npm run app-icon
  *
- * 앱에서 쓰는 캐릭터를 그대로 렌더해서(`src/renderer/icon/`) 한 장을 뜨고,
- * 거기서 플랫폼별 아이콘 파일을 파생시킨다. 이미지 편집기가 필요 없고,
- * 캐릭터 색이나 비율을 바꾸면 아이콘도 다시 만들면 그대로 따라온다.
+ * "빼꼼" 마크(`src/renderer/icon/logo.ts`)를 그려 한 장을 뜨고, 거기서 플랫폼별 아이콘
+ * 파일을 파생시킨다. 이미지 편집기가 필요 없고, 마크를 고치면 다시 돌리기만 하면 된다.
+ *
+ * **바탕은 노랑이 기본이고, macOS 다크 모드에서는 검정이다.** 다크 모드에 따라 바뀌는
+ * 앱 아이콘은 macOS 26 의 Icon Composer 형식(`.icon`)으로만 만들 수 있어서, 그 묶음을
+ * 만들어 Xcode 의 `actool` 로 `Assets.car` 를 컴파일해 둔다. 앱은 그 파일을 품고 나간다
+ * (package.json 의 `mac.extraResources` · `CFBundleIconName`). 다크 모드를 모르는
+ * 곳(Windows · Linux · macOS 25 이하)은 노랑 한 벌을 쓴다.
  *
  * 만드는 것
- *   build/icon.icns          macOS 앱 아이콘 (iconutil, macOS 에서만)
- *   build/icon.ico           Windows 앱 아이콘
- *   build/icon.png           Linux 앱 아이콘 (512)
- *   site/assets/icon-*.png   랜딩 페이지 파비콘 (32 · 180)
- *   site/favicon.ico         랜딩 페이지 파비콘 (구형 브라우저)
+ *   build/Icon.icon/           Icon Composer 원본 (노랑 · 검정 두 모습)
+ *   build/Assets.car           그것을 컴파일한 것 — macOS 26 의 아이콘 (Xcode 가 있어야 한다)
+ *   build/icon.icns            macOS 25 이하의 아이콘 (iconutil, macOS 에서만)
+ *   build/icon.ico             Windows 앱 아이콘
+ *   build/icon.png             Linux 앱 아이콘 (512)
+ *   ../web/public/assets/icon.svg       랜딩 파비콘 — 브라우저가 다크 모드면 검정
+ *   ../web/public/assets/icon-*.png     랜딩 파비콘(32) · 아이폰 홈 화면(180)
+ *   ../web/public/favicon.ico           랜딩 파비콘 (구형 브라우저)
  *
- * 산출물은 저장소에 커밋한다. CI 러너에서 Electron 렌더링을 돌리는 것보다
- * 훨씬 안정적이고, 빌드가 그림 그리는 일에 기대지 않게 된다.
+ * 산출물은 저장소에 커밋한다. CI 러너(Xcode 판이 다를 수 있다)에서 그리고 컴파일하는
+ * 것보다 훨씬 안정적이고, 빌드가 그림 그리는 일에 기대지 않게 된다.
  */
 
 const fs = require('node:fs')
 const path = require('node:path')
 const { execFileSync } = require('node:child_process')
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, nativeImage } = require('electron')
 
 const ROOT = path.join(__dirname, '..')
 const PAGE = path.join(ROOT, 'dist-renderer', 'icon', 'index.html')
 const BUILD_DIR = path.join(ROOT, 'build')
-const SITE_ASSETS = path.join(ROOT, 'site', 'assets')
+// 랜딩은 이웃 워크스페이스다. ROOT 가 apps/desktop 이므로 한 칸 올라가 건너간다
+const WEB_PUBLIC = path.join(ROOT, '..', 'web', 'public')
+const WEB_ASSETS = path.join(WEB_PUBLIC, 'assets')
 
 const CANVAS = 1024
 const READY_TIMEOUT_MS = 15000
@@ -69,7 +79,7 @@ async function waitForReady(window) {
  * 아이콘 한 장을 1024×1024 로 뜬다.
  * 창은 투명해야 한다 — 판(둥근 사각형) 바깥이 비어 있어야 아이콘이 제 모양이 된다.
  */
-async function shoot(platform) {
+async function shoot(platform, withSources = false) {
   const window = new BrowserWindow({
     width: CANVAS,
     height: CANVAS,
@@ -86,11 +96,96 @@ async function shoot(platform) {
   await waitForReady(window)
 
   const captured = await window.capturePage()
+  const sources = withSources ? await window.webContents.executeJavaScript('window.iconSources') : null
   window.destroy()
 
-  const image = captured.resize({ width: CANVAS, height: CANVAS, quality: 'best' })
-  if (image.isEmpty()) throw new Error(`${platform} 아이콘 캡처가 비어 있습니다`)
-  return image
+  const resized = captured.resize({ width: CANVAS, height: CANVAS, quality: 'best' })
+  if (resized.isEmpty()) throw new Error(`${platform} 아이콘 캡처가 비어 있습니다`)
+  /*
+   * 비트맵을 거쳐 다시 만든다. 캡처를 곧장 PNG 로 쓰면 디스플레이 색 공간으로 바뀐 값이
+   * 들어가서, 노랑 #ffc83d 가 물 빠진 색으로 찍힌다 (데모 영상의 `make-demo-video.js` 가
+   * 같은 일을 겪었다).
+   */
+  const image = nativeImage.createFromBitmap(resized.toBitmap(), { width: CANVAS, height: CANVAS })
+  return withSources ? { image, sources } : image
+}
+
+// ── Icon Composer ─────────────────────────────────────────
+
+/** '#ffc83d' → Icon Composer 가 적는 색 'srgb:1.00000,0.78431,0.23922,1.00000' */
+function composerColor(hex) {
+  const channels = [1, 3, 5].map((at) => (parseInt(hex.slice(at, at + 2), 16) / 255).toFixed(5))
+  return `srgb:${channels.join(',')},1.00000`
+}
+
+/**
+ * Icon Composer 묶음(`build/Icon.icon`)을 쓴다. **이름이 `Icon` 이어야 한다** — `actool` 의
+ * `--app-icon` 이름과 묶음 이름이 다르면 오류 없이 아무것도 만들지 않고 끝난다. 그 이름이
+ * 곧 Info.plist 의 `CFBundleIconName` 이다 (package.json).
+ * 판은 묶음이 칠하고(밝을 때 노랑 · 어두울
+ * 때 검정), 그 위에 마크 한 겹을 올린다. 마크도 모습마다 색이 달라서 그림을 둘 둔다.
+ *
+ * Liquid Glass 의 유리 효과(반투명 · 그림자)는 끈다 — 마크가 선 그림이라 유리처럼 비치면
+ * 테두리가 흐려진다.
+ */
+function writeIconComposer(sources) {
+  const bundle = path.join(BUILD_DIR, 'Icon.icon')
+  fs.rmSync(bundle, { recursive: true, force: true })
+  fs.mkdirSync(path.join(bundle, 'Assets'), { recursive: true })
+  fs.writeFileSync(path.join(bundle, 'Assets', 'mark-light.svg'), sources.composerLight)
+  fs.writeFileSync(path.join(bundle, 'Assets', 'mark-dark.svg'), sources.composerDark)
+  const manifest = {
+    'fill-specializations': [
+      { value: { solid: composerColor(sources.plateLight) } },
+      { appearance: 'dark', value: { solid: composerColor(sources.plateDark) } },
+    ],
+    groups: [
+      {
+        layers: [
+          {
+            name: 'mark',
+            'image-name-specializations': [
+              { value: 'mark-light.svg' },
+              { appearance: 'dark', value: 'mark-dark.svg' },
+            ],
+          },
+        ],
+        shadow: { kind: 'none', opacity: 0.5 },
+        translucency: { enabled: false, value: 0.5 },
+      },
+    ],
+    'supported-platforms': { squares: ['macOS'] },
+  }
+  fs.writeFileSync(path.join(bundle, 'icon.json'), `${JSON.stringify(manifest, null, 2)}\n`)
+  return bundle
+}
+
+/**
+ * `actool` 로 `Assets.car` 를 컴파일한다. Xcode 26 이상이 있어야 `.icon` 을 읽는다.
+ * 없으면 이미 커밋된 `Assets.car` 를 그대로 두고 알린다 — 그 파일이 낡았을 수 있다.
+ */
+function compileAssetCatalog(bundle) {
+  const out = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'simsim-icon-'))
+  try {
+    execFileSync('xcrun', [
+      'actool', bundle,
+      '--compile', out,
+      '--platform', 'macosx',
+      '--minimum-deployment-target', '11.0',
+      '--app-icon', 'Icon',
+      '--output-partial-info-plist', path.join(out, 'partial.plist'),
+    ], { stdio: 'ignore' })
+    const car = path.join(out, 'Assets.car')
+    // 이름이 어긋나거나 형식을 못 읽으면 actool 은 실패하지 않고 빈손으로 끝난다
+    if (!fs.existsSync(car)) throw new Error('actool 이 Assets.car 를 만들지 않았습니다')
+    fs.copyFileSync(car, path.join(BUILD_DIR, 'Assets.car'))
+    return true
+  } catch (error) {
+    console.warn(`건너뜀: build/Assets.car — Xcode 26 이상의 actool 이 있어야 만들 수 있습니다 (${error.message})`)
+    return false
+  } finally {
+    fs.rmSync(out, { recursive: true, force: true })
+  }
 }
 
 /** 판 바깥이 정말 투명한지 왼쪽 위 구석 한 점으로 확인한다 */
@@ -150,10 +245,11 @@ const icoFrom = (image, sizes) =>
 
 async function main() {
   fs.mkdirSync(BUILD_DIR, { recursive: true })
-  fs.mkdirSync(SITE_ASSETS, { recursive: true })
+  fs.mkdirSync(WEB_ASSETS, { recursive: true })
 
-  const mac = await shoot('mac')
+  const { image: mac, sources } = await shoot('mac', true)
   const win = await shoot('win')
+  const touch = await shoot('touch')
   assertTransparentCorner(mac, 'mac')
 
   const written = []
@@ -162,7 +258,14 @@ async function main() {
     written.push(path.relative(ROOT, file))
   }
 
-  // macOS — iconutil 은 macOS 에만 있다
+  // macOS 26 — 다크 모드에 따라 바뀌는 아이콘
+  const bundle = writeIconComposer(sources)
+  written.push(path.relative(ROOT, bundle))
+  if (process.platform === 'darwin' && compileAssetCatalog(bundle)) {
+    written.push(path.relative(ROOT, path.join(BUILD_DIR, 'Assets.car')))
+  }
+
+  // macOS 25 이하 — iconutil 은 macOS 에만 있다
   if (process.platform === 'darwin') {
     const iconset = path.join(BUILD_DIR, 'icon.iconset')
     fs.rmSync(iconset, { recursive: true, force: true })
@@ -183,9 +286,10 @@ async function main() {
   write(path.join(BUILD_DIR, 'icon.png'), resize(mac, 512))
 
   // 랜딩 페이지 — 파비콘은 작게 쓰이므로 여백 없는 win 판이 또렷하다
-  write(path.join(SITE_ASSETS, 'icon-180.png'), resize(win, 180)) // apple-touch-icon
-  write(path.join(SITE_ASSETS, 'icon-32.png'), resize(win, 32))
-  write(path.join(ROOT, 'site', 'favicon.ico'), icoFrom(win, FAVICON_SIZES))
+  write(path.join(WEB_ASSETS, 'icon.svg'), sources.favicon)
+  write(path.join(WEB_ASSETS, 'icon-180.png'), resize(touch, 180)) // apple-touch-icon
+  write(path.join(WEB_ASSETS, 'icon-32.png'), resize(win, 32))
+  write(path.join(WEB_PUBLIC, 'favicon.ico'), icoFrom(win, FAVICON_SIZES))
 
   for (const file of written) console.log(`wrote ${file}`)
 }

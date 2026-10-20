@@ -251,7 +251,7 @@ xattr -cr "/Applications/SimSim Friends.app"
 ```bash
 npm test                  # Supabase 없이 도는 검사
 npm run check             # 실제 Supabase 연동 점검
-npm run app-icon          # 앱 아이콘 (캐릭터를 렌더해서 icns·ico 를 만든다)
+npm run app-icon          # 앱 아이콘 (빼꼼 마크로 icns·ico·Assets.car·파비콘을 만든다)
 npm run site-images       # 랜딩페이지 그림
 npm run dist -- --mac     # 내 컴퓨터에서 빌드해 보기 (키가 없으면 멈춥니다)
 ```

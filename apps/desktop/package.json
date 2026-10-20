@@ -60,6 +60,15 @@
     "mac": {
       "category": "public.app-category.social-networking",
       "icon": "build/icon.icns",
+      "extraResources": [
+        {
+          "from": "build/Assets.car",
+          "to": "Assets.car"
+        }
+      ],
+      "extendInfo": {
+        "CFBundleIconName": "Icon"
+      },
       "identity": "-",
       "hardenedRuntime": false,
       "artifactName": "simsim-friends-${version}-${arch}.${ext}",

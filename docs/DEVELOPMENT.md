@@ -56,7 +56,7 @@ npm run check         # 실제 Supabase 연결 점검 (접속 정보 필요)
 npm run preview       # 캐릭터 5종 나란히 보기 + 키프레임 편집기
 npm run image-capture-studio  # 캐릭터를 각도·동작 골라 배경 없는 PNG 로 뽑는 촬영장
 npm run tray-icon     # 메뉴바 아이콘 PNG 다시 생성
-npm run app-icon      # 앱 아이콘(icns·ico·파비콘) 다시 생성
+npm run app-icon      # 앱 아이콘(icns·ico·Assets.car·파비콘) 다시 생성 — Xcode 26 필요
 npm run site-images   # 랜딩페이지에 쓰는 그림 다시 생성
 npm run site          # 랜딩페이지를 Vercel 과 같은 규칙으로 로컬에서 띄운다
 npm run site:open     # 띄우고 브라우저까지 연다
@@ -201,9 +201,16 @@ supabase/           schema.sql — 테이블과 RPC
 `config.ts`·`windows.ts`·`tray.ts` 가 저장소 루트를 찾지 못하는데, 그게 **배포본에서만**
 드러납니다.
 
-**앱 아이콘·메뉴바 아이콘도 랜딩페이지 그림도 앱과 같은 캐릭터 코드로 그립니다.**
-캐릭터 스펙을 고치고 `npm run app-icon && npm run site-images` 를 돌리면 전부
-따라옵니다. **창 안의 작은 아이콘은 여기 해당하지 않습니다** — 그것들은 lucide 세트에서
+**메뉴바 아이콘도 랜딩페이지 그림도 앱과 같은 캐릭터 코드로 그립니다.**
+캐릭터 스펙을 고치고 `npm run site-images` 를 돌리면 따라옵니다.
+
+**앱 아이콘과 랜딩 파비콘은 "빼꼼" 마크입니다** (`renderer/icon/logo.ts`, 기획서 "앱 아이콘은
+빼꼼 마크"). 모양을 고치면 `npm run app-icon` 을 다시 돌립니다. 노랑 판이 기본이고 다크
+모드에서는 검정 판인데, macOS 에서 그렇게 바뀌는 아이콘은 Icon Composer 형식으로만 만들 수
+있어서 `build/Icon.icon` 을 Xcode 의 `actool` 로 `build/Assets.car` 에 컴파일해 커밋합니다.
+앱은 그 파일을 품고 나가고(`mac.extraResources`) Info.plist 의 `CFBundleIconName` 이
+그것을 가리킵니다. **CI 러너의 Xcode 판에 기대지 않으려고** 빌드 때 컴파일하지 않습니다.
+`build/icon.icns` 는 macOS 25 이하가 쓰는 노랑 한 벌입니다. **창 안의 작은 아이콘은 여기 해당하지 않습니다** — 그것들은 lucide 세트에서
 꺼내 쓰고 `renderer/icons.tsx` 가 크기·굵기만 씌웁니다
 ([library-icons.md](design/library-icons.md)).
 
