@@ -18,6 +18,8 @@
  *   build/icon.icns            macOS 25 이하의 아이콘 (iconutil, macOS 에서만)
  *   build/icon.ico             Windows 앱 아이콘
  *   build/icon.png             Linux 앱 아이콘 (512)
+ *   assets/trayTemplate*.png   메뉴바 아이콘 — 검정. 맥은 템플릿으로 써서 메뉴바 색에 맞춰 뒤집는다
+ *   assets/trayDark*.png       메뉴바 아이콘 — 흰색. 윈도우 · 리눅스의 어두운 작업 표시줄용
  *   ../web/public/assets/icon.svg       랜딩 파비콘 — 브라우저가 다크 모드면 검정
  *   ../web/public/assets/icon-*.png     랜딩 파비콘(32) · 아이폰 홈 화면(180)
  *   ../web/public/favicon.ico           랜딩 파비콘 (구형 브라우저)
@@ -34,6 +36,20 @@ const { app, BrowserWindow, nativeImage } = require('electron')
 const ROOT = path.join(__dirname, '..')
 const PAGE = path.join(ROOT, 'dist-renderer', 'icon', 'index.html')
 const BUILD_DIR = path.join(ROOT, 'build')
+const ASSETS_DIR = path.join(ROOT, 'assets')
+
+/**
+ * 메뉴바 아이콘 두 벌. 크기는 1x(22) 와 2x(44) — `nativeImage.createFromPath` 가 이름의
+ * `@2x` 를 보고 화면 배율에 맞는 쪽을 고른다. 파일 이름은 `main/tray-icon.ts` 와 짝이다.
+ */
+const TRAY_ICONS = [
+  { base: 'trayTemplate', color: '#000000' },
+  { base: 'trayDark', color: '#ffffff' },
+]
+const TRAY_SIZES = [
+  [22, ''],
+  [44, '@2x'],
+]
 // 랜딩은 이웃 워크스페이스다. ROOT 가 apps/desktop 이므로 한 칸 올라가 건너간다
 const WEB_PUBLIC = path.join(ROOT, '..', 'web', 'public')
 const WEB_ASSETS = path.join(WEB_PUBLIC, 'assets')
@@ -110,6 +126,38 @@ async function shoot(platform, withSources = false) {
   return withSources ? { image, sources } : image
 }
 
+// ── 메뉴바 아이콘 ─────────────────────────────────────────
+
+/**
+ * 메뉴바 아이콘을 그린다. 창을 캡처하지 않고 화면 쪽 캔버스가 정확히 그 화소로 그려 준
+ * RGBA 를 받는다 (`renderer/icon/icon.ts` 의 `rasterizeTray`). 색은 검정 아니면 흰색 하나라
+ * 색 공간이 끼어들 여지가 없다.
+ */
+async function writeTrayIcons(write) {
+  const window = new BrowserWindow({ show: false, width: 200, height: 200 })
+  await window.loadFile(PAGE)
+  await waitForReady(window)
+  for (const { base, color } of TRAY_ICONS) {
+    for (const [size, suffix] of TRAY_SIZES) {
+      const rgba = Buffer.from(
+        await window.webContents.executeJavaScript(`rasterizeTray(${size}, '${color}')`),
+        'base64',
+      )
+      // nativeImage 는 알파를 곱해 둔 BGRA 를 받는다. 캔버스는 곱하지 않은 RGBA 를 주므로
+      // 빨강 · 파랑 자리를 바꾸고 알파를 곱한다 (안 곱하면 흰 아이콘의 가장자리가 번진다)
+      for (let index = 0; index < rgba.length; index += 4) {
+        const alpha = rgba[index + 3] / 255
+        const red = rgba[index]
+        rgba[index] = Math.round(rgba[index + 2] * alpha)
+        rgba[index + 1] = Math.round(rgba[index + 1] * alpha)
+        rgba[index + 2] = Math.round(red * alpha)
+      }
+      write(path.join(ASSETS_DIR, `${base}${suffix}.png`), nativeImage.createFromBitmap(rgba, { width: size, height: size }).toPNG())
+    }
+  }
+  window.destroy()
+}
+
 // ── Icon Composer ─────────────────────────────────────────
 
 /** '#ffc83d' → Icon Composer 가 적는 색 'srgb:1.00000,0.78431,0.23922,1.00000' */
@@ -125,8 +173,8 @@ function composerColor(hex) {
  * 판은 묶음이 칠하고(밝을 때 노랑 · 어두울
  * 때 검정), 그 위에 마크 한 겹을 올린다. 마크도 모습마다 색이 달라서 그림을 둘 둔다.
  *
- * Liquid Glass 의 유리 효과(반투명 · 그림자)는 끈다 — 마크가 선 그림이라 유리처럼 비치면
- * 테두리가 흐려진다.
+ * Liquid Glass 의 유리 효과(반투명 · 그림자 · 반사광)는 끈다 — 마크가 평면 그림이라 유리처럼
+ * 빚으면 테두리 모서리가 고르지 않아 보이고, 랜딩 로고 · 메뉴바 아이콘과 따로 논다.
  */
 function writeIconComposer(sources) {
   const bundle = path.join(BUILD_DIR, 'Icon.icon')
@@ -144,6 +192,9 @@ function writeIconComposer(sources) {
         layers: [
           {
             name: 'mark',
+            // 이 겹은 유리로 빚지 않는다. 유리 효과(입체 테두리 · 반사광)를 켜 두면 테두리
+            // 모서리가 깎인 듯 두꺼워 보이고 고양이 눈이 팔각형으로 번쩍였다
+            glass: false,
             'image-name-specializations': [
               { value: 'mark-light.svg' },
               { appearance: 'dark', value: 'mark-dark.svg' },
@@ -152,6 +203,7 @@ function writeIconComposer(sources) {
         ],
         shadow: { kind: 'none', opacity: 0.5 },
         translucency: { enabled: false, value: 0.5 },
+        specular: false,
       },
     ],
     'supported-platforms': { squares: ['macOS'] },
@@ -280,6 +332,9 @@ async function main() {
   } else {
     console.warn('건너뜀: build/icon.icns 는 macOS 에서만 만들 수 있습니다 (iconutil)')
   }
+
+  // 메뉴바
+  await writeTrayIcons(write)
 
   // Windows / Linux
   write(path.join(BUILD_DIR, 'icon.ico'), icoFrom(win, ICO_SIZES))

@@ -14,7 +14,7 @@
  * 스크립트가 따로 그리지 않는다.
  */
 
-import { DARK, LIGHT, appIconSvg, composerLayerSvg, faviconSvg, squareIconSvg } from './logo'
+import { DARK, LIGHT, appIconSvg, composerLayerSvg, faviconSvg, squareIconSvg, trayMarkSvg } from './logo'
 
 const platform = new URLSearchParams(location.search).get('platform')
 
@@ -27,5 +27,26 @@ document.body.innerHTML =
   composerDark: composerLayerSvg(DARK, 'dark'),
   favicon: faviconSvg(),
 }
+
+/**
+ * 메뉴바 아이콘을 정확히 `size` 화소로 그려 RGBA 를 돌려준다(base64). 창을 캡처하지 않고
+ * 캔버스에 직접 그리는 것은, 22px 같은 작은 크기를 화면 배율과 상관없이 딱 그 화소로
+ * 받아야 하기 때문이다.
+ */
+async function rasterizeTray(size: number, color: string) {
+  const image = new Image()
+  image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(trayMarkSvg(color))}`
+  await image.decode()
+  const canvas = new OffscreenCanvas(size, size)
+  const context = canvas.getContext('2d')!
+  context.drawImage(image, 0, 0, size, size)
+  const { data } = context.getImageData(0, 0, size, size)
+  let binary = ''
+  for (let index = 0; index < data.length; index += 0x8000) {
+    binary += String.fromCharCode(...data.subarray(index, index + 0x8000))
+  }
+  return btoa(binary)
+}
+;(window as unknown as { rasterizeTray: unknown }).rasterizeTray = rasterizeTray
 
 requestAnimationFrame(() => requestAnimationFrame(() => document.body.setAttribute('data-ready', 'true')))

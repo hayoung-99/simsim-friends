@@ -1,6 +1,7 @@
 /**
  * 메뉴바(트레이) 아이콘. 캐릭터를 숨겨도 앱으로 돌아올 길을 남겨둔다.
- * 아이콘 PNG는 `node scripts/make-tray-icon.js` 로 생성한다.
+ * 아이콘 PNG 는 `npm run app-icon` 이 로고에서 그린다. 어느 파일을 쓸지(라이트 · 다크)는
+ * `tray-icon.ts` 가 정한다.
  *
  * 왼쪽을 누르면 팀 목록 창이 열리고, 오른쪽을 누르면 메뉴가 뜬다.
  *
@@ -10,12 +11,21 @@
  */
 
 import path from 'node:path'
-import { Tray, Menu, nativeImage } from 'electron'
+import { Tray, Menu, nativeImage, nativeTheme } from 'electron'
 import { t } from './i18n'
 import { allToggle } from './pet-hiding'
+import { chooseTrayIcon } from './tray-icon'
 import type { AppState } from '@simsim-friends/shared/state'
 
-const ICON = path.join(__dirname, '..', '..', 'assets', 'trayTemplate.png')
+const ASSETS = path.join(__dirname, '..', '..', 'assets')
+
+/** 지금 플랫폼과 시스템 테마에 맞는 메뉴바 아이콘 */
+function trayImage() {
+  const { file, template } = chooseTrayIcon(process.platform, nativeTheme.shouldUseDarkColors)
+  const image = nativeImage.createFromPath(path.join(ASSETS, file))
+  if (template) image.setTemplateImage(true)
+  return image
+}
 
 /**
  * 리눅스만 예외다.
@@ -52,10 +62,13 @@ export interface TrayHandle {
 }
 
 function createTray(app: TrayHost): TrayHandle {
-  const image = nativeImage.createFromPath(ICON)
-  image.setTemplateImage(true)
-
-  const tray = new Tray(image)
+  const tray = new Tray(trayImage())
+  // 윈도우 · 리눅스에서 시스템 테마가 바뀌면 아이콘 색을 다시 고른다 (맥은 템플릿이라 그대로다)
+  if (process.platform !== 'darwin') {
+    nativeTheme.on('updated', () => {
+      if (!tray.isDestroyed()) tray.setImage(trayImage())
+    })
+  }
   // 테스트용 두 번째 인스턴스는 트레이 아이콘이 하나 더 생기므로 이름을 붙여 구분한다
   tray.setToolTip(
     process.env.SIMSIM_PROFILE ? `${t('app.name')} (${process.env.SIMSIM_PROFILE})` : t('app.name'),

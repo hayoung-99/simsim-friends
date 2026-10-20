@@ -36,8 +36,7 @@
     "image-capture-studio": "npm run image-capture-studio -w simsim-friends",
     "start:both": "npm run start:both -w simsim-friends",
     "start:second": "npm run start:second -w simsim-friends",
-    "test:watch": "npm run test:watch -w simsim-friends",
-    "tray-icon": "npm run tray-icon -w simsim-friends"
+    "test:watch": "npm run test:watch -w simsim-friends"
   },
   "devDependencies": {
     "oxlint": "^1.88.0",

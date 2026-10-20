@@ -2,7 +2,7 @@
  * SimSim Friends 로고 — "빼꼼" 마크.
  *
  * 모니터 화면 오른쪽 아래에서 고양이가 귀와 눈만 내밀고 있다. 앱 아이콘 · macOS 다크 모드
- * 아이콘 · 랜딩 파비콘이 전부 여기서 나온다 (`scripts/make-app-icon.js`). 모양을 고칠 일이
+ * 아이콘 · 메뉴바(트레이) 아이콘 · 랜딩 파비콘이 전부 여기서 나온다 (`scripts/make-app-icon.js`). 모양을 고칠 일이
  * 생기면 이 파일만 고치고 `npm run app-icon` 을 다시 돌린다.
  *
  * Three.js 도 DOM 도 부르지 않는 순수 함수라 `test/logo.test.ts` 가 브라우저 없이 지킨다.
@@ -64,18 +64,47 @@ export const MARK_BOUNDS = { x: 7, y: 11, width: 86, height: 81 }
 
 /**
  * 마크 본체(SVG 조각). `id` 는 한 문서에 마크가 여럿일 때 클립 · 마스크 이름이 겹치지
- * 않게 붙인다.
+ * 않게 붙인다. `stroke` 는 테두리 · 받침대의 굵기, `eye` 는 눈 반지름이다.
  *
- * 고양이는 화면 안쪽 가장자리(테두리 선 6 의 안쪽)를 따라 잘라 테두리 밖으로 새지 않는다.
+ * **테두리와 받침대는 선(stroke)이 아니라 채운 도형으로 그린다.** 모양은 같지만, Apple 의
+ * 아이콘 컴파일러(`actool`)는 그림 범위를 잴 때 선 두께를 빼고 도형의 뼈대만 재서 바깥으로
+ * 삐져나온 선을 잘라 버린다. 선으로 그렸더니 Dock 아이콘의 테두리 바깥 모서리가 비스듬히
+ * 깎이고 받침대 아래가 평평하게 잘려, 모서리마다 굵기가 달라 보였다.
+ *
+ * 고양이는 화면 안쪽 가장자리(테두리의 안쪽 선)를 따라 잘라 테두리 밖으로 새지 않는다.
  */
-export function markBody(colors: MarkColors, id: string) {
-  const eyes = EYES.map(({ cx, cy, r }) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#000"/>`).join('')
+export function markBody(colors: MarkColors, id: string, { stroke = 6, eye = 2.7 } = {}) {
+  const half = stroke / 2
+  // 선의 가운데 자리(10,14 에서 80x62, 모서리 16)를 두께의 절반씩 밖 · 안으로 민다
+  const outer = { x: 10 - half, y: 14 - half, w: 80 + stroke, h: 62 + stroke, r: 16 + half }
+  const inner = { x: 10 + half, y: 14 + half, w: 80 - stroke, h: 62 - stroke, r: 16 - half }
+  const eyes = EYES.map(({ cx, cy }) => `<circle cx="${cx}" cy="${cy}" r="${eye}" fill="#000"/>`).join('')
   return (
-    `<defs><clipPath id="screen-${id}"><rect x="13" y="17" width="74" height="56" rx="13"/></clipPath>` +
+    `<defs><clipPath id="screen-${id}">${roundRect(inner)}</clipPath>` +
     `<mask id="eyes-${id}"><rect width="100" height="100" fill="#fff"/>${eyes}</mask></defs>` +
-    `<rect x="10" y="14" width="80" height="62" rx="16" fill="none" stroke="${colors.ink}" stroke-width="6"/>` +
-    `<path d="M38 89 H62" stroke="${colors.ink}" stroke-width="6" stroke-linecap="round"/>` +
+    `<path d="${roundRectPath(outer)} ${roundRectPath(inner)}" fill="${colors.ink}" fill-rule="evenodd"/>` +
+    `<rect x="${38 - half}" y="${89 - half}" width="${24 + stroke}" height="${stroke}" rx="${half}" fill="${colors.ink}"/>` +
     `<g clip-path="url(#screen-${id})"><path d="${CAT_PATH}" fill="${colors.cat}" mask="url(#eyes-${id})"/></g>`
+  )
+}
+
+interface Box {
+  x: number
+  y: number
+  w: number
+  h: number
+  r: number
+}
+
+const roundRect = ({ x, y, w, h, r }: Box) =>
+  `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}"/>`
+
+/** 둥근 사각형을 경로로. 바깥과 안쪽을 한 경로에 이어 `evenodd` 로 속을 비운다 */
+function roundRectPath({ x, y, w, h, r }: Box) {
+  return (
+    `M${x + r} ${y} H${x + w - r} A${r} ${r} 0 0 1 ${x + w} ${y + r} V${y + h - r} ` +
+    `A${r} ${r} 0 0 1 ${x + w - r} ${y + h} H${x + r} A${r} ${r} 0 0 1 ${x} ${y + h - r} ` +
+    `V${y + r} A${r} ${r} 0 0 1 ${x + r} ${y} Z`
   )
 }
 
@@ -170,16 +199,37 @@ export function composerLayerSvg(theme: IconTheme, id: string) {
 export function faviconSvg() {
   const { size, exponent } = PLATES.full
   const paint = (theme: IconTheme) =>
-    `.plate{fill:${theme.plate}}.ink{stroke:${theme.mark.ink}}.cat{fill:${theme.mark.cat}}`
+    `.plate{fill:${theme.plate}}.ink{fill:${theme.mark.ink}}.cat{fill:${theme.mark.cat}}`
   // 색을 속성이 아니라 클래스로 칠해야 미디어 쿼리가 바꿀 수 있다
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS} ${CANVAS}">` +
     `<style>${paint(LIGHT)}@media (prefers-color-scheme: dark){${paint(DARK)}}</style>` +
     `<path class="plate" d="${squirclePath(size, exponent, 0)}"/>` +
     `<g transform="${placeMark(size, 0)}">` +
-    markBody({ ink: 'currentColor', cat: 'currentColor' }, 'favicon')
-      .replace(/stroke="currentColor"/g, 'class="ink"')
-      .replace(/fill="currentColor"/g, 'class="cat"') +
+    markBody({ ink: 'INK', cat: 'CAT' }, 'favicon')
+      .replace(/fill="INK"/g, 'class="ink"')
+      .replace(/fill="CAT"/g, 'class="cat"') +
+    `</g></svg>`
+  )
+}
+
+/** 메뉴바 아이콘의 캔버스(포인트). 맥 메뉴바 아이콘의 관례 크기다 */
+export const TRAY = 22
+
+/**
+ * 메뉴바(트레이) 아이콘 — 마크를 22 칸에 한 가지 색으로 줄인 것.
+ *
+ * 앱 아이콘과 같은 그림이지만 **선을 굵히고(6 → 7.5) 눈을 키운다(2.7 → 3.4).** 22px 로
+ * 줄이면 원래 굵기의 테두리는 1.3px 이 되어 흐려지고, 눈 구멍은 메워져 고양이가 덩어리로
+ * 보였다. 색은 하나뿐이다 — 맥은 이것을 템플릿으로 써서 메뉴바 색에 맞춰 스스로 뒤집고,
+ * 윈도우 · 리눅스는 검정과 흰색 두 벌을 시스템 테마에 따라 고른다 (`main/tray-icon.ts`).
+ */
+export function trayMarkSvg(color: string, id = 'tray') {
+  const scale = 0.226
+  return (
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${TRAY} ${TRAY}" width="${TRAY}" height="${TRAY}">` +
+    `<g transform="translate(-0.3 -0.6) scale(${scale})">` +
+    markBody({ ink: color, cat: color }, id, { stroke: 7.5, eye: 3.4 }) +
     `</g></svg>`
   )
 }
