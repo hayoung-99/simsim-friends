@@ -1,4 +1,5 @@
 import '../globals.css'
+import '../pretendard.css'
 import type { ReactNode } from 'react'
 import { RootHtml } from '../../components/RootHtml'
 import { en } from '../../lib/copy.en'

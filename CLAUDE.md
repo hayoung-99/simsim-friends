@@ -229,10 +229,12 @@ gzip 기준 자바스크립트가 곧바로 뜁니다. `scripts/check-site.js` �
 입니다. 새 자리에 캐릭터를 놓을 때도 그 판들 위에 두세요 — 윗줄 로고의 고양이가 꿀색
 동그라미에 앉아 있는 것도 그래서입니다.
 
-**제목 글꼴(Jua)은 `next/font` 로 우리 도메인에서 나가고, CSP 에 `font-src 'self'` 가
-있어야 합니다** (`middleware.ts`). `default-src 'none'` 이라 그 한 줄이 빠지면 글꼴이 오류
-없이 막히고 제목만 운영체제 글꼴로 떨어집니다. 한글 조각이라 한국어 페이지는 끝까지 내리면
-250KB 안팎을 받습니다(영어는 13KB) — **본문까지 이 글꼴로 칠하지 마세요.**
+**제목 · 강조 글꼴은 학교안심 둥근미소 Bold, 본문은 Pretendard 입니다** (2026-10). 둘 다
+우리 도메인에서 나가고(제목은 `next/font/local`, 본문은 `app/pretendard.css` + `public/fonts/pretendard/`),
+CSP 에 `font-src 'self'` 가 있어야 합니다 (`middleware.ts`). `default-src 'none'` 이라 그 한 줄이
+빠지면 글꼴이 오류 없이 막히고 운영체제 글꼴로 떨어집니다. 무게를 알고 쓰세요 — 제목 글꼴은
+한글이 다 든 한 벌이라 **어느 언어 페이지든 212KB**, Pretendard 는 글자 구간별 92 조각 중 쓰인
+것만 받아 랜딩을 끝까지 내리면 **350KB 안팎**입니다. **본문에 제목 글꼴을 쓰지 마세요.**
 
 **나라말은 `lib/copy.ko.tsx`·`copy.en.tsx` 에만 있습니다.** 마크업은 `components/Landing.tsx`
 한 벌뿐입니다. 예전에는 HTML 이 두 벌이라 한쪽만 고치면 조용히 어긋났습니다.
