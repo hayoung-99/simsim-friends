@@ -159,7 +159,8 @@ body > footer,
 .site-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px; }
 .logo { display: flex; align-items: center; gap: 0.45em; font-family: var(--display); font-size: 1.45rem; text-decoration: none; }
 /* 로고의 고양이도 맨 베이지 위에 두지 않는다(맨 위 주석) — 꿀색 동그라미에 앉힌다 */
-.logo img { width: 42px; height: 42px; object-fit: contain; object-position: 50% 80%; padding: 4px 5px 2px; border-radius: var(--r-pill); background: var(--honey); }
+/* 빼꼼 마크. 받침대까지 포함한 그림이 글자 높이보다 살짝 크게 서야 "로고" 로 읽힌다 */
+.logo svg { width: 40px; height: auto; flex: none; overflow: visible; }
 .site-header nav { display: flex; align-items: center; gap: 26px; font-size: 0.95rem; font-weight: 600; }
 .site-header nav a:not(.btn) { text-decoration: none; color: var(--ink-soft); }
 .site-header nav a:not(.btn):hover { color: var(--ink); }
@@ -188,12 +189,12 @@ body > footer,
 /*
  * ── 데모: 누르면 친구 화면에서 춤춘다 ──
  *
- * 영상 한 편이다. 앱의 캐릭터 코드로 그려 찍은 것이라(`npm run demo-video`) 고양이의
- * 움찔 · 말풍선, 강아지의 춤 · 음표 · 이름표가 앱에 뜨는 그대로다. 소리 없이 저절로
- * 반복되고, 끝 장면이 첫 장면으로 이어지게 떠 두었다.
+ * 영상 한 편이다. 앱의 캐릭터 코드로 그려 찍은 것이라(`npm run demo-video`) 누를 때의
+ * 움찔 · 말풍선, 받을 때의 춤 · 음표 · 수줍음 · 하트 · 이름표가 앱에 뜨는 그대로다. 두 사람의
+ * 바탕화면을 카메라가 왕복하고, 소리 없이 저절로 반복되며 끝 장면이 첫 장면으로 이어진다.
  *
  * **영상의 바탕은 구워져 있어서 페이지 바탕을 따라가지 않는다.** 그래서 이음매를 숨기려
- * 하지 않고 둥근 카드로 내건다 — 다크 모드에서도 밝은 카드 한 장으로 읽힌다.
+ * 하지 않고 둥근 카드(바탕화면 한 장)로 내건다 — 다크 모드에서도 그대로 읽힌다.
  *
  * 움직임을 줄인 사람에게는 영상 대신 춤이 한창인 한 장을 보여 준다. `autoplay` 는 그
  * 설정을 따르지 않기 때문이다.
@@ -202,7 +203,8 @@ body > footer,
 .demo-video,
 .demo-still {
   display: block; width: 100%; height: auto; aspect-ratio: 1280 / 880;
-  border-radius: var(--r-panel); background: #f6eddc; box-shadow: var(--shadow);
+  /* 포스터가 들어오기 전에 비는 칸. 영상 첫 장면인 내 바탕화면의 색이다 */
+  border-radius: var(--r-panel); background: var(--accent); box-shadow: var(--shadow);
 }
 .demo-still { display: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -217,9 +219,12 @@ body > footer,
 .stickers { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 18px; margin-block: 36px; }
 .stickers li {
   position: relative; font-family: var(--display); font-size: clamp(1.1rem, 2vw, 1.4rem);
-  padding: 0.45em 1.1em; border-radius: var(--r-pill);
-  background: var(--surface); color: var(--ink-soft); box-shadow: inset 0 0 0 2px var(--line);
+  padding: 0.55em 1.15em; border-radius: 22px 22px 22px 6px;
+  background: var(--surface); color: var(--ink-soft);
+  box-shadow: inset 0 0 0 2px var(--line), 0 10px 18px -14px #6e482466;
 }
+/* 알약이 아니라 메신저 말풍선이라야 "말 걸기" 이야기로 읽힌다. 짝수는 받은 쪽처럼 모서리를 뒤집는다 */
+.stickers li:nth-child(even) { border-radius: 22px 22px 6px 22px; background: var(--accent-soft); box-shadow: 0 10px 18px -14px #6e482466; }
 .stickers li:nth-child(1) { transform: rotate(-4deg); }
 .stickers li:nth-child(2) { transform: rotate(3deg) translateY(6px); }
 .stickers li:nth-child(3) { transform: rotate(-2deg); }
@@ -404,17 +409,32 @@ body > footer,
 /* ── 궁금한 것 ────────────────────────────────────────── */
 
 .faq { padding-block: clamp(40px, 6vw, 80px); }
-.qa-list { margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px 18px; align-items: start; }
-.qa { border-radius: var(--r-panel); background: var(--surface); }
+/* 카드 여섯 장 대신 한 판 위에 줄로 늘어놓는다. 질문만 훑어 내려가는 자리라 칸마다 테두리가
+   생기면 눈이 칸을 세느라 글을 놓친다 */
+.qa-list {
+  margin-top: 32px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; align-items: start;
+  padding: 8px 32px; border-radius: var(--r-panel); background: var(--surface);
+}
+.qa { border-bottom: 1px solid var(--line); }
 .qa summary {
   list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 20px 24px; font-weight: 700; border-radius: var(--r-panel);
+  padding: 24px 0; font-weight: 700; transition: color 200ms ease-out;
 }
+.qa summary:hover { color: var(--accent-text); }
 .qa summary::-webkit-details-marker { display: none; }
-/* 더하기 표시. 펴면 돌아서 곱하기가 된다 */
-.qa summary::after { content: '+'; flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: var(--r-pill); background: var(--honey); font-family: var(--display); font-size: 1.3rem; line-height: 1; transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1); }
+/* 더하기 표시. 글자가 아니라 막대 둘로 그려 글꼴에 따라 굵기가 흔들리지 않게 한다. 펴면 돌아서 곱하기가 된다 */
+.qa summary::after {
+  content: ''; flex: none; width: 22px; height: 22px;
+  background:
+    linear-gradient(currentColor, currentColor) center / 12px 2px no-repeat,
+    linear-gradient(currentColor, currentColor) center / 2px 12px no-repeat;
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
 .qa[open] summary::after { transform: rotate(45deg); }
-.qa p { padding: 0 24px 22px; color: var(--ink-soft); font-size: 0.95rem; }
+.qa p { padding: 0 32px 22px 0; color: var(--ink-soft); font-size: 0.95rem; }
+@media (max-width: 720px) {
+  .qa-list { grid-template-columns: 1fr; padding: 4px 20px; }
+}
 
 /* ── 마지막 받기 칸 ───────────────────────────────────── */
 

@@ -1,5 +1,6 @@
 import type { Copy } from '../lib/copy'
 import { BRAND } from '../lib/site'
+import { PeekMark } from './PeekMark'
 
 /**
  * 윗줄 — 랜딩과 `/download` 가 함께 쓴다.
@@ -8,7 +9,8 @@ import { BRAND } from '../lib/site'
  * 베이지 랜딩으로 옮기면서 창틀을 걷었고, 남은 일은 셋이다 — 처음으로 돌아가기,
  * 페이지 안의 섹션으로 건너뛰기(랜딩에서만), 언어 바꾸기.
  *
- * 로고 그림은 본문의 다섯 친구 줄과 **같은 파일**이다. 새로 받는 것이 없다.
+ * 로고는 앱 아이콘과 같은 "빼꼼" 마크다(`PeekMark`). 인라인 SVG 라 새로 받는 것이 없고,
+ * 랜딩 토큰으로 칠해 다크 모드에서 저절로 바뀐다.
  */
 export function SiteHeader({
   copy,
@@ -28,7 +30,7 @@ export function SiteHeader({
   return (
     <header className="site-header">
       <a className="logo" href={homeHref} aria-label={sections ? undefined : copy.download.backHome}>
-        <img src="/assets/friend-cat.webp" alt="" width={434} height={520} />
+        <PeekMark />
         <span>{BRAND}</span>
       </a>
       <nav>

@@ -63,7 +63,10 @@ export function buildMetadata(copy: Copy): Metadata {
     },
 
     icons: {
+      // SVG 가 먼저다 — 안의 미디어 쿼리가 다크 모드에서 검정 판으로 바꾼다. 그것을 못 읽는
+      // 브라우저(사파리 등)는 아래의 노란 PNG · ICO 로 떨어진다
       icon: [
+        { url: '/assets/icon.svg', type: 'image/svg+xml' },
         { url: '/favicon.ico', sizes: 'any' },
         { url: '/assets/icon-32.png', type: 'image/png', sizes: '32x32' },
       ],
