@@ -146,8 +146,13 @@ html, body { width: 640px; height: 440px; overflow: hidden; }
 /* 신호 궤적. 두 바탕화면 전체(640 + 틈 24 + 640)에 걸쳐 그린다 */
 .flight { position: absolute; left: 0; top: 0; width: 1304px; height: 440px; overflow: visible; pointer-events: none; }
 .flight .trail { fill: none; stroke: url(#trail-fade); stroke-width: 4.5; stroke-linecap: round; }
-.flight .dot { fill: var(--signal); stroke: #fff; stroke-width: 3; }
-.flight .glow { fill: rgba(240, 138, 28, 0.3); }
+/*
+ * 신호 머리 — 작은 꿀색 점 둘레로 옅은 고리 둘이 번갈아 퍼졌다 사라진다("숨 쉬는 고리").
+ * 예전의 흰 테두리 + 빛 번짐은 노란 바탕에서 하얗게 떠 보였다. 고리는 "부르고 있다" 는
+ * 느낌을 주면서 바탕을 가리지 않는다.
+ */
+.flight .dot { fill: var(--signal); }
+.flight .pulse { fill: none; stroke: var(--signal); stroke-width: 1.8; }
 
 .cursor {
   position: absolute; left: 0; top: 0; width: 30px; height: 30px; transform-origin: 5px 2.5px;

@@ -65,8 +65,12 @@ const VIEW = { width: 640, height: 440 }
  */
 const ZOOM_SCALE = 2.2
 
-/** 신호 궤적이 솟는 높이와 점 크기(장면 좌표 px). 카메라가 2배 넘게 키워 보이므로 작게 그린다 */
-const FLIGHT = { arc: 110, dot: 5, glow: 10 }
+/**
+ * 신호 궤적이 솟는 높이와 머리 크기(장면 좌표 px). 카메라가 2배 넘게 키워 보이므로 작게 그린다.
+ * 머리 둘레의 고리는 `pulse` 초마다 `ring` 에서 `ring + spread` 까지 퍼지며 옅어지고, 두 개가
+ * 반 박자씩 엇갈려 끊김 없이 숨 쉬는 것처럼 보인다.
+ */
+const FLIGHT = { arc: 110, dot: 4.5, ring: 5, spread: 9, pulse: 0.4 }
 
 /** 신호가 몸 어디에서 떠나고 닿는지 (캐릭터 키 2.0 기준 높이) */
 const BELLY = 0.85
@@ -314,7 +318,7 @@ const world = $<HTMLElement>(document, '#world')
 const cursor = $<SVGElement>(document, '.cursor')
 const trail = $<SVGPathElement>(document, '.flight .trail')
 const dot = $<SVGCircleElement>(document, '.flight .dot')
-const glow = $<SVGCircleElement>(document, '.flight .glow')
+const pulses = [...document.querySelectorAll<SVGCircleElement>('.flight .pulse')]
 const trailFade = $<SVGLinearGradientElement>(document, '#trail-fade')
 
 function drawCamera(camera: CameraKey) {
@@ -386,8 +390,7 @@ function drawFlight(time: number) {
   const active = TRIPS.find(({ leg }) => time >= leg.launch && time < leg.land + 0.08)
   if (!active) {
     trail.setAttribute('d', '')
-    dot.setAttribute('r', '0')
-    glow.setAttribute('r', '0')
+    for (const circle of [dot, ...pulses]) circle.setAttribute('r', '0')
     return
   }
   const { leg, from, to, control } = active
@@ -410,13 +413,17 @@ function drawFlight(time: number) {
 
   // 떠날 때 톡 생겨나고 닿으면 쏙 들어간다
   const size = easeOutBack(progress(time, leg.launch, leg.launch + 0.16)) * (1 - progress(time, leg.land, leg.land + 0.08))
-  for (const circle of [dot, glow]) {
+  for (const circle of [dot, ...pulses]) {
     circle.setAttribute('cx', String(head.x))
     circle.setAttribute('cy', String(head.y))
   }
   dot.setAttribute('r', String(FLIGHT.dot * size))
-  // 날아가는 동안 빛이 숨 쉬듯 일렁인다
-  glow.setAttribute('r', String(FLIGHT.glow * (1 + 0.2 * Math.sin(time * 28)) * size))
+  // 떠난 때부터 재서, 고리 둘이 반 박자씩 엇갈려 퍼졌다 사라진다
+  pulses.forEach((circle, index) => {
+    const k = ((time - leg.launch + (index * FLIGHT.pulse) / 2) % FLIGHT.pulse) / FLIGHT.pulse
+    circle.setAttribute('r', String((FLIGHT.ring + FLIGHT.spread * k) * size))
+    circle.style.opacity = String(0.6 * (1 - k))
+  })
 }
 
 /** 신호가 닿은 자리의 반짝임 */
