@@ -60,10 +60,13 @@ export interface Copy {
   nav: { signals: string; friends: string; start: string; download: string }
 
   hero: {
-    /** 제목은 두 줄이다 — 앞줄과, 강조가 끝에 붙는 뒷줄 */
+    /**
+     * 제목은 두 줄이다 — 앞줄과 뒷줄. 뒷줄에서 꿀색으로 칠할 낱말은 `<em>` 으로 감싼다.
+     * 한때 강조를 끝에 하나만 붙일 수 있었는데, "톡 하면 톡" 처럼 주고받는 두 낱말을 함께
+     * 칠하려고 뒷줄을 통째로 받게 했다.
+     */
     lead: string
-    tail: string
-    emphasis: string
+    tail: ReactNode
     sub: string
     /** 히어로의 받기 단추. `DownloadButtons` 가 OS 에 맞춰 바꿔 단다 */
     download: string

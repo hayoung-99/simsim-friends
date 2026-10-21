@@ -14,8 +14,11 @@ export const ko: Copy = {
 
   hero: {
     lead: '데스크탑 화면에서,',
-    tail: '톡 하면 ',
-    emphasis: '톡',
+    tail: (
+      <>
+        <em>톡</em> 하면 <em>톡</em>
+      </>
+    ),
     sub: '서로의 화면에서 캐릭터를 눌러보세요. 말 한마디 할 필요 없이 오로지 몸짓으로 안부를 전해요.',
     download: '받기',
     howTo: '어떻게 시작해요?',

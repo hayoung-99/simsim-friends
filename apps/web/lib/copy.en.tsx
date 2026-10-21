@@ -15,8 +15,11 @@ export const en: Copy = {
 
   hero: {
     lead: 'On your desktops,',
-    tail: 'a tap for ',
-    emphasis: 'a tap',
+    tail: (
+      <>
+        <em>a tap</em> for <em>a tap</em>
+      </>
+    ),
     sub: "Tap the characters on each other's screens. No words needed — just a little move to say hi.",
     download: 'Download',
     howTo: 'How it works',
