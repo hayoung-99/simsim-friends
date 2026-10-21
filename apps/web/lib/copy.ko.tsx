@@ -13,10 +13,10 @@ export const ko: Copy = {
   nav: { signals: '신호', friends: '친구들', start: '시작하기', download: '다운로드' },
 
   hero: {
-    lead: '톡 누르면,',
-    tail: '친구 화면에서 ',
-    emphasis: '춤춰요',
-    sub: '바탕화면에 사는 작은 동물 친구로, 답장할 필요 없는 안부를 보내요.',
+    lead: '데스크탑 화면에서,',
+    tail: '톡 하면 ',
+    emphasis: '톡',
+    sub: '서로의 화면에서 캐릭터를 눌러보세요. 말 한마디 할 필요 없이 오로지 몸짓으로 안부를 전해요.',
     download: '받기',
     howTo: '어떻게 시작해요?',
     warns: '처음 열 때 경고가 한 번 떠요.',
