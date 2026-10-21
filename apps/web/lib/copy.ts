@@ -67,7 +67,8 @@ export interface Copy {
      */
     lead: string
     tail: ReactNode
-    sub: string
+    /** 제목 아래 설명. 문장마다 줄을 바꾼다 (`<br />`) */
+    sub: ReactNode
     /** 히어로의 받기 단추. `DownloadButtons` 가 OS 에 맞춰 바꿔 단다 */
     download: string
     /** 받기 옆 두 번째 단추 — 시작하는 법으로 내려간다 */
