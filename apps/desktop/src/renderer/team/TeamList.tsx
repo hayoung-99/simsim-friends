@@ -15,7 +15,7 @@ import { getCharacter } from '@simsim-friends/shared/characters'
 import { createTranslator } from '@simsim-friends/shared/i18n'
 import type { Translate } from '@simsim-friends/shared/i18n'
 import type { AppState, Membership } from '@simsim-friends/shared/state'
-import { characterThumbnails } from './thumbnails'
+import { useCharacterThumbnails } from './thumbnails'
 import { useAppState, useRunner } from './hooks'
 import * as ui from '../ui'
 import { GearIcon, KeyIcon, PawIcon, PeopleIcon } from '../icons'
@@ -169,6 +169,7 @@ function NicknameField({
 
 /** 팀 한 줄. 누르면 그 팀의 상세 창이 열린다. */
 function TeamRow({ entry, state, t }: { entry: Membership; state: AppState; t: Translate }) {
+  const thumbnails = useCharacterThumbnails()
   const { team, member, members, onlineIds, connection } = entry
   const spec = getCharacter(member.characterKey)
   const online = new Set(onlineIds).size
@@ -185,7 +186,7 @@ function TeamRow({ entry, state, t }: { entry: Membership; state: AppState; t: T
     <button className={ui.row} onClick={() => window.teamApi.openTeam(team.id)}>
       <img
         className="w-[42px] h-[46px] object-contain flex-none"
-        src={characterThumbnails().get(spec.key)}
+        src={thumbnails.get(spec.key)}
         alt={t(`character.${spec.key}`)}
       />
       <span className={ui.rowMain}>
