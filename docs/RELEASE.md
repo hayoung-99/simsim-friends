@@ -252,7 +252,6 @@ xattr -cr "/Applications/SimSim Friends.app"
 npm test                  # Supabase 없이 도는 검사
 npm run check             # 실제 Supabase 연동 점검
 npm run app-icon          # 앱 아이콘 (빼꼼 마크로 icns·ico·Assets.car·파비콘을 만든다)
-npm run site-images       # 랜딩페이지 그림
 npm run dist -- --mac     # 내 컴퓨터에서 빌드해 보기 (키가 없으면 멈춥니다)
 ```
 
@@ -392,13 +391,8 @@ requirement for auto-updating on macOS."* 그래서 맥에서는 아예 시도�
 ### 확인하는 법
 
 자동 업데이트는 **패키징한 앱에서만** 돕니다(`app.isPackaged`). 개발 중에는 저장소의
-버전이 늘 더 높게 보여 쓸모가 없기 때문입니다. 배너 모양만 보려면:
-
-```bash
-SIMSIM_FAKE_NET=1 SIMSIM_CAPTURE=.preview/upd SIMSIM_SEED="나오리와 친구들:나영" \
-  SIMSIM_UPDATE="0.2.0:ready" npm start     # "지금 적용하기"
-  SIMSIM_UPDATE="0.2.0"       npm start     # "받으러 가기"
-```
+버전이 늘 더 높게 보여 쓸모가 없기 때문입니다. 배너 모양만 따로 띄워 보던 길(`SIMSIM_UPDATE`)은 2026-11 에 캡처 도구와 함께
+걷어 냈습니다.
 
 진짜 흐름은 Windows 에서 **버전이 다른 두 릴리스**로 확인해야 합니다. 낮은 버전을
 설치해 두고 높은 버전을 릴리스한 뒤, 앱을 켜고 몇 초 기다리면 배너가 떠야 합니다.

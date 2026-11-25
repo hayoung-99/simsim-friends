@@ -89,7 +89,6 @@ npm start             # 앱 실행 (먼저 빌드한다)
 npm run start:both    # A·B 두 명인 척 동시 실행 (Ctrl+C 한 번에 둘 다 종료)
 npm run check         # 실제 Supabase 를 거치는 e2e 점검 (.env 필요, 데이터는 지운다)
 npm run check:site    # 랜딩페이지 점검
-npm run preview       # 캐릭터 5종을 나란히 놓고 눈으로 확인
 ```
 
 CI(`.github/workflows/ci.yml`)가 미는 것마다 돌리는 것은 `npm test` ·
@@ -245,14 +244,12 @@ CSP 에 `font-src 'self'` 가 있어야 합니다 (`middleware.ts`). `default-sr
 
 **주소는 `lib/site.ts` 한 곳에서 나옵니다.** 도메인을 바꿀 일이 생기면 거기만 고치세요.
 
-**그림은 WebP 이고, 화면에 걸릴 크기의 두 배로 떠 둡니다.** 목록은
-`apps/desktop/scripts/make-site-images.js` 에 있습니다 (`npm run site-images`). 랜딩 화면의
-캐릭터(`friend-*` 다섯 · `signal-*` 몸짓 다섯)는 **캐릭터 촬영장**(`npm run preview -- --studio`)
-에서 찍어 여백을 잘라 옮긴 것이고, 팀 창 스크린샷처럼 손으로 옮긴 뒤
-`npm run site-images -- --webp-only` 로 형식을 맞춥니다 — 둘 다 앱과 같은 캐릭터 코드로
-그린 것이라 앱에 뜨는 모습과 다르지 않습니다. 스크립트가 직접 뜨는 것은 구조화 데이터용
-`characters.webp` 와 `og.png` 둘뿐입니다 (히어로 데모 영상은 위 문단). **PNG 로 남는 것은 `og.png` 와 아이콘뿐입니다** —
-링크 미리보기를 만드는 쪽에 WebP 를 못 읽는 곳이 아직 있기 때문입니다.
+**그림은 WebP 이고, 화면에 걸릴 크기의 두 배로 떠 둡니다.** 랜딩의 캐릭터 그림
+(`friend-*` · `signal-*` · `characters.webp` · `og.png`)은 **예전 코드 캐릭터로 뜬 것**입니다.
+앱 캐릭터가 2026-11 에 3D 모델(glb)로 바뀌었고, 그림을 뜨던 도구(`site-images` · 촬영장)는
+그때 걷어 냈습니다. 3D 캐릭터로 다시 그리는 길은 아직 정하지 않았습니다 (기획서 "정해야
+할 것"). **PNG 로 남는 것은 `og.png` 와 아이콘뿐입니다** — 링크 미리보기를 만드는 쪽에
+WebP 를 못 읽는 곳이 아직 있기 때문입니다.
 
 **정적 export 를 쓰지 않습니다.** 어드민에는 서버 경계가 필요하고, `middleware.ts` 가
 붙이는 보안 헤더도 정적 export 로는 나가지 않기 때문입니다. 다만 **페이지 자체는 빌드
@@ -620,7 +617,7 @@ preload 의 `call()` 이 봉투를 풀어 다시 던집니다 — 새 창을 만
 
 ### 5. Three.js 자원은 만들면 반드시 되돌린다
 
-캐릭터를 바꾸면 `disposeCritter()`, 음표는 수명이 끝나면 `material.dispose()`,
+캐릭터를 바꾸면 `disposeMascot()`(텍스처까지), 음표는 수명이 끝나면 `material.dispose()`,
 썸네일 렌더러는 `dispose()` + `forceContextLoss()`. 런타임에 geometry·material 을
 새로 만드는 코드를 넣는다면 **어디서 해제하는지까지 같이 쓰세요.**
 
@@ -783,15 +780,13 @@ DB 는 `security definer` RPC 로만 접근합니다. 테이블은 RLS 로 잠�
 
 ## 눈으로 확인하기
 
-화면을 고쳤으면 스크린샷을 찍어 직접 보세요. `apps/desktop/src/main/dev-capture.ts` 가
-환경변수로 상황을 만들어 주고 PNG 를 남긴 뒤 앱을 끕니다.
+화면을 고쳤으면 `npm run start:both` 로 두 명인 척 띄워 직접 눌러 보세요. 신호 ·
+재우기 · 캐릭터 바꾸기를 실제로 주고받아 볼 수 있습니다. 화면만 둘러볼 때는
+`SIMSIM_PROFILE=look SIMSIM_FAKE_NET=1 npm start` 로 가짜 서버를 씁니다.
 
-```bash
-SIMSIM_PROFILE=shot SIMSIM_FAKE_NET=1 SIMSIM_CAPTURE=.preview/x SIMSIM_LANG=ko \
-  SIMSIM_SEED="디자인팀:나영" SIMSIM_SETTINGS=1 npm start
-```
-
-쓸 수 있는 환경변수는 그 파일 맨 위 주석에 전부 적혀 있습니다.
+**환경변수로 상황을 만들어 스크린샷을 남기던 캡처 도구(`dev-capture.ts`)는 2026-11 에
+걷어 냈습니다.** 옛 설계 문서의 `SIMSIM_CAPTURE` · `SIMSIM_SEED` · `SIMSIM_POKE` 등은
+지금 동작하지 않습니다.
 
 성능이 걱정되는 변경을 했다면 실제로 재세요.
 
