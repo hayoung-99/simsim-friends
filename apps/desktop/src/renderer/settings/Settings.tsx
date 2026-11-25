@@ -199,8 +199,6 @@ export function Settings() {
                 <button
                   key={entry.key}
                   className={ui.row}
-                  // 개발용 스크린샷(dev-capture.js)이 이 표식으로 항목을 눌러 상세를 찍는다
-                  data-item={entry.key}
                   onClick={() => setScreen(entry.key)}
                 >
                   <span className={ui.rowMain}>
