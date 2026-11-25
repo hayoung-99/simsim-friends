@@ -184,7 +184,8 @@ body > footer,
   gap: clamp(28px, 4vw, 56px); align-items: center;
   padding-block: clamp(24px, 5vw, 64px) clamp(56px, 8vw, 104px);
 }
-.hero .lead { margin-top: 20px; font-size: clamp(1.05rem, 1.5vw, 1.2rem); color: var(--ink-soft); max-width: 30ch; }
+/* 설명은 문장마다 줄을 바꾼다(`copy.hero.sub`). 한 문장이 한 줄에 들어가도록 폭을 둔다 */
+.hero .lead { margin-top: 20px; font-size: clamp(1.05rem, 1.5vw, 1.2rem); color: var(--ink-soft); max-width: 36ch; }
 @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
 
 /*

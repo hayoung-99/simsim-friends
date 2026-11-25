@@ -14,10 +14,19 @@ export const en: Copy = {
   nav: { signals: 'Signals', friends: 'Friends', start: 'Get started', download: 'Download' },
 
   hero: {
-    lead: 'Tap yours,',
-    tail: 'and theirs ',
-    emphasis: 'dances',
-    sub: 'A tiny animal lives on your desktop. Poke your teammates without a single message to answer.',
+    lead: 'On your desktops,',
+    tail: (
+      <>
+        <em>a tap</em> for <em>a tap</em>
+      </>
+    ),
+    sub: (
+      <>
+        Tap the characters on each other&apos;s screens.
+        <br />
+        No words needed — just a little move to say hi.
+      </>
+    ),
     download: 'Download',
     howTo: 'How it works',
     warns: 'Your computer will warn you once, the first time.',

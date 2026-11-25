@@ -91,7 +91,6 @@ export function Landing({ copy }: { copy: Copy }) {
               {copy.hero.lead}
               <br />
               {copy.hero.tail}
-              <em>{copy.hero.emphasis}</em>
             </h1>
             <p className="lead">{copy.hero.sub}</p>
             <div className="actions">
