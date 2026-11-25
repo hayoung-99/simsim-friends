@@ -12,7 +12,7 @@ import type { SignalKind } from '@simsim-friends/shared/signals'
 import { createTranslator } from '@simsim-friends/shared/i18n'
 import type { Translate } from '@simsim-friends/shared/i18n'
 import type { Membership, Team } from '@simsim-friends/shared/state'
-import { characterThumbnails } from './thumbnails'
+import { useCharacterThumbnails } from './thumbnails'
 import { inviteStatus } from './invite'
 import { useAppState, useMinuteTick, useRunner, useToast } from './hooks'
 import * as ui from '../ui'
@@ -146,6 +146,7 @@ function MemberList({
   toast: (message: string) => void
   onRename: (nickname: string) => void
 }) {
+  const thumbnails = useCharacterThumbnails()
   const { team, member, members, onlineIds } = entry
   const online = new Set(onlineIds)
   // 방장은 칸이 아니라 순서다 — 그 방에 아직 남아 있는 것 중 가장 먼저 들어온
@@ -169,7 +170,7 @@ function MemberList({
           >
             <img
               className="w-[40px] h-[44px] object-contain flex-none"
-              src={characterThumbnails().get(spec.key)}
+              src={thumbnails.get(spec.key)}
               alt={t(`character.${spec.key}`)}
             />
             <div className="flex-1 min-w-0">
@@ -398,6 +399,7 @@ function CharacterPicker({
   t: Translate
   run: (action: () => Promise<unknown>) => Promise<void>
 }) {
+  const thumbnails = useCharacterThumbnails()
   return (
     <div className="grid grid-cols-5 gap-[7px]">
       {CHARACTERS.map((spec) => (
@@ -411,7 +413,7 @@ function CharacterPicker({
         >
           <img
             className="w-full max-w-[52px] h-[58px] object-contain"
-            src={characterThumbnails().get(spec.key)}
+            src={thumbnails.get(spec.key)}
             alt={t(`character.${spec.key}`)}
           />
           <span className="text-[10px] font-bold text-center leading-[1.25]">
