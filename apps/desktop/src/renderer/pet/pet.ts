@@ -36,16 +36,16 @@ import { createTranslator } from '@simsim-friends/shared/i18n'
 import { powerProfile, SLEEP_FPS } from '@simsim-friends/shared/power'
 import type { PowerProfile } from '@simsim-friends/shared/power'
 import type { AppState, Membership, TapPayload } from '@simsim-friends/shared/state'
-import { createCritter, disposeCritter, scaleToStandardHeight } from './critter'
-import type { Critter } from './critter'
 import { createStage } from './scene'
-import { createAnimator } from './animations'
+import { loadMascot, disposeMascot, scaleMascot, createMascotAnimator } from './mascot'
+import type { Mascot } from './mascot'
 import { createBubble } from './bubble'
 import { createNameplate } from './nameplate'
 import { createNotes } from './notes'
 import { createPuff } from './puff'
 import { createGreet } from './greet'
 import { createHeartBubble } from './heart-bubble'
+import { createSleepBubble } from './sleep-bubble'
 import { createTakeoff } from './takeoff'
 import { toSignal } from '@simsim-friends/shared/signals'
 import type { SignalKind } from '@simsim-friends/shared/signals'
@@ -94,8 +94,10 @@ export function startPet({ canvas, bubble: bubbleElement, nameplate: nameplateEl
   const stage = createStage({ canvas })
 
   let spec = getCharacter('cat')
-  let critter: Critter | null = null
-  let animator: ReturnType<typeof createAnimator> | null = null
+  let critter: Mascot | null = null
+  let animator: ReturnType<typeof createMascotAnimator> | null = null
+  /** glb 는 비동기로 뜨므로, 늦게 도착한 옛 캐릭터가 새 것을 덮지 않게 순번을 단다 */
+  let loading = 0
   let hotZone: HotZone = { left: 0, top: 0, right: 0, bottom: 0, centerX: 0 }
   let interactive = false
   let pixelsPerUnit = 0
@@ -103,6 +105,8 @@ export function startPet({ canvas, bubble: bubbleElement, nameplate: nameplateEl
   let puff: ReturnType<typeof createPuff> | null = null
   let greet: ReturnType<typeof createGreet> | null = null
   let heartBubble: ReturnType<typeof createHeartBubble> | null = null
+  /** 재워 둔 동안 머리 곁에 떠 있는 Z 말풍선 */
+  let sleepBubble: ReturnType<typeof createSleepBubble> | null = null
   /**
    * 지금 화면에서 재생 중인 신호. 다른 신호가 오면 갈아타야 해서 들고 있는다.
    * 아무것도 안 하고 있으면 null 이다.
@@ -133,17 +137,24 @@ export function startPet({ canvas, bubble: bubbleElement, nameplate: nameplateEl
 
   function setCharacter(key: string) {
     const next = getCharacter(key)
-    if (critter && next.key === spec.key) return
+    if (next.key === spec.key && (critter || loading)) return
     spec = next
+    const ticket = ++loading
+    void loadMascot(spec.key).then((mascot) => {
+      if (ticket !== loading) return disposeMascot(mascot)
+      mountCharacter(mascot)
+    })
+  }
 
-    if (critter) disposeCritter(critter)
-    critter = createCritter(spec)
+  function mountCharacter(mascot: Mascot) {
+    animator?.dispose()
+    if (critter) disposeMascot(critter)
+    critter = mascot
     // 종마다 키가 달라도 화면에서는 같은 크기로 보이게 맞춘다.
-    // (토끼는 귀 때문에 오리보다 훨씬 커서, 안 맞추면 말풍선 자리가 없어진다)
-    stage.stand.scale.setScalar(scaleToStandardHeight(critter))
+    stage.stand.scale.setScalar(scaleMascot(critter))
     stage.stand.add(critter.root)
-    animator = createAnimator(critter)
-    const unit = critter.height * scaleToStandardHeight(critter)
+    animator = createMascotAnimator(critter)
+    const unit = critter.height * scaleMascot(critter)
     notes?.dispose()
     notes = createNotes(stage.stand, unit)
     puff?.dispose()
@@ -152,10 +163,15 @@ export function startPet({ canvas, bubble: bubbleElement, nameplate: nameplateEl
     greet = createGreet(stage.stand, unit)
     heartBubble?.dispose()
     heartBubble = createHeartBubble(stage.stand, unit)
+    sleepBubble?.dispose()
+    sleepBubble = createSleepBubble(stage.stand, unit)
     playing = null
     // 애니메이터가 새로 만들어졌으므로 자던 방이면 다시 재워 둔다. 안 하면 재워 놓은
     // 방인데 캐릭터를 바꾼 순간 벌떡 일어난다.
-    if (asleep) animator.doze({ instant: true })
+    if (asleep) {
+      animator.doze({ instant: true })
+      sleepBubble.show({ instant: true })
+    }
     updateHotZone()
   }
 
@@ -367,8 +383,10 @@ export function startPet({ canvas, bubble: bubbleElement, nameplate: nameplateEl
       animator.stop()
       playing = null
       animator.doze({ instant: first })
+      sleepBubble?.show({ instant: first })
     } else if (!first) {
       animator.wake()
+      sleepBubble?.hide()
     }
   }
 
@@ -416,6 +434,7 @@ export function startPet({ canvas, bubble: bubbleElement, nameplate: nameplateEl
         animator?.isWaking ||
         greet?.count ||
         heartBubble?.showing ||
+        sleepBubble?.transitioning ||
         notes?.count ||
         puff?.count ||
         interactive ||
@@ -452,6 +471,7 @@ export function startPet({ canvas, bubble: bubbleElement, nameplate: nameplateEl
       puff?.update(step)
       greet?.update(step)
       heartBubble?.update(step)
+      sleepBubble?.update(step)
     }
     stage.render()
   }
@@ -513,6 +533,7 @@ export function startPet({ canvas, bubble: bubbleElement, nameplate: nameplateEl
     document.removeEventListener('visibilitychange', onVisibilityChange)
     notes?.dispose()
     puff?.dispose()
-    if (critter) disposeCritter(critter)
+    sleepBubble?.dispose()
+    if (critter) disposeMascot(critter)
   }
 }

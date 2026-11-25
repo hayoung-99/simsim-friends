@@ -29,7 +29,6 @@
     "dev": "npm run dev -w simsim-friends",
     "dev:web": "npm run dev -w @simsim-friends/web",
     "dist": "npm run dist -w simsim-friends",
-    "preview": "npm run preview -w simsim-friends",
     "site-images": "npm run site-images -w simsim-friends --",
     "demo-video": "npm run demo-video -w simsim-friends --",
     "start": "npm run start -w simsim-friends",
