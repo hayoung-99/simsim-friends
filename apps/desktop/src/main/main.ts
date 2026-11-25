@@ -384,9 +384,8 @@ const app = {
   /**
    * 끄기 전에 해 둘 일.
    *
-   * **앱을 끄는 문이 둘이라 한곳에 모아 둔다.** 사람이 종료를 누르면 `before-quit` 이
-   * 오지만, 개발용 캡처(`dev-capture.js`)는 `app.exit()` 으로 곧장 나간다. 그 길에는
-   * `before-quit` 이 오지 않아서, 여기 있는 것들을 저쪽에서 직접 불러 줘야 한다.
+   * 사람이 종료를 누르면 `before-quit` 이 이것을 부른다. `app.exit()` 처럼 `before-quit`
+   * 을 건너뛰는 길을 새로 만들면 그쪽에서도 이것을 직접 불러 줘야 한다.
    *
    * 특히 `quitting` 을 세우는 일이 중요하다. 이 표시가 없으면 캐릭터 창의 `close`
    * 가드가 계속 창을 붙잡고, Electron 은 "닫지 못한 창" 으로 보고 종료를 통째로
@@ -422,7 +421,7 @@ const app = {
 /**
  * 창·세션·트레이를 잇는 껍데기의 모양.
  *
- * `ipc.ts` 와 `dev-capture.ts` 가 이 타입만 보고 일한다. 타입만 가져가므로(`import type`)
+ * `ipc.ts` 가 이 타입만 보고 일한다. 타입만 가져가므로(`import type`)
  * 실행 시점에 서로를 부르는 고리는 생기지 않는다.
  */
 export type AppShell = typeof app
@@ -502,8 +501,6 @@ function start() {
     // 아직 팀이 없거나 설정이 안 끝났으면 무엇을 해야 하는지 바로 보여준다
     if (state.memberships.length === 0 || !state.configured) app.openTeamWindow()
 
-    const { captureIfRequested } = await import('./dev-capture')
-    await captureIfRequested(app, electronApp)
   })
 
   electronApp.on('window-all-closed', () => {
