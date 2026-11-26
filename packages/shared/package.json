@@ -2,10 +2,12 @@
   "name": "@simsim-friends/shared",
   "version": "0.0.0",
   "private": true,
-  "description": "데스크톱 앱·랜딩·어드민이 함께 보는 것 (캐릭터 스펙 · 네 언어 사전 · 화면 상태 타입)",
+  "description": "데스크톱 앱·랜딩·어드민이 함께 보는 것 (캐릭터 스펙 · 디자인 토큰 · 네 언어 사전 · 화면 상태 타입)",
   "type": "module",
   "exports": {
     "./characters": "./src/characters.ts",
+    "./design/tokens": "./src/design/tokens.ts",
+    "./design/tokens.css": "./src/design/tokens.css",
     "./i18n": "./src/i18n/index.ts",
     "./i18n/*.json": "./src/i18n/*.json",
     "./ipc": "./src/ipc.ts",

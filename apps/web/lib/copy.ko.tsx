@@ -10,7 +10,7 @@ export const ko: Copy = {
   other: { href: '/en/', lang: 'en', short: 'EN', long: 'English' },
 
   skipToContent: '본문으로 건너뛰기',
-  nav: { signals: '신호', friends: '친구들', start: '시작하기', download: '다운로드' },
+  nav: { home: '미니룸', signals: '신호', friends: '친구들', start: '시작하기', download: '다운로드', menuLabel: '미니홈피 메뉴' },
 
   hero: {
     lead: '데스크탑 화면에서,',
@@ -30,10 +30,22 @@ export const ko: Copy = {
     warns: '처음 열 때 경고가 한 번 떠요.',
     warnsLink: '넘기는 법 보기',
     note: '친구도 함께 받아야 시작돼요. 무료이고 가입도 없어요.',
+    facts: ['한 방에 다섯 명까지', '몸짓은 다섯 가지 중 하나', '방마다 다른 동물 친구', '조용히 하고 싶으면 방째로 재우기'],
+    playerLabel: '지금 받을 수 있어요',
   },
 
   demo: {
-    label: '내 바탕화면의 흰 고양이를 톡 누르면 친구 바탕화면의 갈색 강아지가 춤추고, 친구가 강아지를 누르면 내 고양이가 하트를 띄우며 수줍어해요',
+    heading: '미니룸 — 내 방 · 친구 방',
+    label: '내 방의 흰 고양이를 톡 누르면 노란 점이 건너가, 친구 방의 갈색 강아지가 춤을 춰요',
+    myRoom: '내 방',
+    friendRoom: '친구 방',
+    hint: '내 고양이를 눌러 보세요',
+    tapLabel: '내 고양이를 톡 누르기',
+    chip: '방금 내가 콕!',
+    lineup: '방마다 한 마리',
+    today: 'TODAY',
+    total: 'TOTAL',
+    counterNote: '이 브라우저에서 누른 횟수',
   },
 
   quiet: {
@@ -48,11 +60,11 @@ export const ko: Copy = {
     sub: '누르는 건 하나뿐이라, 고른 몸짓이 곧 그 사람의 인사법이 돼요.',
     pickerLabel: '몸짓 고르기',
     items: [
-      { id: 'poke', name: '콕', meaning: '나 여기 있어', motion: '좌우로 흔들며 춤춰요', alt: '음표 사이에서 춤추는 강아지' },
+      { id: 'poke', name: '콕', meaning: '나 여기 있어', motion: '두 팔을 V자로 살랑이며 춤춰요', alt: '두 팔을 V자로 흔들며 눈웃음 짓고 춤추는 강아지' },
       { id: 'hop', name: '폴짝', meaning: '반가워, 신나', motion: '제자리에서 통통 뛰어요', alt: '제자리에서 뛰어오르는 고양이' },
-      { id: 'wave', name: '손 흔들기', meaning: '안녕', motion: '한쪽 팔을 들어 흔들어요', alt: '한쪽 팔을 들어 흔드는 판다' },
-      { id: 'heart', name: '하트', meaning: '고마워, 좋아해', motion: '하트를 띄우고 수줍어해요', alt: '하트 말풍선 아래에서 수줍어하는 오리' },
-      { id: 'sulk', name: '앙탈', meaning: '날 좀 봐줘', motion: '털썩 주저앉아 보채요', alt: '털썩 주저앉아 보채는 토끼' },
+      { id: 'wave', name: '손 흔들기', meaning: '안녕', motion: '팔꿈치를 꺾어 손을 흔들어요', alt: '팔꿈치를 꺾어 손을 흔드는 판다' },
+      { id: 'heart', name: '하트', meaning: '고마워, 좋아해', motion: '두 손을 볼에 대고 수줍어해요', alt: '두 손을 볼에 대고 볼이 붉어진 오리' },
+      { id: 'sulk', name: '앙탈', meaning: '날 좀 봐줘', motion: '털썩 주저앉아 팔을 휘저어요', alt: '털썩 주저앉아 눈을 꼭 감고 팔을 휘젓는 토끼' },
     ],
   },
 
@@ -80,9 +92,10 @@ export const ko: Copy = {
   },
 
   room: {
+    heading: '이 방의 규칙',
     members: { big: '5명', title: '딱 친한 사이만큼', body: '한 방에 다섯 명까지. 서른 명이 서로 찌르는 화면은 끄고 싶어지니까요.' },
     rooms: { big: '3개', title: '방은 셋까지', body: '친구방, 가족방, 우리 둘 방.' },
-    sleep: { title: '조용히 하고 싶으면 재우기', body: '재운 방의 친구는 웅크려 자요. 내 신호는 그대로 나가요.' },
+    sleep: { title: '조용히 하고 싶으면 재우기', body: '재운 방의 친구는 옆으로 엎드려 자요. 내 신호는 그대로 나가요.' },
     clear: { title: '바탕화면을 가리지 않아요', body: '친구 옆 빈 자리는 클릭이 그대로 통과해요. 가만히 있을 땐 배터리도 아껴요.' },
   },
 
@@ -93,7 +106,6 @@ export const ko: Copy = {
   },
 
   download: {
-    label: '받기',
     heading: '내 컴퓨터에 맞는 파일',
     sub: '버전마다 다시 받을 수 있어요. 평소에는 최신 버전이면 충분해요.',
     metaTitle: 'SimSim Friends · 받기',
@@ -226,6 +238,6 @@ export const ko: Copy = {
       '바탕화면에 3D 동물 친구를 띄우고, 내 캐릭터를 누르면 멤버들 화면에서 캐릭터가 춤을 춰요. macOS·Windows 무료. 가입 없이 닉네임과 8자리 초대코드로 시작해요.',
     ogDescription:
       '내 캐릭터를 누르면 멤버들 화면에서 캐릭터가 춤을 춰요. 말을 걸지 않고도 나 여기 있어를 전하는 가장 가벼운 방법.',
-    imageAlt: '크림색 배경 위에 선 고양이, 강아지, 판다, 오리, 토끼 캐릭터 다섯 마리',
+    imageAlt: '하늘색 미니룸 틀 안에 나란히 선 고양이, 강아지, 판다, 오리, 토끼 3D 캐릭터 다섯 마리',
   },
 }

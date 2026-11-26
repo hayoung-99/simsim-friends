@@ -115,7 +115,6 @@ export function DownloadPage({
   return (
     <Chrome copy={copy} homeHref={homeHref} other={other}>
       <section className="pane">
-        <p className="label">{copy.download.label}</p>
         <h1>{copy.download.heading}</h1>
         <p className="sub">{copy.download.sub}</p>
 
@@ -168,7 +167,6 @@ export function DownloadMobileGate({
   return (
     <Chrome copy={copy} homeHref={homeHref} other={other}>
       <section className="pane gate">
-        <p className="label">{copy.download.label}</p>
         <h1>{copy.download.mobileGateHeading}</h1>
         <p className="sub">{copy.download.mobileGateBody}</p>
       </section>

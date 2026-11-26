@@ -11,7 +11,7 @@ export const en: Copy = {
   other: { href: '/', lang: 'ko', short: '한국어', long: '한국어' },
 
   skipToContent: 'Skip to content',
-  nav: { signals: 'Signals', friends: 'Friends', start: 'Get started', download: 'Download' },
+  nav: { home: 'Mini room', signals: 'Signals', friends: 'Friends', start: 'Get started', download: 'Download', menuLabel: 'Mini room menu' },
 
   hero: {
     lead: 'On your desktops,',
@@ -32,10 +32,22 @@ export const en: Copy = {
     warns: 'Your computer will warn you once, the first time.',
     warnsLink: 'How to get past it',
     note: 'Your teammates need it too. Free, no sign up.',
+    facts: ['Up to five people per team', 'One of five moves', 'A different animal for each team', 'Need quiet? Put the whole team to sleep'],
+    playerLabel: 'Ready to download',
   },
 
   demo: {
-    label: "Tap the white cat on your desktop and the brown dog on your friend's desktop dances. When your friend taps the dog, your cat blushes with a little heart",
+    heading: "Mini rooms — yours and your friend's",
+    label: "Tap the white cat in your room, a yellow dot hops across, and the brown dog in your friend's room starts dancing",
+    myRoom: 'Your room',
+    friendRoom: "Friend's room",
+    hint: 'Tap your cat',
+    tapLabel: 'Give your cat a tap',
+    chip: 'You just poked!',
+    lineup: 'One animal per team',
+    today: 'TODAY',
+    total: 'TOTAL',
+    counterNote: 'taps in this browser',
   },
 
   quiet: {
@@ -50,11 +62,11 @@ export const en: Copy = {
     sub: 'You only ever tap once, so the move you pick becomes your way of saying hi.',
     pickerLabel: 'Pick a move',
     items: [
-      { id: 'poke', name: 'Nudge', meaning: "I'm here", motion: 'Sways and dances', alt: 'A dog dancing among music notes' },
+      { id: 'poke', name: 'Nudge', meaning: "I'm here", motion: 'Sways both arms in a V and dances', alt: 'A dog dancing with its arms in a V and smiling eyes' },
       { id: 'hop', name: 'Hop', meaning: 'Hey, yay!', motion: 'Bounces on the spot', alt: 'A cat jumping on the spot' },
-      { id: 'wave', name: 'Wave', meaning: 'Hello', motion: 'Lifts an arm and waves', alt: 'A panda waving one arm' },
-      { id: 'heart', name: 'Heart', meaning: 'Thanks, love you', motion: 'Pops a heart and blushes', alt: 'A duck blushing under a heart bubble' },
-      { id: 'sulk', name: 'Sulk', meaning: 'Look at me', motion: 'Flops down and flails', alt: 'A bunny flopped down and fussing' },
+      { id: 'wave', name: 'Wave', meaning: 'Hello', motion: 'Bends an elbow and waves', alt: 'A panda waving with a bent elbow' },
+      { id: 'heart', name: 'Heart', meaning: 'Thanks, love you', motion: 'Paws on cheeks, blushing', alt: 'A duck with both hands on its blushing cheeks' },
+      { id: 'sulk', name: 'Sulk', meaning: 'Look at me', motion: 'Flops down and flails its arms', alt: 'A bunny flopped down, eyes squeezed shut, arms flailing' },
     ],
   },
 
@@ -82,9 +94,10 @@ export const en: Copy = {
   },
 
   room: {
+    heading: 'House rules',
     members: { big: '5', title: 'Just your people', body: 'Up to five per team. Thirty people poking each other is a screen you would switch off.' },
     rooms: { big: '3', title: 'Up to three teams', body: 'Friends, family, just the two of you.' },
-    sleep: { title: 'Need quiet? Let it sleep', body: "A sleeping team's animal curls up. Your own signals still go out." },
+    sleep: { title: 'Need quiet? Let it sleep', body: "A sleeping team's animal lies down on its side. Your own signals still go out." },
     clear: { title: 'Never in your way', body: 'Clicks around the animal pass straight through, and it saves battery when idle.' },
   },
 
@@ -95,7 +108,6 @@ export const en: Copy = {
   },
 
   download: {
-    label: 'Download',
     heading: 'The file for your machine',
     sub: 'Every version stays here. Most people just want the latest one.',
     metaTitle: 'SimSim Friends · Download',
@@ -229,6 +241,6 @@ export const en: Copy = {
       "Put a 3D animal friend on your desktop. Tap yours and your teammates' characters dance on theirs. Free for macOS and Windows, no sign up needed.",
     ogDescription:
       'Tap your own character and your teammates’ characters dance. The lightest way to say I am here without saying anything.',
-    imageAlt: 'Five characters standing in a row: a cat, a dog, a panda, a duck and a bunny',
+    imageAlt: 'Five 3D characters standing in a sky-blue mini room frame: a cat, a dog, a panda, a duck and a bunny',
   },
 }

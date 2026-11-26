@@ -1,382 +1,964 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-26T00:03:42.758Z",
+  "generatedAt": "2026-11-26T01:26:11.496325Z",
   "title": "Design System: SimSim Friends Web",
   "extensions": {
     "colorMeta": {
-      "wall-top": {
+      "sky": {
         "role": "neutral",
-        "displayName": "차가운 페리윙클 (위)",
-        "canonical": "#a9a5bd",
+        "displayName": "점무늬 하늘",
+        "canonical": "#d6ecf8",
         "tonalRamp": [
-          "#0c0818",
-          "#262234",
-          "#423f53",
-          "#625e74",
-          "#837f96",
-          "#a5a1b9",
-          "#c9c5de",
-          "#efecff"
+          "#04141c",
+          "#1c2e37",
+          "#384b54",
+          "#566974",
+          "#768a95",
+          "#97abb7",
+          "#b9ceda",
+          "#dcf2ff"
         ]
       },
-      "wall-bottom": {
+      "sky-dot": {
         "role": "neutral",
-        "displayName": "차가운 페리윙클 (아래)",
-        "canonical": "#cbbfc0",
+        "displayName": "흰 점",
+        "canonical": "#ffffff",
         "tonalRamp": [
-          "#10090a",
-          "#2b2223",
-          "#493f40",
-          "#695e5f",
-          "#8a7f80",
-          "#ada2a3",
-          "#d2c6c7",
-          "#f7ebec"
+          "#121212",
+          "#2b2b2b",
+          "#484848",
+          "#666666",
+          "#868686",
+          "#a8a8a8",
+          "#cacaca",
+          "#eeeeee"
         ]
       },
-      "panel": {
+      "frame": {
         "role": "neutral",
-        "displayName": "종이",
-        "canonical": "#f7f5f1",
+        "displayName": "틀 하늘",
+        "canonical": "#a8d6ef",
         "tonalRamp": [
-          "#0c0b09",
-          "#262522",
-          "#43423f",
-          "#63615e",
-          "#84827e",
-          "#a7a5a1",
-          "#cbc9c5",
-          "#f0eeea"
+          "#001527",
+          "#003044",
+          "#224d62",
+          "#416c82",
+          "#618da4",
+          "#82afc7",
+          "#a4d2eb",
+          "#c7f6ff"
         ]
       },
-      "sunk": {
+      "frame-edge": {
         "role": "neutral",
-        "displayName": "가라앉은 판",
-        "canonical": "#eae6de",
+        "displayName": "짙은 하늘 외곽선",
+        "canonical": "#6aa6cc",
         "tonalRamp": [
-          "#0d0b06",
-          "#28251f",
-          "#45423b",
-          "#64615a",
-          "#85827b",
-          "#a8a59d",
-          "#cdc9c1",
-          "#f2eee6"
+          "#001331",
+          "#002f4f",
+          "#094d6f",
+          "#316d90",
+          "#528eb3",
+          "#74b0d6",
+          "#96d3fb",
+          "#b9f8ff"
+        ]
+      },
+      "frame-dash": {
+        "role": "neutral",
+        "displayName": "흰 점선",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#121212",
+          "#2b2b2b",
+          "#484848",
+          "#666666",
+          "#868686",
+          "#a8a8a8",
+          "#cacaca",
+          "#eeeeee"
+        ]
+      },
+      "page": {
+        "role": "neutral",
+        "displayName": "흰 쪽",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#121212",
+          "#2b2b2b",
+          "#484848",
+          "#666666",
+          "#868686",
+          "#a8a8a8",
+          "#cacaca",
+          "#eeeeee"
+        ]
+      },
+      "page-tint": {
+        "role": "neutral",
+        "displayName": "옅은 쪽",
+        "canonical": "#f2f8fc",
+        "tonalRamp": [
+          "#0e1215",
+          "#282c2f",
+          "#44484c",
+          "#62676a",
+          "#82878b",
+          "#a3a9ac",
+          "#c6cbcf",
+          "#e9eff3"
+        ]
+      },
+      "page-line": {
+        "role": "neutral",
+        "displayName": "쪽 테두리",
+        "canonical": "#d3e4ef",
+        "tonalRamp": [
+          "#07131b",
+          "#202d36",
+          "#3c4a53",
+          "#5a6872",
+          "#798993",
+          "#9aaab5",
+          "#bdcdd8",
+          "#e0f1fd"
+        ]
+      },
+      "dot-line": {
+        "role": "neutral",
+        "displayName": "점선",
+        "canonical": "#a9c6d8",
+        "tonalRamp": [
+          "#001421",
+          "#162e3d",
+          "#324b5b",
+          "#506a7a",
+          "#6f8b9b",
+          "#90acbe",
+          "#b2cfe2",
+          "#d6f4ff"
         ]
       },
       "ink": {
         "role": "neutral",
-        "displayName": "잉크",
-        "canonical": "#2b2733",
+        "displayName": "남색 글자",
+        "canonical": "#343849",
         "tonalRamp": [
-          "#0d0913",
-          "#27232e",
-          "#443f4c",
-          "#635f6c",
-          "#84808e",
-          "#a7a2b1",
-          "#cbc6d6",
-          "#f1ebfc"
+          "#0e101f",
+          "#272a3b",
+          "#424758",
+          "#606578",
+          "#808599",
+          "#a2a7bb",
+          "#c4cadf",
+          "#e8eeff"
         ]
       },
       "ink-soft": {
         "role": "neutral",
-        "displayName": "옅은 잉크",
-        "canonical": "#615c6e",
+        "displayName": "딸린 글자",
+        "canonical": "#5b6479",
         "tonalRamp": [
-          "#0d0816",
-          "#272231",
-          "#443f50",
-          "#635e70",
-          "#847f92",
-          "#a7a1b5",
-          "#cbc5da",
-          "#f0ebff"
+          "#0a1121",
+          "#232b3d",
+          "#3f475b",
+          "#5d667b",
+          "#7c869c",
+          "#9ea8bf",
+          "#c0cae2",
+          "#e4eeff"
         ]
       },
-      "accent": {
+      "accent-text": {
         "role": "primary",
-        "displayName": "[이름 미정 · 값도 임시]",
-        "canonical": "#9a5d18",
+        "displayName": "벽돌 글자",
+        "canonical": "#a5532f",
         "tonalRamp": [
-          "#150700",
-          "#391d00",
-          "#613600",
-          "#8c5101",
-          "#b17232",
-          "#d69556",
-          "#fdb97a",
-          "#ffead9"
+          "#350000",
+          "#570700",
+          "#792b00",
+          "#9d4b27",
+          "#c16c48",
+          "#e68e69",
+          "#ffb18b",
+          "#ffd4ae"
         ]
       },
-      "accent-dark": {
-        "role": "primary",
-        "displayName": "[이름 미정 · 어두운 모드 짝]",
-        "canonical": "#e8b06a",
+      "pastel-ink": {
+        "role": "neutral",
+        "displayName": "파스텔 위 글자 (고정)",
+        "canonical": "#343849",
         "tonalRamp": [
-          "#140800",
-          "#361f00",
-          "#5c3900",
-          "#865500",
-          "#ab762e",
-          "#d09953",
-          "#f6bd77",
-          "#ffebd4"
+          "#0e101f",
+          "#272a3b",
+          "#424758",
+          "#606578",
+          "#808599",
+          "#a2a7bb",
+          "#c4cadf",
+          "#e8eeff"
+        ]
+      },
+      "apricot": {
+        "role": "primary",
+        "displayName": "살구",
+        "canonical": "#f3a77c",
+        "tonalRamp": [
+          "#310000",
+          "#521200",
+          "#733200",
+          "#965127",
+          "#b97248",
+          "#de9369",
+          "#ffb68b",
+          "#ffdaae"
+        ]
+      },
+      "apricot-edge": {
+        "role": "primary",
+        "displayName": "구운 살구",
+        "canonical": "#d98558",
+        "tonalRamp": [
+          "#350000",
+          "#560a00",
+          "#782d00",
+          "#9b4d1e",
+          "#bf6e41",
+          "#e59062",
+          "#ffb284",
+          "#ffd6a7"
+        ]
+      },
+      "sage": {
+        "role": "secondary",
+        "displayName": "세이지",
+        "canonical": "#b3d5a5",
+        "tonalRamp": [
+          "#011800",
+          "#183309",
+          "#345127",
+          "#527045",
+          "#719164",
+          "#92b384",
+          "#b4d6a6",
+          "#d8fbc9"
+        ]
+      },
+      "rose": {
+        "role": "secondary",
+        "displayName": "장미",
+        "canonical": "#eeb0c3",
+        "tonalRamp": [
+          "#290011",
+          "#48182b",
+          "#683547",
+          "#8a5365",
+          "#ac7385",
+          "#d094a7",
+          "#f5b6c9",
+          "#ffdaed"
+        ]
+      },
+      "butter": {
+        "role": "secondary",
+        "displayName": "버터",
+        "canonical": "#f4df96",
+        "tonalRamp": [
+          "#1f0d00",
+          "#3b2800",
+          "#594600",
+          "#786518",
+          "#99853d",
+          "#bba75f",
+          "#dfca82",
+          "#ffeea5"
+        ]
+      },
+      "sky-tab": {
+        "role": "secondary",
+        "displayName": "하늘 탭",
+        "canonical": "#9fcdea",
+        "tonalRamp": [
+          "#001429",
+          "#002f46",
+          "#214d65",
+          "#416c86",
+          "#608ca8",
+          "#81aecb",
+          "#a4d2ef",
+          "#c7f6ff"
+        ]
+      },
+      "wall-a": {
+        "role": "tertiary",
+        "displayName": "분홍 벽지",
+        "canonical": "#fbe6ec",
+        "tonalRamp": [
+          "#1a0d11",
+          "#36262b",
+          "#534247",
+          "#726166",
+          "#938086",
+          "#b5a2a7",
+          "#d9c4ca",
+          "#fde8ee"
+        ]
+      },
+      "wall-a-dot": {
+        "role": "tertiary",
+        "displayName": "분홍 벽지 점",
+        "canonical": "#f4cdda",
+        "tonalRamp": [
+          "#210712",
+          "#3e212c",
+          "#5c3d48",
+          "#7d5b67",
+          "#9e7b87",
+          "#c19ca8",
+          "#e5becb",
+          "#ffe2ef"
+        ]
+      },
+      "wall-a-side": {
+        "role": "tertiary",
+        "displayName": "분홍 옆벽",
+        "canonical": "#f6d6e0",
+        "tonalRamp": [
+          "#1e0a12",
+          "#3b232c",
+          "#593f48",
+          "#795d66",
+          "#9a7d86",
+          "#bc9ea8",
+          "#e0c1cb",
+          "#ffe5ef"
+        ]
+      },
+      "floor-a": {
+        "role": "tertiary",
+        "displayName": "나무 바닥",
+        "canonical": "#ddb184",
+        "tonalRamp": [
+          "#270600",
+          "#442100",
+          "#643e10",
+          "#845d31",
+          "#a67d51",
+          "#ca9e72",
+          "#eec194",
+          "#ffe5b7"
+        ]
+      },
+      "floor-a-line": {
+        "role": "tertiary",
+        "displayName": "나무 결",
+        "canonical": "#c99a6a",
+        "tonalRamp": [
+          "#280400",
+          "#462000",
+          "#663d06",
+          "#875c2c",
+          "#a97c4c",
+          "#cc9d6d",
+          "#f1c08f",
+          "#ffe4b2"
+        ]
+      },
+      "wall-b": {
+        "role": "tertiary",
+        "displayName": "초록 벽지",
+        "canonical": "#e4f1d9",
+        "tonalRamp": [
+          "#0c1504",
+          "#252f1c",
+          "#414c38",
+          "#5f6a56",
+          "#7f8b75",
+          "#a0ac96",
+          "#c3d0b8",
+          "#e7f4dc"
+        ]
+      },
+      "wall-b-line": {
+        "role": "tertiary",
+        "displayName": "초록 격자",
+        "canonical": "#cfe4bd",
+        "tonalRamp": [
+          "#081600",
+          "#213111",
+          "#3d4e2d",
+          "#5b6d4a",
+          "#7a8e6a",
+          "#9caf8a",
+          "#bed3ac",
+          "#e2f7cf"
+        ]
+      },
+      "wall-b-side": {
+        "role": "tertiary",
+        "displayName": "초록 옆벽",
+        "canonical": "#d4e9c4",
+        "tonalRamp": [
+          "#081600",
+          "#213113",
+          "#3d4e2f",
+          "#5b6d4c",
+          "#7a8d6b",
+          "#9baf8c",
+          "#bed2ae",
+          "#e1f7d1"
+        ]
+      },
+      "floor-b": {
+        "role": "tertiary",
+        "displayName": "체크 바닥",
+        "canonical": "#f2e2bd",
+        "tonalRamp": [
+          "#1b0f00",
+          "#362908",
+          "#544626",
+          "#736543",
+          "#938562",
+          "#b6a683",
+          "#d9c9a5",
+          "#fdedc8"
+        ]
+      },
+      "floor-b-check": {
+        "role": "tertiary",
+        "displayName": "체크 칸",
+        "canonical": "#e6cf9c",
+        "tonalRamp": [
+          "#1f0d00",
+          "#3b2800",
+          "#584512",
+          "#786333",
+          "#998453",
+          "#bba574",
+          "#dfc895",
+          "#ffecb8"
+        ]
+      },
+      "room-edge": {
+        "role": "tertiary",
+        "displayName": "방 모서리",
+        "canonical": "#b78a61",
+        "tonalRamp": [
+          "#270500",
+          "#452000",
+          "#653d13",
+          "#865c34",
+          "#a87c53",
+          "#cb9d74",
+          "#f0c095",
+          "#ffe4b8"
+        ]
+      },
+      "bubble": {
+        "role": "tertiary",
+        "displayName": "말풍선 크림",
+        "canonical": "#fffbe6",
+        "tonalRamp": [
+          "#151204",
+          "#2f2c1b",
+          "#4b4837",
+          "#6a6754",
+          "#8a8774",
+          "#aca895",
+          "#cfcbb7",
+          "#f3efda"
+        ]
+      },
+      "signal": {
+        "role": "tertiary",
+        "displayName": "신호 노랑",
+        "canonical": "#ffd84d",
+        "tonalRamp": [
+          "#230900",
+          "#402600",
+          "#654000",
+          "#856000",
+          "#a78100",
+          "#caa400",
+          "#eec737",
+          "#ffeb63"
+        ]
+      },
+      "sky-dark": {
+        "role": "neutral",
+        "displayName": "점무늬 하늘 (밤)",
+        "canonical": "#151c29",
+        "tonalRamp": [
+          "#0b111e",
+          "#242b39",
+          "#404857",
+          "#5e6676",
+          "#7d8797",
+          "#9ea8ba",
+          "#c1cbdd",
+          "#e5efff"
+        ]
+      },
+      "frame-dark": {
+        "role": "neutral",
+        "displayName": "틀 하늘 (밤)",
+        "canonical": "#2b4760",
+        "tonalRamp": [
+          "#001228",
+          "#122d45",
+          "#2e4a64",
+          "#4c6984",
+          "#6c8aa6",
+          "#8cacc9",
+          "#aecfed",
+          "#d2f3ff"
+        ]
+      },
+      "frame-edge-dark": {
+        "role": "neutral",
+        "displayName": "짙은 하늘 외곽선 (밤)",
+        "canonical": "#4f7ea3",
+        "tonalRamp": [
+          "#001230",
+          "#002e4e",
+          "#1c4c6e",
+          "#3c6b8f",
+          "#5c8cb1",
+          "#7daed5",
+          "#9fd1f9",
+          "#c3f5ff"
+        ]
+      },
+      "page-dark": {
+        "role": "neutral",
+        "displayName": "흰 쪽 (밤)",
+        "canonical": "#1e2533",
+        "tonalRamp": [
+          "#0b111e",
+          "#242b3a",
+          "#404857",
+          "#5e6677",
+          "#7e8698",
+          "#9fa8ba",
+          "#c1cbde",
+          "#e5efff"
+        ]
+      },
+      "page-tint-dark": {
+        "role": "neutral",
+        "displayName": "옅은 쪽 (밤)",
+        "canonical": "#252e3f",
+        "tonalRamp": [
+          "#0a1120",
+          "#222b3c",
+          "#3e485a",
+          "#5c667a",
+          "#7c879b",
+          "#9da8bd",
+          "#bfcbe1",
+          "#e3efff"
+        ]
+      },
+      "page-line-dark": {
+        "role": "neutral",
+        "displayName": "쪽 테두리 (밤)",
+        "canonical": "#34415a",
+        "tonalRamp": [
+          "#071126",
+          "#1f2b43",
+          "#3a4861",
+          "#586681",
+          "#7887a3",
+          "#99a8c6",
+          "#bbcbea",
+          "#deefff"
+        ]
+      },
+      "dot-line-dark": {
+        "role": "neutral",
+        "displayName": "점선 (밤)",
+        "canonical": "#43546f",
+        "tonalRamp": [
+          "#041127",
+          "#1c2b44",
+          "#384863",
+          "#556783",
+          "#7587a5",
+          "#96a9c7",
+          "#b8ccec",
+          "#dbf0ff"
+        ]
+      },
+      "ink-dark": {
+        "role": "neutral",
+        "displayName": "남색 글자 (밤)",
+        "canonical": "#eaedf4",
+        "tonalRamp": [
+          "#101216",
+          "#292b30",
+          "#45484d",
+          "#63666c",
+          "#83868c",
+          "#a5a8ae",
+          "#c7cad1",
+          "#ebeef5"
+        ]
+      },
+      "ink-soft-dark": {
+        "role": "neutral",
+        "displayName": "딸린 글자 (밤)",
+        "canonical": "#aeb7ca",
+        "tonalRamp": [
+          "#0b111e",
+          "#242b3a",
+          "#404858",
+          "#5e6677",
+          "#7e8698",
+          "#9fa8ba",
+          "#c1cbde",
+          "#e5efff"
+        ]
+      },
+      "accent-text-dark": {
+        "role": "primary",
+        "displayName": "벽돌 글자 (밤)",
+        "canonical": "#f2b08c",
+        "tonalRamp": [
+          "#2d0000",
+          "#4d1800",
+          "#6e3613",
+          "#905533",
+          "#b37553",
+          "#d79773",
+          "#fcb995",
+          "#ffddb8"
+        ]
+      },
+      "apricot-dark": {
+        "role": "primary",
+        "displayName": "살구 (밤)",
+        "canonical": "#e99a70",
+        "tonalRamp": [
+          "#320000",
+          "#531000",
+          "#753000",
+          "#985026",
+          "#bb7047",
+          "#e09268",
+          "#ffb58a",
+          "#ffd8ad"
+        ]
+      },
+      "wall-a-dark": {
+        "role": "tertiary",
+        "displayName": "분홍 벽지 (밤)",
+        "canonical": "#e9cfd8",
+        "tonalRamp": [
+          "#1c0b12",
+          "#38252c",
+          "#564149",
+          "#755f67",
+          "#967f87",
+          "#b9a0a9",
+          "#dcc3cb",
+          "#ffe6ef"
+        ]
+      },
+      "floor-a-dark": {
+        "role": "tertiary",
+        "displayName": "나무 바닥 (밤)",
+        "canonical": "#b98d63",
+        "tonalRamp": [
+          "#270500",
+          "#452100",
+          "#643e12",
+          "#855c33",
+          "#a77c53",
+          "#cb9e73",
+          "#efc095",
+          "#ffe4b8"
+        ]
+      },
+      "wall-b-dark": {
+        "role": "tertiary",
+        "displayName": "초록 벽지 (밤)",
+        "canonical": "#cddfc0",
+        "tonalRamp": [
+          "#0a1601",
+          "#233017",
+          "#3e4d33",
+          "#5c6c51",
+          "#7c8c70",
+          "#9dae91",
+          "#c0d1b3",
+          "#e3f6d6"
         ]
       }
     },
     "typographyMeta": {
       "display": {
-        "displayName": "Display",
-        "purpose": "히어로 제목. 가늘게(300) 가다 한 구절만 굵어진다."
-      },
-      "display-emphasis": {
-        "displayName": "Display Emphasis",
-        "purpose": "제목 안의 단 한 구절. 기울이지 않고 굵힌다."
+        "displayName": "픽셀 큰 제목 (48)",
+        "purpose": "프로필 칸 제목 둘째 줄 하나."
       },
       "headline": {
-        "displayName": "Headline",
-        "purpose": "판 제목."
+        "displayName": "픽셀 쪽 제목 (24)",
+        "purpose": "쪽 제목 · 몸짓 이름 · 플레이어 단추 · 초대코드."
       },
-      "headline-quiet": {
-        "displayName": "Headline Quiet",
-        "purpose": "리듬을 끊는 판 하나에서만 쓰는 작은 판 제목. 그 판은 꼬리표가 없어 제목이 혼자 선다."
+      "headline-large": {
+        "displayName": "픽셀 큰 쪽 제목 (36)",
+        "purpose": "마지막 받기 칸 · 받기 화면 제목."
       },
       "title": {
-        "displayName": "Title",
-        "purpose": "판 안의 작은 제목·질문·설치 안내 소제목."
-      },
-      "lead": {
-        "displayName": "Lead",
-        "purpose": "히어로의 첫 문단. 본문보다 한 단 위인 자리는 여기뿐이다."
-      },
-      "body": {
-        "displayName": "Body",
-        "purpose": "본문. 부연은 28~46ch 로 묶는다."
-      },
-      "body-strong": {
-        "displayName": "Body Strong",
-        "purpose": "줄 제목과 버튼 — 본문 다음으로 무거운 것."
-      },
-      "body-small": {
-        "displayName": "Body Small",
-        "purpose": "딸린 설명 — 사실 목록의 설명, 설치 단계."
-      },
-      "caption": {
-        "displayName": "Caption",
-        "purpose": "꼬리표성 글자 — 창 제목, 메타, 힌트, 꼬리말."
+        "displayName": "픽셀 작은 제목 (12)",
+        "purpose": "칸 안의 h3 · 기본 정보 표의 이름."
       },
       "label": {
-        "displayName": "Label",
-        "purpose": "판 위 꼬리표. 유일하게 포인트 색을 쓰는 글자."
+        "displayName": "픽셀 라벨 (12)",
+        "purpose": "탭 · 단추 · 이름표 · 카운터 · 말풍선."
       },
-      "metric": {
-        "displayName": "Metric",
-        "purpose": "어드민 숫자판. 이 화면에서 가장 큰 글자."
+      "body": {
+        "displayName": "픽셀 본문 (12)",
+        "purpose": "본문 · 설명 · FAQ · 꼬리말 — 12px / 1.9. 위계는 크기가 아니라 색으로."
       }
     },
     "shadows": [
       {
-        "name": "window",
-        "value": "0 40px 90px -30px rgba(20,18,26,0.45), 0 2px 6px rgba(20,18,26,0.1)",
-        "purpose": "창이 벽지 위에 떠 있다는 사실. 두 겹이라야 떠 보인다."
+        "name": "page",
+        "value": "inset 0 0 0 1px var(--page-line), 0 14px 30px -18px rgba(40, 70, 100, 0.45)",
+        "purpose": "흰 쪽 패널. 다크에서는 rgba(0, 0, 0, 0.7)."
       },
       {
-        "name": "app-frame",
-        "value": "0 18px 40px -18px rgba(20,18,26,0.42)",
-        "purpose": "창 안의 앱 스크린샷 액자. 창보다 얕아야 한다."
+        "name": "character-drop",
+        "value": "drop-shadow(0 8px 6px rgba(60, 45, 30, 0.22))",
+        "purpose": "모든 캐릭터 그림의 갈색 발밑 그림자 (filter)."
       },
       {
-        "name": "escapee",
-        "value": "drop-shadow(0 18px 30px rgba(20,18,26,0.28))",
-        "purpose": "창을 넘어온 캐릭터. box-shadow 로는 그림 상자가 드러난다."
+        "name": "button-thickness",
+        "value": "0 3px 0 var(--apricot-edge)",
+        "purpose": "살구 단추의 눌림 두께. active 에서 0."
       },
       {
-        "name": "peek",
-        "value": "drop-shadow(0 12px 20px rgba(43,39,51,0.22))",
-        "purpose": "벽지 위에 지는 그림자라 더 얕고 짧다. 어두운 모드는 rgba(0,0,0,0.5)."
+        "name": "tab-fold",
+        "value": "inset -2px 0 0 rgba(52, 56, 73, 0.12)",
+        "purpose": "세로 탭 끝의 접힘."
+      },
+      {
+        "name": "inner-line",
+        "value": "inset 0 0 0 1px var(--page-line)",
+        "purpose": "쪽 안의 옅은 칸 테두리."
       }
     ],
     "motion": [
       {
-        "name": "window-in",
-        "value": "420ms cubic-bezier(0.2, 0.9, 0.3, 1)",
-        "purpose": "창이 20px 아래에서 떠오르며 나타난다. 900px 아래에서는 끈다."
-      },
-      {
-        "name": "peek-in",
-        "value": "1200ms cubic-bezier(0.16, 0.84, 0.3, 1)",
-        "purpose": "빼꼼 등장. 느린 것이 이 연출의 전부다 — 빠르면 튀어나오는 것이 된다."
+        "name": "ease-out",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "--ss-ease-out. 단추 · 탭 · 음표 · 이름표."
       },
       {
         "name": "press",
-        "value": "120ms ease",
-        "purpose": "transform 계열. 누르면 1px 내려가고, 줄은 1px 떠오른다."
+        "value": "120ms",
+        "purpose": "단추가 꺼지는 시간."
       },
       {
-        "name": "fade",
-        "value": "150ms ease",
-        "purpose": "opacity·border-color 계열."
+        "name": "scene",
+        "value": "3400ms",
+        "purpose": "미니룸 데모 한 바퀴 = SCENE_MS. CSS 지연 합과 함께 고친다."
+      },
+      {
+        "name": "cat-poke",
+        "value": "1.2s, steps(6) × 6 rows",
+        "purpose": "고양이 콕 스프라이트 6×6."
+      },
+      {
+        "name": "signal-flight",
+        "value": "0.7s from 0.35s",
+        "purpose": "노란 점 포물선."
+      },
+      {
+        "name": "dog-dance",
+        "value": "1.67s from 1.05s, 5×5 × 2 loops",
+        "purpose": "강아지 춤 스프라이트."
       }
     ],
     "breakpoints": [
       {
-        "name": "frameless",
-        "value": "900px"
+        "name": "stack",
+        "value": "880px"
       },
       {
-        "name": "escapee-small",
-        "value": "1180px"
+        "name": "touch",
+        "value": "760px"
       },
       {
-        "name": "peekers-on",
-        "value": "1440px"
+        "name": "narrow",
+        "value": "640px"
       },
       {
-        "name": "peekers-large",
-        "value": "1900px"
+        "name": "shelf-scroll",
+        "value": "480px"
+      },
+      {
+        "name": "sticky-profile",
+        "value": "min-width 881px and min-height 780px"
       }
     ]
   },
   "components": [
     {
-      "name": "Primary Button",
+      "name": "살구 단추",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "받기·모든 버전 같은 주 행동. 조용히 있다가 누를 때만 반응한다.",
-      "html": "<a class=\"ds-btn\" href=\"#\">macOS용 받기</a>",
-      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; font: inherit; font-weight: 700; font-size: 0.94rem; text-decoration: none; padding: 0.68rem 1.35rem; border-radius: 8px; border: 1px solid transparent; background: var(--ink, #2b2733); color: var(--panel, #f7f5f1); cursor: pointer; transition: transform 120ms ease, opacity 150ms ease; } .ds-btn:hover { opacity: 0.9; } .ds-btn:active { transform: translateY(1px); } .ds-btn:focus-visible { outline: 2.5px solid var(--accent, #9a5d18); outline-offset: 3px; }"
+      "description": "주 행동. 살구 바탕에 아래로 3px 두께, 누르면 꺼진다.",
+      "html": "<a class=\"ds-btn\" href=\"#\">다운로드</a>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:12px;line-height:1;color:#343849;background:#f3a77c;padding:14px 20px;border-radius:8px;box-shadow:0 3px 0 #d98558;text-decoration:none;cursor:pointer;transition:transform 120ms cubic-bezier(0.22,1,0.36,1),box-shadow 120ms cubic-bezier(0.22,1,0.36,1),filter 120ms}.ds-btn:hover{filter:brightness(1.04)}.ds-btn:active{transform:translateY(3px);box-shadow:0 0 0 #d98558}.ds-btn:focus-visible{outline:3px solid #6aa6cc;outline-offset:2px}"
     },
     {
-      "name": "Ghost Button",
-      "kind": "button",
-      "refersTo": "button-ghost",
-      "description": "보조 행동. 바탕 없이 1px 실선만 두르고, 호버에서 테두리만 진해진다.",
-      "html": "<a class=\"ds-btn-ghost\" href=\"#\">모든 버전</a>",
-      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; font: inherit; font-weight: 700; font-size: 0.94rem; text-decoration: none; padding: 0.68rem 1.35rem; border-radius: 8px; border: 1px solid rgba(43,39,51,0.1); background: transparent; color: var(--ink, #2b2733); cursor: pointer; transition: transform 120ms ease, border-color 150ms ease; } .ds-btn-ghost:hover { border-color: var(--ink-soft, #615c6e); } .ds-btn-ghost:active { transform: translateY(1px); } .ds-btn-ghost:focus-visible { outline: 2.5px solid var(--accent, #9a5d18); outline-offset: 3px; }"
-    },
-    {
-      "name": "Window Titlebar",
-      "kind": "nav",
-      "refersTo": "window-titlebar",
-      "description": "이 시스템의 서명. 신호등 셋이 글자 한 자 읽기 전에 \"바탕화면에 뜨는 것\"이라고 말한다.",
-      "html": "<header class=\"ds-titlebar\"><svg class=\"ds-lights\" viewBox=\"0 0 56 12\" aria-hidden=\"true\"><circle cx=\"6\" cy=\"6\" r=\"6\" fill=\"#ff5f57\"/><circle cx=\"26\" cy=\"6\" r=\"6\" fill=\"#febc2e\"/><circle cx=\"46\" cy=\"6\" r=\"6\" fill=\"#28c840\"/></svg><span class=\"ds-title\">SimSim Friends</span><nav class=\"ds-nav\"><a href=\"#\">캐릭터</a><a href=\"#\">받기</a><a class=\"ds-lang\" href=\"#\">EN</a></nav></header>",
-      "css": ".ds-titlebar { display: flex; align-items: center; gap: 14px; padding: 0 22px; height: 52px; background: color-mix(in srgb, var(--panel, #f7f5f1) 88%, transparent); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(43,39,51,0.1); border-radius: 14px 14px 0 0; color: var(--ink, #2b2733); } .ds-lights { width: 42px; flex: none; } .ds-title { font-size: 0.86rem; font-weight: 700; letter-spacing: -0.01em; } .ds-nav { margin-left: auto; display: flex; gap: 1.3rem; font-size: 0.86rem; } .ds-nav a { text-decoration: none; color: var(--ink-soft, #615c6e); } .ds-nav a:hover { color: var(--ink, #2b2733); } .ds-lang { color: var(--ink, #2b2733) !important; border-left: 1px solid rgba(43,39,51,0.1); padding-left: 1.3rem; }"
-    },
-    {
-      "name": "Download Row",
+      "name": "BGM 플레이어 받기 단추",
       "kind": "custom",
-      "refersTo": "download-row",
-      "description": "내려받기 한 줄. 추천 항목은 뱃지가 아니라 테두리 색으로만 표시한다.",
-      "html": "<div class=\"ds-dl-row ds-dl-recommended\"><div><div class=\"ds-dl-name\">macOS — 요즘 맥</div><div class=\"ds-dl-meta\">simsim-friends-0.5.0-arm64.dmg · 117 MB</div></div><a class=\"ds-dl-btn\" href=\"#\">받기</a></div>",
-      "css": ".ds-dl-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 14px 16px; border: 1px solid rgba(43,39,51,0.1); border-radius: 10px; color: var(--ink, #2b2733); transition: transform 120ms ease, border-color 150ms ease; } .ds-dl-row:hover { transform: translateY(-1px); border-color: var(--ink-soft, #615c6e); } .ds-dl-recommended { border-color: var(--accent, #9a5d18); } .ds-dl-name { font-weight: 700; font-size: 0.96rem; } .ds-dl-meta { font-size: 0.82rem; color: var(--ink-soft, #615c6e); } .ds-dl-btn { display: inline-flex; align-items: center; font: inherit; font-weight: 700; font-size: 0.86rem; text-decoration: none; padding: 0.5rem 1.05rem; border-radius: 8px; background: var(--ink, #2b2733); color: var(--panel, #f7f5f1); }"
+      "refersTo": "button-play",
+      "description": "프로필 칸 아래 배경음악 플레이어 모양의 받기 칸. 글자는 DownloadButtons 가 OS 에 맞춰 바꾼다.",
+      "html": "<div class=\"ds-player\"><p class=\"ds-player-label\">지금 받을 수 있어요</p><a class=\"ds-btn-play\" href=\"#\"><span class=\"ds-play\"><svg viewBox=\"0 0 16 16\" width=\"14\" height=\"14\"><path d=\"M5 3.2v9.6L12.6 8z\" fill=\"currentColor\"/></svg></span>macOS용 받기</a><p class=\"ds-warn\">처음 열 때 경고가 한 번 떠요. <a href=\"#\">넘기는 법 보기</a></p></div>",
+      "css": ".ds-player{width:300px;padding:12px;border-radius:10px;background:#f2f8fc;box-shadow:inset 0 0 0 1px #d3e4ef}.ds-player-label{font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:12px;color:#5b6479;margin:0 0 8px}.ds-btn-play{display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:24px;line-height:1.15;color:#343849;background:#f3a77c;padding:12px 14px;border-radius:8px;box-shadow:0 3px 0 #d98558;text-decoration:none;transition:transform 120ms,box-shadow 120ms,filter 120ms}.ds-btn-play:hover{filter:brightness(1.04)}.ds-btn-play:active{transform:translateY(3px);box-shadow:0 0 0 #d98558}.ds-btn-play:focus-visible{outline:3px solid #6aa6cc;outline-offset:2px}.ds-play{width:28px;height:28px;border-radius:50%;background:#fff;color:#d98558;display:grid;place-items:center;flex:none}.ds-play svg{translate:1px 0}.ds-warn{margin:10px 0 0;font-size:12px;line-height:1.55;color:#5b6479}.ds-warn a{color:#a5532f;font-weight:700}"
     },
     {
-      "name": "Section Label",
-      "kind": "chip",
-      "description": "판 위에 붙는 꼬리표. 페이지에서 유일하게 포인트 색을 쓰는 글자다.",
-      "html": "<p class=\"ds-label\">캐릭터</p>",
-      "css": ".ds-label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent, #9a5d18); margin: 0; }"
+      "name": "세로 탭",
+      "kind": "nav",
+      "refersTo": "tab-apricot",
+      "description": "틀 오른쪽 끝에 붙는 파스텔 탭 다섯. 880px 아래에서는 가로 줄.",
+      "html": "<nav class=\"ds-tabs\"><a href=\"#\" style=\"background:#f3a77c\">미니룸</a><a href=\"#\" style=\"background:#b3d5a5\">신호</a><a href=\"#\" style=\"background:#eeb0c3\">친구들</a><a href=\"#\" style=\"background:#f4df96\">시작하기</a><a href=\"#\" style=\"background:#9fcdea\">다운로드</a></nav>",
+      "css": ".ds-tabs{display:flex;flex-direction:column;gap:6px;width:40px}.ds-tabs a{display:block;writing-mode:vertical-rl;text-decoration:none;font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:12px;line-height:1;letter-spacing:0.12em;padding:14px 10px;border-radius:0 10px 10px 0;color:#343849;box-shadow:inset -2px 0 0 rgba(52,56,73,0.12);transition:translate 150ms cubic-bezier(0.22,1,0.36,1)}.ds-tabs a:hover{translate:3px 0}.ds-tabs a:focus-visible{outline:3px solid #6aa6cc;outline-offset:2px}"
     },
     {
-      "name": "Stat Card",
+      "name": "흰 쪽 패널",
       "kind": "card",
-      "refersTo": "stat-card",
-      "description": "어드민 숫자판. 꼬리표 → 숫자 → 부연 세 줄 고정, 그림자 없음.",
-      "html": "<div class=\"ds-stat\"><div class=\"ds-stat-label\">지금 켜 둔 사람</div><div class=\"ds-stat-value\">12</div><div class=\"ds-stat-sub\">최근 1시간</div></div>",
-      "css": ".ds-stat { background: var(--panel, #f7f5f1); border: 1px solid rgba(43,39,51,0.1); border-radius: 12px; padding: 18px 20px; color: var(--ink, #2b2733); } .ds-stat-label { font-size: 0.78rem; font-weight: 700; color: var(--ink-soft, #615c6e); } .ds-stat-value { font-size: 2.1rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; font-variant-numeric: tabular-nums; } .ds-stat-sub { font-size: 0.78rem; color: var(--ink-soft, #615c6e); }"
+      "refersTo": "page-panel",
+      "description": "하늘색 점선 틀 안의 흰 쪽. 제목 아래와 구획은 점선으로만 나눈다.",
+      "html": "<div class=\"ds-frame\"><section class=\"ds-page\"><h2>방 규칙</h2><p>한 방에 다섯 명까지, 방은 셋까지 들 수 있어요.</p></section></div>",
+      "css": ".ds-frame{padding:18px;background:#a8d6ef;border:3px dashed #fff;border-radius:26px;outline:3px solid #6aa6cc;outline-offset:5px}.ds-page{background:#fff;color:#343849;border-radius:16px;padding:20px 26px 28px;box-shadow:inset 0 0 0 1px #d3e4ef,0 14px 30px -18px rgba(40,70,100,0.45);font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:12px;line-height:1.9}.ds-page h2{font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:24px;line-height:1.25;margin:0 0 18px;padding-bottom:12px;border-bottom:1px dotted #a9c6d8}.ds-page p{margin:0;color:#5b6479;font-size:12px}"
     },
     {
-      "name": "Text Field",
-      "kind": "input",
-      "refersTo": "input-field",
-      "description": "어드민 로그인·거르기 칸. 글꼴은 본문을 그대로 물려받는다.",
-      "html": "<input class=\"ds-input\" type=\"email\" placeholder=\"메일 주소\" />",
-      "css": ".ds-input { font: inherit; width: 100%; padding: 0.6rem 0.75rem; border: 1px solid rgba(43,39,51,0.1); border-radius: 8px; background: var(--panel, #f7f5f1); color: var(--ink, #2b2733); } .ds-input::placeholder { color: var(--ink-soft, #615c6e); } .ds-input:focus-visible { outline: 2.5px solid var(--accent, #9a5d18); outline-offset: 3px; }"
+      "name": "기본 정보 표",
+      "kind": "custom",
+      "refersTo": "page-panel",
+      "description": "방 규칙. 점선 줄 안의 한 낱말로만 숫자를 둔다.",
+      "html": "<dl class=\"ds-rules\"><div class=\"ds-rule\"><dt><b>5</b>명까지</dt><dd>한 방에 다섯 명까지 들어와요.</dd></div><div class=\"ds-rule\"><dt><b>3</b>개까지</dt><dd>방은 셋까지 만들거나 들 수 있어요.</dd></div></dl>",
+      "css": ".ds-rules{margin:0;display:grid}.ds-rule{display:grid;grid-template-columns:13em minmax(0,1fr);gap:4px 20px;align-items:baseline;padding-block:14px;border-bottom:1px dotted #a9c6d8}.ds-rule:last-child{border-bottom:0}.ds-rule dt{font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:12px;line-height:1.5;color:#343849}.ds-rule dt b{font-size:24px;line-height:1;margin-right:8px;color:#a5532f}.ds-rule dd{margin:0;font-size:12px;color:#5b6479}"
+    },
+    {
+      "name": "방명록 질문",
+      "kind": "custom",
+      "refersTo": "guestbook-entry",
+      "description": "FAQ 한 줄. 더하기 · 빼기는 막대 두 개로 그린다.",
+      "html": "<details class=\"ds-qa\"><summary>무료인가요?</summary><p>네, 무료이고 가입도 없어요.</p></details>",
+      "css": ".ds-qa{border-radius:10px;background:#fff;box-shadow:inset 0 0 0 1px #d3e4ef;overflow:hidden;color:#343849;font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700}.ds-qa summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 16px;background:#f2f8fc;font-weight:700;font-size:12px}.ds-qa summary::-webkit-details-marker{display:none}.ds-qa summary::after{content:'';flex:none;width:14px;height:14px;background:linear-gradient(#a5532f,#a5532f) center/14px 2.5px no-repeat,linear-gradient(#a5532f,#a5532f) center/2.5px 14px no-repeat}.ds-qa[open] summary::after{background-size:14px 2.5px,0 0}.ds-qa summary:hover{background:#d3e4ef}.ds-qa summary:focus-visible{outline:3px solid #6aa6cc;outline-offset:2px}.ds-qa p{margin:0;padding:12px 16px 16px;font-size:12px;color:#5b6479}"
+    },
+    {
+      "name": "이름표 · 방 이름표",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "짙은 알약은 일어난 일(방금 내가 콕!), 흰 알약은 방 이름.",
+      "html": "<span class=\"ds-tag\">친구 방</span> <span class=\"ds-chip\">방금 내가 콕!</span>",
+      "css": ".ds-tag,.ds-chip{display:inline-block;font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:12px;line-height:1;border-radius:999px}.ds-tag{padding:6px 12px;background:#fff;color:#343849;box-shadow:inset 0 0 0 1.5px #343849}.ds-chip{padding:7px 12px;background:#343849;color:#fff}"
+    },
+    {
+      "name": "초대코드 표",
+      "kind": "custom",
+      "refersTo": "ticket",
+      "description": "쪽 안의 유일한 상자 — 실물 표를 흉내 낸다.",
+      "html": "<div class=\"ds-ticket\"><code>K7Q-29X</code><span>24시간 동안 쓸 수 있어요</span></div>",
+      "css": ".ds-ticket{padding:12px 14px;border-radius:8px;background:#fff;border:1.5px dashed #a9c6d8;max-width:240px}.ds-ticket code{display:block;font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:24px;letter-spacing:0.12em;color:#343849}.ds-ticket span{display:block;margin-top:4px;font-size:12px;color:#5b6479;font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700}"
+    },
+    {
+      "name": "미니룸 데모",
+      "kind": "custom",
+      "refersTo": "page-panel",
+      "description": "시그니처. 아이소메트릭 방 둘, 내 고양이를 누르면 친구 방의 강아지가 춤춘다. 움직임은 콕에서만. 실제 장면은 MiniroomDemo.tsx 와 Blender 스프라이트가 필요해 여기서는 방과 신호 길만 보인다.",
+      "html": "<div class=\"ds-rooms\"><svg viewBox=\"0 0 430 430\"><polygon points=\"215,40 405,135 405,300 215,205\" fill=\"#f6d6e0\"/><polygon points=\"25,135 215,40 215,205 25,300\" fill=\"#fbe6ec\"/><polygon points=\"25,300 215,205 405,300 215,395\" fill=\"#ddb184\"/><polyline points=\"25,300 215,395 405,300\" fill=\"none\" stroke=\"#b78a61\" stroke-width=\"3\"/></svg><svg viewBox=\"0 0 430 430\"><polygon points=\"215,40 405,135 405,300 215,205\" fill=\"#d4e9c4\"/><polygon points=\"25,135 215,40 215,205 25,300\" fill=\"#e4f1d9\"/><polygon points=\"25,300 215,205 405,300 215,395\" fill=\"#f2e2bd\"/><polyline points=\"25,300 215,395 405,300\" fill=\"none\" stroke=\"#b78a61\" stroke-width=\"3\"/></svg><span class=\"ds-dot\"></span></div>",
+      "css": ".ds-rooms{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:2%;width:420px}.ds-rooms svg{width:100%;height:auto;display:block}.ds-dot{position:absolute;left:50%;top:8%;width:24px;height:24px;margin-left:-12px;border-radius:50%;background:#ffd84d;box-shadow:inset 0 0 0 2px #343849}"
     }
   ],
   "narrative": {
-    "northStar": "넘어오는 창",
-    "overview": "이 제품은 바탕화면 위에 사는 앱이다. 그래서 웹은 앱을 설명하지 않고 앱이 사는 자리를 그대로 재현한다 — 페이지 전체가 벽지 위에 떠 있는 창 한 장이고, 신호등 세 개가 달린 제목줄이 글자 한 자를 읽기 전에 \"이건 바탕화면에 뜨는 것\"이라고 말해 버린다.\n\n그리고 그 창은 캐릭터를 가두지 못한다. 히어로의 고양이는 창틀을 밟고 밖으로 나와 서 있고, 다섯 캐릭터는 화면 양 끝 모서리 뒤에서 몸을 기울여 얼굴을 내민다. 창이 한 번 쓰고 마는 장식이 되지 않는 것은 이 규칙 하나 덕분이고, 같은 이유로 900px 아래에서는 창틀을 아예 없앤다.\n\n성격은 장난기다. 다만 그 장난기는 화면이 시끄러워서 나오는 것이 아니라 조용한 틀 위에서만 읽힌다. 이 절제가 배경이기 때문에 창틀을 밟고 선 고양이 한 마리가 사건이 된다.",
+    "northStar": "두 사람의 미니룸",
+    "overview": "랜딩(`/` · `/en/`)과 받기 화면(`/download/`)의 디자인이다. 2026-11 에 \"베이지 방\"(꿀색 판 · Jua 제목 · 노란 단추)을 통째로 걷어 내고 **2000년대 미니홈피 한 채**로 옮겼다. 옛 문서와 섞지 않고 새로 쓴 것이므로, 베이지 · 꿀색 · Jua 에 관한 옛 규칙은 더 이상 기준이 아니다. 어드민(`/admin`)은 따라오지 않았고 자기 스타일시트(`app/(admin)/admin.css`)를 지킨다.\n\n페이지 전체가 미니홈피다. 흰 점무늬 하늘 바탕 위에 하늘색 틀이 있고, 틀 안에 흰 쪽 패널이 놓인다 — 왼쪽은 프로필 칸, 오른쪽은 쪽들. 메뉴는 틀 오른쪽 끝에 붙은 세로 탭이다. 이 시대를 고른 이유는 제품의 성격과 같아서다. \"답장할 필요 없는 가벼운 신호\" 는 그 시절 일촌의 방에 들러 흔적만 남기던 감각과 같은 자리에 있다. 그래서 **그 시절의 문법(미니룸 · 방명록 · 기본 정보 표 · BGM 플레이어 · TODAY 카운터)만 빌리고, 남의 이름 · 로고 · 화폐는 쓰지 않는다.**\n\n무드는 **귀엽게, 그러나 쨍하지 않게.** 시안을 고르면서 사용자가 \"채도 높은 쨍한 색은 싫다\" 고 못 박았다. 탭과 단추는 파스텔에 머물고 진한 색은 글자에만 쓴다. 그리고 페이지는 설명보다 먼저 **해 보게 한다** — 첫 화면의 미니룸에서 내 고양이를 누르면 친구 방의 강아지가 춤춘다. 이 한 번의 누름이 페이지에서 움직임이 시작되는 유일한 자리다.\n\n코드는 `app/globals.css` 한 벌이다. 다섯 캐릭터 색 · 신호 노랑 · 모서리 눈금 · 움직임 곡선은 `packages/shared/src/design/tokens.css` 의 `--ss-*` 공통 층에서 오고, 랜딩은 그 위에 하늘 · 틀 · 쪽 · 방의 표면 층을 얹는다. 마크업은 `components/Landing.tsx` · `MiniroomDemo.tsx` · `SiteHeader.tsx` · `SiteFooter.tsx` · `DownloadPage.tsx`.",
     "keyCharacteristics": [
-      "페이지 = 앱 창 한 장. 신호등 · 제목줄 · 창 모서리가 시그니처다",
-      "캐릭터는 창 안에 갇히지 않는다. 틀을 넘고, 모서리 뒤에서 내다본다",
-      "벽지는 차가운 페리윙클, 창 안은 따뜻한 크림. 이 온도차가 캐릭터를 살린다",
-      "바깥에서 받아오는 글꼴·아이콘 팩·스크립트가 하나도 없다",
-      "색은 한 점만. 나머지는 잉크와 종이다"
+      "하늘색 점선 틀 + 흰 쪽 패널 + 오른쪽 세로 탭 — 페이지가 곧 홈피 한 채",
+      "파스텔은 면에만, 진한 색은 글자에만",
+      "제목 · 탭 · 단추 · 라벨은 갈무리 11 픽셀 서체, 12px 의 배수로만",
+      "Blender 로 렌더한 3D 캐릭터가 같은 키 · 같은 바닥선으로 아이소메트릭 방에 선다",
+      "움직임은 방문자의 콕 한 번에서만 퍼진다"
     ],
     "rules": [
       {
-        "name": "The One Warm Point Rule",
-        "body": "유채색은 화면에 한 점만 있다. 색을 하나 더 들이고 싶어지면, 먼저 그것이 캐릭터가 가진 색과 다투지 않는지 보라 — 이 화면에서 색을 가질 자격이 있는 것은 캐릭터다.",
+        "name": "The 한 단 낮춘 색 Rule",
+        "body": "면에 칠하는 색은 전부 파스텔이다. 채도 높은 쨍한 색은 바탕에도 단추에도 쓰지 않는다. 진한 색은 `accent-text` 하나이고 글자로만 나온다.",
         "section": "colors"
       },
       {
-        "name": "The Cold Wall Rule",
-        "body": "벽지는 차가워야 한다. 따뜻한 쪽으로 되돌리려면 다섯 종의 ΔE 와 명도비부터 다시 재라. 바닥색은 취향이 아니라 캐릭터가 보이느냐 마느냐의 문제다.",
+        "name": "The 무채색 글 칸 Rule",
+        "body": "글을 읽는 칸(쪽 패널 · 프로필)은 흰 바탕 무채색이다. 색은 틀 · 탭 · 방에만 칠한다. 여러 색이 문단 사이를 오가면 귀여움보다 어지러움이 먼저 온다.",
         "section": "colors"
       },
       {
-        "name": "The Provisional Accent Rule",
-        "body": "#9a5d18 은 다시 볼 값이다. 자리(어디에 쓰는가)는 확정이고 값만 임시다. 바꿀 때는 어두운 모드 짝(#e8b06a)을 함께 옮기고 초점 표시가 벽지·종이 양쪽에서 보이는지 확인하라.",
+        "name": "The 파스텔 위 글자 Rule",
+        "body": "파스텔 위 글자는 언제나 `pastel-ink`(#343849)이다. 흰 글자도, `ink` 토큰도(다크에서 밝아진다) 쓰지 않는다. 예외는 짙은 이름표(`chip`) 위의 흰 글자 하나.",
         "section": "colors"
       },
       {
-        "name": "The One Bold Phrase Rule",
-        "body": "가는 제목에 굵은 구절은 하나다. 둘이 되는 순간 어느 쪽도 강조가 아니게 된다.",
+        "name": "The 흰 바닥 금지 Rule",
+        "body": "캐릭터를 흰 쪽 위에 바로 세우지 않는다. 흰 고양이의 밝은 면과 각 바탕 사이의 ΔE2000 을 쟀다.",
+        "section": "colors"
+      },
+      {
+        "name": "The 12의 배수 Rule",
+        "body": "픽셀 서체는 `--px-s/m/l/xl`(12 · 24 · 36 · 48px)로만 부른다. 11px 격자로 그린 글씨라 배수가 아닌 크기에서는 픽셀이 반 칸씩 걸쳐 흐려진다. 새 크기가 필요하면 눈금을 고르지, 13px 이나 1.5rem 을 쓰지 않는다.",
         "section": "typography"
       },
       {
-        "name": "The Three Small Steps Rule",
-        "body": "본문보다 작은 글자는 셋뿐이다 — 0.94 · 0.9 · 0.85rem. 한때 0.82~0.96 사이에 서로 다른 단이 열 개 흩어져 있었는데, 0.5px 차이라 화면에서는 구별되지 않으면서 새 줄을 만들 때마다 옆엣것이 몇 rem 이었는지 다시 재게 만든다. 넷째 단이 필요해 보이면 그건 크기가 아니라 굵기나 색으로 풀 일이다.",
+        "name": "The 본문도 12px Rule",
+        "body": "본문은 15 · 16px 가 아니라 12px 다. 픽셀 서체의 12의 배수 규칙이 본문에도 그대로 걸리기 때문이다. 24px 로 키우면 한 줄에 들어가는 글이 너무 줄어든다. 읽기 부담은 글을 짧게 끊는 것으로 덜어 낸다.",
         "section": "typography"
       },
       {
-        "name": "The Malgun Fallback Rule",
-        "body": "Windows 한국어(Malgun Gothic)에는 300 이 없어 400 으로 떨어진다. 알고 두는 것이다 — 그 환경에서 제목이 조금 두꺼워지는 것을 받아들이는 편이, 굵기 대비라는 장치를 통째로 버리는 것보다 낫다.",
+        "name": "The 두 이름으로 부른다 Rule",
+        "body": "제목 · 라벨은 `--font-head`, 본문은 `--body` 로 부르고 `--font-pixel` 을 직접 부르지 않는다. 지금은 둘 다 갈무리지만, 다시 갈라야 할 날에는 이 두 줄만 고치면 된다(제목을 앱의 둥근미소로 — `var(--font-display)`, 정의만 남겨 둠).",
         "section": "typography"
       },
       {
-        "name": "The One Broken Pane Rule",
-        "body": "판이 전부 같은 리듬이면 스크롤이 지루해진다. 그래서 딱 한 판만 바닥색을 바꾸고 2단으로 눕힌다. 두 판이 어긋나기 시작하면 그건 리듬이 아니라 무질서다.",
-        "section": "layout"
-      },
-      {
-        "name": "The Margin Belongs to the Characters Rule",
-        "body": "창은 940px 에서 멈춘다. 남는 여백은 본문을 늘리는 데 쓰지 않는다 — 그 자리는 빼꼼이 서는 자리다.",
-        "section": "layout"
-      },
-      {
-        "name": "The Only the Window Floats Rule",
-        "body": "그림자를 쓸 수 있는 것은 창과 창을 넘어온 것뿐이다. 카드에 그림자를 붙이고 싶어지면 1px 선이나 바닥색으로 풀라.",
+        "name": "The 갈색 발밑 Rule",
+        "body": "캐릭터는 언제나 갈색 drop-shadow 를 달고 선다. 그림자 없는 캐릭터는 판 위에 붙여 놓은 스티커처럼 뜬다.",
         "section": "elevation"
       },
       {
-        "name": "The Dark Mode Border Rule",
-        "body": "어두운 모드에서는 창과 벽지의 밝기 차가 1.15:1 뿐이라 그림자만으로는 창이 사라진다. 그래서 어두울 때만 테두리가 0.06 → 0.12 로 진해진다.",
+        "name": "The 살구 두께만 Rule",
+        "body": "단단한 아래 두께는 살구 단추의 눌림 문법이다. 다른 판이나 카드에 단단한 오프셋 그림자를 주지 않는다.",
         "section": "elevation"
-      },
-      {
-        "name": "The Hairline Rule",
-        "body": "나누는 선은 1px 이다. 더 두꺼운 선이 필요해 보이면 그건 선이 아니라 바닥색을 바꿔야 할 자리다.",
-        "section": "shapes"
       }
     ],
     "dos": [
-      "벽지 위에는 잉크(#2b2733)만, 옅은 잉크(#615c6e)는 창 안에서만 쓴다. 5.9:1 은 종이 위에서의 값이다.",
-      "캐릭터를 창 밖으로 내보낸다. 창을 넘거나 모서리에 물리지 않는 캐릭터는 이 세계관에서 할 일이 없다.",
-      "그림을 다시 뜨면 빼꼼의 물리는 값을 다시 잰다. 눈 위치가 조금만 움직여도 곧바로 눈을 밟는다.",
-      "그림은 WebP 로, 화면에 걸릴 크기의 두 배로 뜬다. PNG 로 남는 것은 og.png 와 아이콘뿐이다.",
-      "랜딩 본문은 서버 컴포넌트로 둔다. 자바스크립트가 필요한 것은 빼꼼과 받기 단추 둘뿐이고, check-site.js 가 190KB 한도로 그걸 지킨다."
+      "**Do** 면에는 파스텔(살구 · 세이지 · 장미 · 버터 · 하늘)을, 진한 색은 `accent-text` 로 글자에만 쓴다.",
+      "**Do** 파스텔 위 글자는 `pastel-ink`(#343849)로 쓴다 — 다크 모드에서도.",
+      "**Do** 픽셀 서체는 `--font-head` 로 부르고 크기는 `--px-s/m/l/xl` 눈금에서만 고른다.",
+      "**Do** 쪽 안의 구획은 1px `dot-line` 점선으로 나눈다.",
+      "**Do** 캐릭터는 벽지 · 바닥 · 하늘 탭 칸 위에, 갈색 drop-shadow 와 함께 세운다.",
+      "**Do** 새 캐릭터 그림은 `render-landing-mascots.py` 의 같은 틀로 뜨고 폭으로만 크기를 정한다.",
+      "**Do** 움직임마다 `prefers-reduced-motion` 을 걸고, 줄였을 때는 끝 상태만 보여 준다.",
+      "**Do** +/− · 재생 · 음표 · z 같은 표지는 막대나 SVG 로 그린다.",
+      "**Do** 데모 지연 시간을 바꾸면 `SCENE_MS` 도 함께 바꾼다."
     ],
     "donts": [
-      "SaaS 랜딩페이지 문법을 들이지 않는다 — 보라색 그러데이션 히어로, 로고 띠, \"신뢰받는 팀들\" 줄, 3단 요금표. 이 제품은 팔 것이 아니라 받아 보라고 부르는 것이다.",
-      "업무용 협업 도구처럼 보이게 만들지 않는다. 파란 기업색 · 조직도 · 생산성 말투로 가면 5명 정원이 기능이 아니라 결함으로 읽힌다.",
-      "카드 한쪽에 굵은 색 띠를 두르지 않는다. 나누는 선은 1px 하나다.",
-      "색을 하나 더 들이지 않는다. 유채색은 화면에 한 점이다.",
-      "제목 안에서 두 구절을 굵히지 않는다. 하나가 아니면 강조가 아니다.",
-      "바깥에서 글꼴·아이콘 팩·스크립트를 받아오지 않는다.",
-      "벽지를 따뜻한 쪽으로 되돌리지 않는다. 그러려면 다섯 종의 ΔE 부터 다시 재야 한다."
+      "**Don't** 채도 높은 쨍한 색(시안의 #ff8a3d 같은)을 면에 쓰지 않는다.",
+      "**Don't** 글 칸(쪽 · 프로필)에 색 바탕을 깔지 않는다 — 흰 바탕 무채색이다.",
+      "**Don't** 캐릭터를 흰 쪽 위에 바로 세우지 않는다 (ΔE2000 0).",
+      "**Don't** 어떤 글자도 12px 의 배수가 아닌 크기(13 · 15 · 16px 같은)로 쓰지 않는다 — 본문도 12px 다.",
+      "**Don't** 쪽 안에 카드를 겹치지 않는다. 상자는 초대코드 표처럼 실물을 흉내 내는 것만.",
+      "**Don't** 숫자를 크게 띄운 지표 카드를 만들지 않는다 — 숫자는 기본 정보 표의 한 낱말이다.",
+      "**Don't** 제목 위에 작은 머리말(kicker · eyebrow)을 달지 않는다.",
+      "**Don't** 데모를 저절로 틀지 않는다. 움직임은 방문자의 콕에서만 시작한다.",
+      "**Don't** 지어낸 숫자 · 지어낸 사람 이름을 쓰지 않는다. TOTAL 은 이 브라우저의 기록뿐이다.",
+      "**Don't** 그 시절 서비스의 이름 · 로고 · 화폐를 쓰지 않는다. 문법만 빌린다.",
+      "**Don't** 글리프(▶ ♪ + −)를 아이콘으로 쓰지 않는다 — 서체마다 굵기와 자리가 다르다.",
+      "**Don't** 살구 단추 밖에서 단단한 오프셋 그림자를 쓰지 않는다.",
+      "**Don't** 랜딩 본문에 `'use client'` 를 들이지 않는다 — 스크립트는 받기 단추와 미니룸 데모 둘뿐이다."
     ]
   }
 }
