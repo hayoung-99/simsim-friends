@@ -12,12 +12,12 @@
  * **글 칸은 흰 바탕 무채색이다.** 색은 틀 · 탭 · 방에만 칠한다. 여러 색이 글 사이를 오가면
  * 귀여움보다 어지러움이 먼저 온다.
  *
- * 서체
- *   제목 · 탭 · 단추 · 라벨   갈무리 11 Bold (픽셀) — **12px 의 배수로만** (`--px-*`)
- *   본문 · 설명 · FAQ        Pretendard
- * 픽셀 서체는 11px 격자로 그려져 있어서 배수가 아닌 크기에서는 반 칸씩 흐려진다. 끝까지 쓸지는
- * 화면에 올려 보며 정하기로 했다 — 되돌릴 때는 `--font-head` 한 줄을 `var(--font-display)`
- * (앱 제목의 둥근미소)로 바꾸면 된다.
+ * 서체 — **전부 갈무리 11 Bold (픽셀) 한 벌, 12px 의 배수로만** (`--px-*`)
+ *   본문 · 설명 · FAQ        12px
+ *   제목 · 탭 · 단추 · 라벨   12 · 24 · 36 · 48px
+ * 픽셀 서체는 11px 격자로 그려져 있어서 배수가 아닌 크기에서는 반 칸씩 흐려진다. 그래서 본문도
+ * 15~16px 가 아니라 12px 다. 시안을 세 벌(제목만 픽셀 · 본문만 픽셀 · 전부 픽셀) 나란히 놓고
+ * 미니홈피 느낌이 가장 진한 "전부 픽셀" 로 정했다(2026-11). 서체가 한 벌이라 Pretendard 도 받지 않는다.
  *
  * 캐릭터 그림은 모두 Blender 원본에서 **같은 키 · 같은 바닥선**으로 렌더했다(정사각형, 발이
  * 아래에서 10% 자리). 그래서 크기는 폭으로만 정하고, 바닥은 그 폭의 90% 지점에 맞춘다.
@@ -82,8 +82,8 @@
   --px-xl: 48px;
 
   --font-head: var(--font-pixel), var(--ss-font-pixel);
-  /* 본문은 Pretendard 를 우리 도메인에서 내보낸다(`pretendard.css`). 못 받으면 운영체제 글꼴로 */
-  --body: 'Pretendard Variable', Pretendard, var(--ss-font-body);
+  /* 본문도 같은 픽셀 서체다(2026-11 "3안"). 못 받으면 운영체제 글꼴로 */
+  --body: var(--font-pixel), var(--ss-font-pixel);
 
   color-scheme: light;
 }
@@ -157,8 +157,8 @@ body {
   background-size: 22px 22px;
   color: var(--ink);
   font-family: var(--body);
-  font-size: 16px;
-  line-height: 1.7;
+  font-size: var(--px-s);
+  line-height: 1.9;
   -webkit-font-smoothing: antialiased;
   word-break: keep-all;
   overflow-wrap: break-word;
@@ -275,9 +275,9 @@ body > footer,
 .profile .lead-line { font-size: var(--px-m); }
 .profile .tail-line { font-size: var(--px-xl); line-height: 1.1; }
 
-.intro { font-size: 15px; color: var(--ink-soft); }
+.intro { font-size: var(--px-s); color: var(--ink-soft); }
 
-.facts { list-style: none; display: grid; gap: 4px; font-size: 15px; padding-block: 12px; border-block: 1px dotted var(--dot-line); }
+.facts { list-style: none; display: grid; gap: 4px; font-size: var(--px-s); padding-block: 12px; border-block: 1px dotted var(--dot-line); }
 .facts li { display: flex; align-items: baseline; gap: 9px; }
 .facts li::before { content: ''; flex: none; width: 6px; height: 6px; background: var(--sage); translate: 0 -2px; }
 
@@ -287,9 +287,9 @@ body > footer,
 .btn-play { width: 100%; justify-content: flex-start; font-size: var(--px-m); line-height: 1.15; text-align: left; text-wrap: balance; padding: 12px 14px; }
 .btn-play .play { width: 28px; height: 28px; border-radius: 50%; background: var(--page); color: var(--apricot-edge); display: grid; place-items: center; flex: none; }
 .btn-play .play svg { width: 14px; height: 14px; translate: 1px 0; }
-.warn { margin-top: 10px; font-size: 13px; line-height: 1.55; color: var(--ink-soft); }
+.warn { margin-top: 10px; font-size: var(--px-s); line-height: 1.8; color: var(--ink-soft); }
 .warn a { color: var(--accent-text); font-weight: 700; }
-.profile > .note { font-size: 13px; line-height: 1.55; color: var(--ink-soft); }
+.profile > .note { font-size: var(--px-s); line-height: 1.8; color: var(--ink-soft); }
 
 /* ── 오른쪽 쪽들 ──────────────────────────────────────── */
 
@@ -457,7 +457,7 @@ body > footer,
 }
 .traces li:nth-child(odd) { rotate: -2deg; }
 .traces li:nth-child(even) { rotate: 1.5deg; }
-.quiet-body { font-size: 16px; max-width: 46ch; }
+.quiet-body { font-size: var(--px-s); max-width: 46ch; }
 
 /* ── 몸짓 다섯 ────────────────────────────────────────── */
 
@@ -471,7 +471,7 @@ body > footer,
 }
 .picker label:hover { background: var(--page-tint); }
 .picker b { font-family: var(--font-head); font-size: var(--px-m); line-height: 1.2; min-width: 4.2em; }
-.picker span { font-size: 15px; color: var(--ink-soft); }
+.picker span { font-size: var(--px-s); color: var(--ink-soft); }
 
 /* 무대 — 그 몸짓을 하는 친구 한 마리. 벽지와 바닥 위에 선다 */
 .stage {
@@ -536,7 +536,7 @@ body > footer,
   position: relative; display: grid; justify-items: center; gap: 4px; margin-top: 4px; text-align: center;
   font-family: var(--font-head); font-size: var(--px-s); line-height: 1.2; color: #343849;
 }
-.shelf .name small { font-family: var(--body); font-size: 13px; font-weight: 500; color: #343849; }
+.shelf .name small { font-family: var(--body); font-size: var(--px-s); color: #343849; }
 
 /* ── 시작하기 ─────────────────────────────────────────── */
 
@@ -551,10 +551,10 @@ body > footer,
   border-radius: 50%; background: var(--butter); color: #343849;
 }
 .step h3 { font-size: var(--px-s); margin-bottom: 6px; }
-.step p { font-size: 15px; color: var(--ink-soft); }
+.step p { font-size: var(--px-s); color: var(--ink-soft); }
 .ticket { margin-top: 14px; padding: 12px 14px; border-radius: var(--ss-radius-field); background: var(--page); border: 1.5px dashed var(--dot-line); }
 .ticket code { display: block; font-family: var(--font-head); font-size: var(--px-m); letter-spacing: 0.12em; color: var(--ink); }
-.ticket span { display: block; margin-top: 4px; font-size: 13px; color: var(--ink-soft); }
+.ticket span { display: block; margin-top: 4px; font-size: var(--px-s); color: var(--ink-soft); }
 
 /* ── 방 규칙 — 홈피의 "기본 정보" 표 ─────────────────── */
 
@@ -564,7 +564,7 @@ body > footer,
 .rule:last-child { border-bottom: 0; padding-bottom: 0; }
 .rule dt { font-family: var(--font-head); font-size: var(--px-s); line-height: 1.5; }
 .rule .num { font-size: var(--px-m); line-height: 1; margin-right: 8px; color: var(--accent-text); }
-.rule dd { font-size: 15px; color: var(--ink-soft); max-width: 52ch; }
+.rule dd { font-size: var(--px-s); color: var(--ink-soft); max-width: 52ch; }
 .rule-sleep dd { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 
 /* 엎드려 자는 강아지 — 방석 위에. 앱의 Z 말풍선과 같은 남색 z 셋 */
@@ -582,9 +582,9 @@ body > footer,
 .guide h3 { font-size: var(--px-m); margin-bottom: 10px; }
 .guide ol { list-style: none; counter-reset: guide; display: grid; gap: 8px; }
 /* 한 줄 안에 굵은 글씨가 섞여 있어 flex 로 두면 조각마다 칸이 갈린다 — 번호만 따로 띄운다 */
-.guide li { counter-increment: guide; position: relative; padding-left: 32px; font-size: 15px; }
+.guide li { counter-increment: guide; position: relative; padding-left: 32px; font-size: var(--px-s); }
 .guide li::before { content: counter(guide); position: absolute; left: 0; top: 2px; font-family: var(--font-head); font-size: var(--px-s); line-height: 1; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: var(--sky-tab); color: #343849; }
-.hint { margin-top: 12px; font-size: 13px; color: var(--ink-soft); }
+.hint { margin-top: 12px; font-size: var(--px-s); color: var(--ink-soft); }
 .hint a { color: var(--accent-text); font-weight: 700; }
 
 /* ── 궁금한 것 — 방명록 ───────────────────────────────── */
@@ -593,7 +593,7 @@ body > footer,
 .qa { border-radius: var(--ss-radius-inner); background: var(--page); box-shadow: inset 0 0 0 1px var(--page-line); overflow: hidden; }
 .qa summary {
   cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 12px 16px; background: var(--page-tint); font-weight: 700; font-size: 16px;
+  padding: 12px 16px; background: var(--page-tint); font-weight: 700; font-size: var(--px-s);
 }
 .qa summary::-webkit-details-marker { display: none; }
 /* 더하기 · 빼기는 글자가 아니라 막대 두 개로 그린다 — 서체마다 굵기와 자리가 달라서 */
@@ -605,7 +605,7 @@ body > footer,
 }
 .qa[open] summary::after { background-size: 14px 2.5px, 0 0; }
 .qa summary:hover { background: var(--page-line); }
-.qa p { padding: 12px 16px 16px; font-size: 15px; color: var(--ink-soft); max-width: 68ch; }
+.qa p { padding: 12px 16px 16px; font-size: var(--px-s); color: var(--ink-soft); max-width: 68ch; }
 
 /* ── 마지막 받기 칸 ───────────────────────────────────── */
 
@@ -613,7 +613,7 @@ body > footer,
 .final-copy { padding-bottom: 28px; }
 .final-copy h2 { font-size: var(--px-l); line-height: 1.25; margin-bottom: 20px; }
 .final-copy .btn { font-size: var(--px-m); padding: 14px 22px; }
-.final-copy .note { margin-top: 14px; font-size: 13px; color: var(--ink-soft); }
+.final-copy .note { margin-top: 14px; font-size: var(--px-s); color: var(--ink-soft); }
 .final-floor {
   position: relative; display: flex; align-items: flex-end; justify-content: center; align-self: stretch; min-height: 220px;
   border-radius: var(--ss-radius-inner) var(--ss-radius-inner) 0 0;
@@ -641,7 +641,7 @@ body > footer,
 
 /* ── 꼬리말 ───────────────────────────────────────────── */
 
-body > footer { display: flex; justify-content: flex-end; padding-block: 18px 40px; font-size: 13px; color: var(--ink-soft); }
+body > footer { display: flex; justify-content: flex-end; padding-block: 18px 40px; font-size: var(--px-s); color: var(--ink-soft); }
 body > footer nav { display: flex; gap: 1.4rem; }
 body > footer a { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
 body > footer a:hover { color: var(--ink); }
@@ -670,7 +670,7 @@ body > footer a svg { width: 15px; height: 15px; flex: none; }
 .dl-list { margin-top: 6px; }
 .dl-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 11px 0; border-bottom: 1px dotted var(--dot-line); }
 .dl-row:last-child { border-bottom: none; padding-bottom: 0; }
-.dl-row .name { font-size: 15px; }
+.dl-row .name { font-size: var(--px-s); }
 .dl-icon-btn {
   display: inline-flex; align-items: center; justify-content: center; flex: none;
   width: 38px; height: 38px; border-radius: var(--ss-radius-pill); background: var(--apricot); color: #343849;

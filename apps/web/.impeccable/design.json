@@ -717,16 +717,8 @@
         "purpose": "탭 · 단추 · 이름표 · 카운터 · 말풍선."
       },
       "body": {
-        "displayName": "Pretendard 본문",
-        "purpose": "본문 16px / 1.7."
-      },
-      "body-small": {
-        "displayName": "Pretendard 설명",
-        "purpose": "설명 · 단계 · FAQ 답."
-      },
-      "note": {
-        "displayName": "Pretendard 꼬리말",
-        "purpose": "경고 줄 · 꼬리말."
+        "displayName": "픽셀 본문 (12)",
+        "purpose": "본문 · 설명 · FAQ · 꼬리말 — 12px / 1.9. 위계는 크기가 아니라 색으로."
       }
     },
     "shadows": [
@@ -826,7 +818,7 @@
       "refersTo": "button-play",
       "description": "프로필 칸 아래 배경음악 플레이어 모양의 받기 칸. 글자는 DownloadButtons 가 OS 에 맞춰 바꾼다.",
       "html": "<div class=\"ds-player\"><p class=\"ds-player-label\">지금 받을 수 있어요</p><a class=\"ds-btn-play\" href=\"#\"><span class=\"ds-play\"><svg viewBox=\"0 0 16 16\" width=\"14\" height=\"14\"><path d=\"M5 3.2v9.6L12.6 8z\" fill=\"currentColor\"/></svg></span>macOS용 받기</a><p class=\"ds-warn\">처음 열 때 경고가 한 번 떠요. <a href=\"#\">넘기는 법 보기</a></p></div>",
-      "css": ".ds-player{width:300px;padding:12px;border-radius:10px;background:#f2f8fc;box-shadow:inset 0 0 0 1px #d3e4ef}.ds-player-label{font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:12px;color:#5b6479;margin:0 0 8px}.ds-btn-play{display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:24px;line-height:1.15;color:#343849;background:#f3a77c;padding:12px 14px;border-radius:8px;box-shadow:0 3px 0 #d98558;text-decoration:none;transition:transform 120ms,box-shadow 120ms,filter 120ms}.ds-btn-play:hover{filter:brightness(1.04)}.ds-btn-play:active{transform:translateY(3px);box-shadow:0 0 0 #d98558}.ds-btn-play:focus-visible{outline:3px solid #6aa6cc;outline-offset:2px}.ds-play{width:28px;height:28px;border-radius:50%;background:#fff;color:#d98558;display:grid;place-items:center;flex:none}.ds-play svg{translate:1px 0}.ds-warn{margin:10px 0 0;font-size:13px;line-height:1.55;color:#5b6479}.ds-warn a{color:#a5532f;font-weight:700}"
+      "css": ".ds-player{width:300px;padding:12px;border-radius:10px;background:#f2f8fc;box-shadow:inset 0 0 0 1px #d3e4ef}.ds-player-label{font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:12px;color:#5b6479;margin:0 0 8px}.ds-btn-play{display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:24px;line-height:1.15;color:#343849;background:#f3a77c;padding:12px 14px;border-radius:8px;box-shadow:0 3px 0 #d98558;text-decoration:none;transition:transform 120ms,box-shadow 120ms,filter 120ms}.ds-btn-play:hover{filter:brightness(1.04)}.ds-btn-play:active{transform:translateY(3px);box-shadow:0 0 0 #d98558}.ds-btn-play:focus-visible{outline:3px solid #6aa6cc;outline-offset:2px}.ds-play{width:28px;height:28px;border-radius:50%;background:#fff;color:#d98558;display:grid;place-items:center;flex:none}.ds-play svg{translate:1px 0}.ds-warn{margin:10px 0 0;font-size:12px;line-height:1.55;color:#5b6479}.ds-warn a{color:#a5532f;font-weight:700}"
     },
     {
       "name": "세로 탭",
@@ -842,7 +834,7 @@
       "refersTo": "page-panel",
       "description": "하늘색 점선 틀 안의 흰 쪽. 제목 아래와 구획은 점선으로만 나눈다.",
       "html": "<div class=\"ds-frame\"><section class=\"ds-page\"><h2>방 규칙</h2><p>한 방에 다섯 명까지, 방은 셋까지 들 수 있어요.</p></section></div>",
-      "css": ".ds-frame{padding:18px;background:#a8d6ef;border:3px dashed #fff;border-radius:26px;outline:3px solid #6aa6cc;outline-offset:5px}.ds-page{background:#fff;color:#343849;border-radius:16px;padding:20px 26px 28px;box-shadow:inset 0 0 0 1px #d3e4ef,0 14px 30px -18px rgba(40,70,100,0.45);font-family:'Pretendard Variable',Pretendard,sans-serif;font-size:16px;line-height:1.7}.ds-page h2{font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:24px;line-height:1.25;margin:0 0 18px;padding-bottom:12px;border-bottom:1px dotted #a9c6d8}.ds-page p{margin:0;color:#5b6479;font-size:15px}"
+      "css": ".ds-frame{padding:18px;background:#a8d6ef;border:3px dashed #fff;border-radius:26px;outline:3px solid #6aa6cc;outline-offset:5px}.ds-page{background:#fff;color:#343849;border-radius:16px;padding:20px 26px 28px;box-shadow:inset 0 0 0 1px #d3e4ef,0 14px 30px -18px rgba(40,70,100,0.45);font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:12px;line-height:1.9}.ds-page h2{font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:24px;line-height:1.25;margin:0 0 18px;padding-bottom:12px;border-bottom:1px dotted #a9c6d8}.ds-page p{margin:0;color:#5b6479;font-size:12px}"
     },
     {
       "name": "기본 정보 표",
@@ -850,7 +842,7 @@
       "refersTo": "page-panel",
       "description": "방 규칙. 점선 줄 안의 한 낱말로만 숫자를 둔다.",
       "html": "<dl class=\"ds-rules\"><div class=\"ds-rule\"><dt><b>5</b>명까지</dt><dd>한 방에 다섯 명까지 들어와요.</dd></div><div class=\"ds-rule\"><dt><b>3</b>개까지</dt><dd>방은 셋까지 만들거나 들 수 있어요.</dd></div></dl>",
-      "css": ".ds-rules{margin:0;display:grid}.ds-rule{display:grid;grid-template-columns:13em minmax(0,1fr);gap:4px 20px;align-items:baseline;padding-block:14px;border-bottom:1px dotted #a9c6d8}.ds-rule:last-child{border-bottom:0}.ds-rule dt{font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:12px;line-height:1.5;color:#343849}.ds-rule dt b{font-size:24px;line-height:1;margin-right:8px;color:#a5532f}.ds-rule dd{margin:0;font-size:15px;color:#5b6479}"
+      "css": ".ds-rules{margin:0;display:grid}.ds-rule{display:grid;grid-template-columns:13em minmax(0,1fr);gap:4px 20px;align-items:baseline;padding-block:14px;border-bottom:1px dotted #a9c6d8}.ds-rule:last-child{border-bottom:0}.ds-rule dt{font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:12px;line-height:1.5;color:#343849}.ds-rule dt b{font-size:24px;line-height:1;margin-right:8px;color:#a5532f}.ds-rule dd{margin:0;font-size:12px;color:#5b6479}"
     },
     {
       "name": "방명록 질문",
@@ -858,7 +850,7 @@
       "refersTo": "guestbook-entry",
       "description": "FAQ 한 줄. 더하기 · 빼기는 막대 두 개로 그린다.",
       "html": "<details class=\"ds-qa\"><summary>무료인가요?</summary><p>네, 무료이고 가입도 없어요.</p></details>",
-      "css": ".ds-qa{border-radius:10px;background:#fff;box-shadow:inset 0 0 0 1px #d3e4ef;overflow:hidden;color:#343849;font-family:'Pretendard Variable',Pretendard,sans-serif}.ds-qa summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 16px;background:#f2f8fc;font-weight:700;font-size:16px}.ds-qa summary::-webkit-details-marker{display:none}.ds-qa summary::after{content:'';flex:none;width:14px;height:14px;background:linear-gradient(#a5532f,#a5532f) center/14px 2.5px no-repeat,linear-gradient(#a5532f,#a5532f) center/2.5px 14px no-repeat}.ds-qa[open] summary::after{background-size:14px 2.5px,0 0}.ds-qa summary:hover{background:#d3e4ef}.ds-qa summary:focus-visible{outline:3px solid #6aa6cc;outline-offset:2px}.ds-qa p{margin:0;padding:12px 16px 16px;font-size:15px;color:#5b6479}"
+      "css": ".ds-qa{border-radius:10px;background:#fff;box-shadow:inset 0 0 0 1px #d3e4ef;overflow:hidden;color:#343849;font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700}.ds-qa summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 16px;background:#f2f8fc;font-weight:700;font-size:12px}.ds-qa summary::-webkit-details-marker{display:none}.ds-qa summary::after{content:'';flex:none;width:14px;height:14px;background:linear-gradient(#a5532f,#a5532f) center/14px 2.5px no-repeat,linear-gradient(#a5532f,#a5532f) center/2.5px 14px no-repeat}.ds-qa[open] summary::after{background-size:14px 2.5px,0 0}.ds-qa summary:hover{background:#d3e4ef}.ds-qa summary:focus-visible{outline:3px solid #6aa6cc;outline-offset:2px}.ds-qa p{margin:0;padding:12px 16px 16px;font-size:12px;color:#5b6479}"
     },
     {
       "name": "이름표 · 방 이름표",
@@ -874,7 +866,7 @@
       "refersTo": "ticket",
       "description": "쪽 안의 유일한 상자 — 실물 표를 흉내 낸다.",
       "html": "<div class=\"ds-ticket\"><code>K7Q-29X</code><span>24시간 동안 쓸 수 있어요</span></div>",
-      "css": ".ds-ticket{padding:12px 14px;border-radius:8px;background:#fff;border:1.5px dashed #a9c6d8;max-width:240px}.ds-ticket code{display:block;font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:24px;letter-spacing:0.12em;color:#343849}.ds-ticket span{display:block;margin-top:4px;font-size:13px;color:#5b6479;font-family:'Pretendard Variable',Pretendard,sans-serif}"
+      "css": ".ds-ticket{padding:12px 14px;border-radius:8px;background:#fff;border:1.5px dashed #a9c6d8;max-width:240px}.ds-ticket code{display:block;font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700;font-size:24px;letter-spacing:0.12em;color:#343849}.ds-ticket span{display:block;margin-top:4px;font-size:12px;color:#5b6479;font-family:var(--font-pixel),'Galmuri11',sans-serif;font-weight:700}"
     },
     {
       "name": "미니룸 데모",
@@ -922,13 +914,13 @@
         "section": "typography"
       },
       {
-        "name": "The 픽셀은 짧은 글에만 Rule",
-        "body": "문장이 두 줄을 넘는 자리는 Pretendard 다. 픽셀 서체를 본문 · 설명 · FAQ 답에 쓰지 않는다.",
+        "name": "The 본문도 12px Rule",
+        "body": "본문은 15 · 16px 가 아니라 12px 다. 픽셀 서체의 12의 배수 규칙이 본문에도 그대로 걸리기 때문이다. 24px 로 키우면 한 줄에 들어가는 글이 너무 줄어든다. 읽기 부담은 글을 짧게 끊는 것으로 덜어 낸다.",
         "section": "typography"
       },
       {
-        "name": "The 한 줄로 되돌린다 Rule",
-        "body": "픽셀 서체를 어디까지 쓸지는 아직 \"적용해 보며 정한다\" 는 열린 결정이다. 되돌릴 때는 `--font-head` 한 줄을 `var(--font-display)`(앱 제목의 학교안심 둥근미소, 정의만 남겨 둔 것)로 바꾼다. 그래서 제목 · 라벨의 글꼴은 반드시 `--font-head` 로 부르고 `--font-pixel` 을 직접 부르지 않는다.",
+        "name": "The 두 이름으로 부른다 Rule",
+        "body": "제목 · 라벨은 `--font-head`, 본문은 `--body` 로 부르고 `--font-pixel` 을 직접 부르지 않는다. 지금은 둘 다 갈무리지만, 다시 갈라야 할 날에는 이 두 줄만 고치면 된다(제목을 앱의 둥근미소로 — `var(--font-display)`, 정의만 남겨 둠).",
         "section": "typography"
       },
       {
@@ -957,7 +949,7 @@
       "**Don't** 채도 높은 쨍한 색(시안의 #ff8a3d 같은)을 면에 쓰지 않는다.",
       "**Don't** 글 칸(쪽 · 프로필)에 색 바탕을 깔지 않는다 — 흰 바탕 무채색이다.",
       "**Don't** 캐릭터를 흰 쪽 위에 바로 세우지 않는다 (ΔE2000 0).",
-      "**Don't** 픽셀 서체를 12px 의 배수가 아닌 크기로, 또는 문단 본문에 쓰지 않는다.",
+      "**Don't** 어떤 글자도 12px 의 배수가 아닌 크기(13 · 15 · 16px 같은)로 쓰지 않는다 — 본문도 12px 다.",
       "**Don't** 쪽 안에 카드를 겹치지 않는다. 상자는 초대코드 표처럼 실물을 흉내 내는 것만.",
       "**Don't** 숫자를 크게 띄운 지표 카드를 만들지 않는다 — 숫자는 기본 정보 표의 한 낱말이다.",
       "**Don't** 제목 위에 작은 머리말(kicker · eyebrow)을 달지 않는다.",

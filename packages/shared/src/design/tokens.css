@@ -44,9 +44,9 @@
 
   /*
    * 서체. 셋 다 SIL OFL 이고 우리 도메인(앱은 번들)에서 낸다.
-   * - 픽셀: 갈무리 11 Bold — 미니룸 랜딩의 제목 · 탭 · 단추 · 라벨. 12px 의 배수에서 또렷하다
+   * - 픽셀: 갈무리 11 Bold — 미니룸 랜딩의 모든 글자(제목부터 본문까지). 12px 의 배수에서 또렷하다
    * - 둥근: 학교안심 둥근미소 Bold — 앱 창 제목
-   * - 본문: 운영체제 글꼴 위주. 랜딩은 Pretendard 를 앞에 둔다
+   * - 본문: 운영체제 글꼴 — 앱 창의 본문
    */
   --ss-font-pixel: 'Galmuri11', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
   --ss-font-round: 'HakgyoansimDunggeunmiso', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;

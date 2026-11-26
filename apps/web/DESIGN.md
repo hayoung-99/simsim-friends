@@ -77,17 +77,10 @@ typography:
     fontWeight: 700
     lineHeight: 1
   body:
-    fontFamily: "'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Segoe UI', 'Malgun Gothic', sans-serif"
-    fontSize: "16px"
-    lineHeight: 1.7
-  body-small:
-    fontFamily: "Pretendard"
-    fontSize: "15px"
-    lineHeight: 1.7
-  note:
-    fontFamily: "Pretendard"
-    fontSize: "13px"
-    lineHeight: 1.55
+    fontFamily: "Galmuri11, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif"
+    fontSize: "12px"
+    fontWeight: 700
+    lineHeight: 1.9
 rounded:
   frame: "26px"
   panel: "16px"
@@ -297,11 +290,13 @@ Jua 제목 · 노란 단추)을 통째로 걷어 내고 **2000년대 미니홈�
 ## Typography
 
 **Display Font:** 갈무리 11 Bold (Galmuri11, SIL OFL 1.1, `next/font/local` 로 자체 배포)
-**Body Font:** Pretendard (자체 배포, `app/pretendard.css`), 못 받으면 운영체제 글꼴
+**Body Font:** 같은 갈무리 11 Bold — 랜딩의 글자는 이 한 벌뿐이다. 못 받으면 운영체제 글꼴
 
-**Character:** 미니홈피 시절의 비트맵 글씨를 오늘 화면에서 다시 읽히게 만든 픽셀 서체가
-제목 · 탭 · 단추 · 라벨을 맡고, 긴 글은 둥글고 고른 Pretendard 가 맡는다. 픽셀 글씨로 문단을
-읽게 하면 눈이 금방 지친다.
+**Character:** 미니홈피 시절의 비트맵 글씨를 오늘 화면에서 다시 읽히게 만든 픽셀 서체가 제목부터
+본문 · FAQ 까지 전부 맡는다. 시안을 세 벌(제목만 픽셀 + 본문 Pretendard · 제목 Pretendard + 본문
+픽셀 · 전부 픽셀) 같은 화면에 나란히 놓고, 미니홈피 느낌이 가장 진한 "전부 픽셀" 로 정했다
+(2026-11). 그 대가로 본문이 12px 로 작고 진하다 — 긴 글을 더할 때는 짧게 끊어 쓴다. 서체가 한
+벌이라 본문 서체를 따로 받지 않아 페이지는 오히려 가벼워졌다(`app/pretendard.css` 는 더 부르지 않는다).
 
 갈무리는 한글 11,172자가 다 든 한 벌이 167KB 라 쪼개지 않고 미리 받는다(`preload: true`).
 CSP 의 `font-src 'self'` 가 빠지면 오류 없이 운영체제 글꼴로 떨어진다.
@@ -315,9 +310,8 @@ CSP 의 `font-src 'self'` 가 빠지면 오류 없이 운영체제 글꼴로 떨
 - **Title** (700, 12px `--px-s`, 1.5): 칸 안의 작은 제목(`h3`) · 기본 정보 표의 이름 칸.
 - **Label** (700, 12px `--px-s`, 1): 탭 · 단추 · 로고 · 카운터 · 방 이름표 · 말풍선 · 이름표 ·
   선반 이름 · 흔적 스티커.
-- **Body** (400, 16px, 1.7): 본문. FAQ 질문은 같은 크기 700.
-- **Body Small** (15px): 설명 · 사실 목록 · 단계 설명 · FAQ 답(최대 68ch).
-- **Note** (13px, 1.55): 경고 줄 · 칸 아래 꼬리말 · 초대코드 설명.
+- **Body** (700, 12px `--px-s`, 1.9): 본문 · 설명 · 사실 목록 · 단계 설명 · FAQ 질문과 답(최대 68ch) ·
+  경고 줄 · 꼬리말 · 초대코드 설명. 크기로 위계를 나누지 않고 색(`ink` · `ink-soft`)으로 나눈다.
 
 `word-break: keep-all` — 한국어가 낱말 가운데서 끊기지 않게.
 
@@ -327,13 +321,13 @@ CSP 의 `font-src 'self'` 가 빠지면 오류 없이 운영체제 글꼴로 떨
 격자로 그린 글씨라 배수가 아닌 크기에서는 픽셀이 반 칸씩 걸쳐 흐려진다. 새 크기가 필요하면
 눈금을 고르지, 13px 이나 1.5rem 을 쓰지 않는다.
 
-**The 픽셀은 짧은 글에만 Rule.** 문장이 두 줄을 넘는 자리는 Pretendard 다. 픽셀 서체를
-본문 · 설명 · FAQ 답에 쓰지 않는다.
+**The 본문도 12px Rule.** 본문은 15 · 16px 가 아니라 12px 다. 픽셀 서체의 12의 배수 규칙이
+본문에도 그대로 걸리기 때문이다. 24px 로 키우면 한 줄에 들어가는 글이 너무 줄어든다. 읽기 부담은
+글을 짧게 끊는 것으로 덜어 낸다.
 
-**The 한 줄로 되돌린다 Rule.** 픽셀 서체를 어디까지 쓸지는 아직 "적용해 보며 정한다" 는
-열린 결정이다. 되돌릴 때는 `--font-head` 한 줄을 `var(--font-display)`(앱 제목의 학교안심
-둥근미소, 정의만 남겨 둔 것)로 바꾼다. 그래서 제목 · 라벨의 글꼴은 반드시 `--font-head` 로
-부르고 `--font-pixel` 을 직접 부르지 않는다.
+**The 두 이름으로 부른다 Rule.** 제목 · 라벨은 `--font-head`, 본문은 `--body` 로 부르고
+`--font-pixel` 을 직접 부르지 않는다. 지금은 둘 다 갈무리지만, 다시 갈라야 할 날에는 이 두 줄만
+고치면 된다(제목을 앱의 둥근미소로 — `var(--font-display)`, 정의만 남겨 둠).
 
 ## Layout
 
@@ -497,7 +491,7 @@ CSP 의 `font-src 'self'` 가 빠지면 오류 없이 운영체제 글꼴로 떨
 
 벽지 위에 서고 나무 바닥을 딛는 한 줄. 그림의 발이 폭의 90% 높이에 있으므로 벽지 칸을
 가로세로 1 : 0.9 로 깔면 그 아래부터가 바닥이 되어 다섯이 같은 줄에 선다. 이름은 픽셀,
-성격 한 줄은 Pretendard 13px.
+성격 한 줄도 같은 서체 12px.
 
 ### 그림
 
@@ -536,7 +530,7 @@ CSP 의 `font-src 'self'` 가 빠지면 오류 없이 운영체제 글꼴로 떨
 - **Don't** 채도 높은 쨍한 색(시안의 #ff8a3d 같은)을 면에 쓰지 않는다.
 - **Don't** 글 칸(쪽 · 프로필)에 색 바탕을 깔지 않는다 — 흰 바탕 무채색이다.
 - **Don't** 캐릭터를 흰 쪽 위에 바로 세우지 않는다 (ΔE2000 0).
-- **Don't** 픽셀 서체를 12px 의 배수가 아닌 크기로, 또는 문단 본문에 쓰지 않는다.
+- **Don't** 어떤 글자도 12px 의 배수가 아닌 크기(13 · 15 · 16px 같은)로 쓰지 않는다 — 본문도 12px 다.
 - **Don't** 쪽 안에 카드를 겹치지 않는다. 상자는 초대코드 표처럼 실물을 흉내 내는 것만.
 - **Don't** 숫자를 크게 띄운 지표 카드를 만들지 않는다 — 숫자는 기본 정보 표의 한 낱말이다.
 - **Don't** 제목 위에 작은 머리말(kicker · eyebrow)을 달지 않는다.
