@@ -113,6 +113,14 @@ function findAsset(release: Release, target: string): ReleaseAsset | null {
   return (test && assets.find((item) => test(item.name))) ?? null
 }
 
+/**
+ * 단추 안에서 글자만 갈아 끼울 자리. 미니룸 랜딩의 받기 단추는 재생 삼각형 그림을 함께
+ * 품고 있어서, 단추 전체의 글자를 바꾸면 그림까지 지워진다. 글자 칸이 따로 없으면 단추째로.
+ */
+function labelOf(anchor: HTMLElement): HTMLElement {
+  return anchor.querySelector<HTMLElement>('[data-hero-download-label]') ?? anchor
+}
+
 export function DownloadButtons({ strings }: { strings: Copy['downloadStrings'] }) {
   useEffect(() => {
     let cancelled = false
@@ -124,9 +132,9 @@ export function DownloadButtons({ strings }: { strings: Copy['downloadStrings'] 
       void sendToComputer().then((copied) => {
         if (!copied || cancelled) return
         // 복사는 화면에 아무 흔적도 남기지 않으므로 단추가 대신 말해 준다
-        button.textContent = strings.copied
+        labelOf(button).textContent = strings.copied
         setTimeout(() => {
-          if (!cancelled) button.textContent = strings.sendToComputer
+          if (!cancelled) labelOf(button).textContent = strings.sendToComputer
         }, 1800)
       })
     }
@@ -144,7 +152,7 @@ export function DownloadButtons({ strings }: { strings: Copy['downloadStrings'] 
 
         const hero = document.querySelector<HTMLAnchorElement>('[data-hero-download]')
         if (hero) {
-          hero.textContent = strings.sendToComputer
+          labelOf(hero).textContent = strings.sendToComputer
           // 스크립트가 죽어도 헛걸음하지 않게, 원래 자리는 살려 둔다
           hero.href = location.href
           hero.addEventListener('click', onSend)
@@ -166,7 +174,7 @@ export function DownloadButtons({ strings }: { strings: Copy['downloadStrings'] 
         const asset = findAsset(release, target)
         if (!asset) return // 이 릴리스엔 그 파일이 없다 — 링크는 릴리스 페이지 그대로 둔다
 
-        hero.textContent = strings.heroFor.replace('{target}', ASSET_OS_LABELS[target] ?? '')
+        labelOf(hero).textContent = strings.heroFor.replace('{target}', ASSET_OS_LABELS[target] ?? '')
         hero.href = asset.browser_download_url
       } catch {
         // GitHub 이 답하지 않거나 아직 릴리스가 없다. 링크는 릴리스 페이지 그대로 둔다.

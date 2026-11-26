@@ -57,7 +57,7 @@ export interface Copy {
 
   skipToContent: string
   /** 윗줄 내비. `download` 는 `/download` 로 가는 단추이자 맨 끝 받기 칸의 단추 글자다 */
-  nav: { signals: string; friends: string; start: string; download: string }
+  nav: { home: string; signals: string; friends: string; start: string; download: string; menuLabel: string }
 
   hero: {
     /**
@@ -86,15 +86,35 @@ export interface Copy {
      * 캐릭터도 뜨지 않기 때문이다(기획서 "방이 없으면 캐릭터도 없다").
      */
     note: string
+    /** 프로필 칸의 사실 목록. 기획서에 있는 것만 적는다 */
+    facts: string[]
+    /** 받기 단추를 감싼 플레이어 모양 칸의 머리말 */
+    playerLabel: string
   }
 
   /**
-   * 히어로 오른쪽의 데모 영상. 영상 속 글씨(화면 이름 · 보낸 사람)는 구워져 있어서
-   * 여기가 아니라 `apps/desktop/src/renderer/demo-video/demo-video.ts` 의 `TEXT` 에 있다.
+   * 히어로 오른쪽의 미니룸 데모 — 내 방의 고양이를 누르면 친구 방의 강아지가 춤춘다.
+   * 위쪽 TODAY · TOTAL 카운터도 여기 말을 쓴다. 숫자는 **방문자가 누른 횟수뿐**이다.
    */
   demo: {
-    /** 영상과, 움직임을 줄인 사람에게 대신 보여 주는 한 장의 설명. 낭독기가 읽는다 */
+    /** 미니룸 칸의 제목 줄 */
+    heading: string
+    /** 데모 전체를 한 문장으로. 낭독기가 읽고, 움직임을 줄인 사람에게도 이 그림이 남는다 */
     label: string
+    myRoom: string
+    friendRoom: string
+    /** 고양이 옆 말풍선 */
+    hint: string
+    /** 고양이 단추의 이름 (낭독기용) */
+    tapLabel: string
+    /** 춤추는 강아지 발밑에 뜨는 이름표 — 앱에서 보낸 사람 이름이 뜨는 자리 */
+    chip: string
+    /** 아래 다섯 친구 줄의 머리말 */
+    lineup: string
+    today: string
+    total: string
+    /** 카운터가 무엇을 세는지 — 지어낸 숫자가 아니라는 것을 밝힌다 */
+    counterNote: string
   }
 
   /** 말 걸기엔 시시하고 — 이 제품이 무엇을 일부러 안 하는지 */
@@ -130,8 +150,9 @@ export interface Copy {
     codeNote: string
   }
 
-  /** 방 규칙 네 칸 */
+  /** 방 규칙 — 홈피의 기본 정보 표처럼 네 줄 */
   room: {
+    heading: string
     members: { big: string; title: string; body: string }
     rooms: { big: string; title: string; body: string }
     sleep: { title: string; body: string }
@@ -152,7 +173,6 @@ export interface Copy {
    * 화면으로 옮겨 가면서 페이지 자체의 몫(`metaTitle`·`backHome` 등)이 늘었다.
    */
   download: {
-    label: string
     heading: string
     /** 큰 제목 바로 아래 한 줄 */
     sub: string

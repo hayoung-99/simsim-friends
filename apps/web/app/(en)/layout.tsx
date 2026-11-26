@@ -1,3 +1,4 @@
+import '@simsim-friends/shared/design/tokens.css'
 import '../globals.css'
 import '../pretendard.css'
 import type { ReactNode } from 'react'
@@ -9,8 +10,8 @@ export const metadata = buildMetadata(en)
 
 export const viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f6eddc' },
-    { media: '(prefers-color-scheme: dark)', color: '#231a13' },
+    { media: '(prefers-color-scheme: light)', color: '#cfe9f7' },
+    { media: '(prefers-color-scheme: dark)', color: '#1b2230' },
   ],
 }
 

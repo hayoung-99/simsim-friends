@@ -1,0 +1,68 @@
+/*
+ * SimSim Friends 디자인 토큰 — 앱과 랜딩이 함께 부르는 바닥.
+ *
+ * **여기에는 어느 화면에서든 같아야 하는 것만 둔다.** 다섯 캐릭터의 색, 신호가 건너가는
+ * 노란 점, 접속 중 초록, 서체 이름, 모서리 눈금, 움직임의 길이. 이것들은 캐릭터와 제품에서
+ * 나온 값이라 화면마다 달라지면 같은 제품으로 읽히지 않는다.
+ *
+ * 바탕 · 글자 · 강조색처럼 **화면마다 다른 것은 여기 두지 않는다.** 앱 창은 크림색,
+ * 랜딩은 미니룸 하늘색이고, 그 값은 각자의 스타일시트(`apps/desktop/src/renderer/theme.css` ·
+ * `apps/web/app/globals.css`)가 이 토큰 위에 얹는다. 2026-11 지금은 랜딩만 이 파일을 부른다 —
+ * 앱이 따라올지는 나중에 정하기로 했다.
+ *
+ * 이름은 모두 `--ss-` 로 시작한다. 각 화면의 토큰(`--ink` · `--surface` …)과 부딪히지 않게.
+ * 같은 값을 TS 로도 내보낸다(`tokens.ts`) — 한쪽을 고치면 다른 쪽도 함께 고친다.
+ */
+
+:root {
+  /*
+   * 캐릭터 색. Blender 모델의 텍스처에서 뽑은 대표색이라, 캐릭터를 상징하는 자리
+   * (이름표 점 · 친구 줄의 바닥 띠)에만 쓴다. 글자 색으로 쓰지 않는다 — 대부분 밝아서
+   * 흰 바탕 위 대비가 모자란다.
+   */
+  --ss-cat: #f4a64a;
+  --ss-cat-light: #fbf7f1;
+  --ss-dog: #c98a5e;
+  --ss-dog-light: #f1dcc0;
+  --ss-panda: #2a2a2e;
+  --ss-panda-light: #f6f6f3;
+  --ss-duck: #ffd84a;
+  --ss-duck-light: #fff3c2;
+  --ss-bunny: #f19bc0;
+  --ss-bunny-light: #fbe3ee;
+
+  /* 신호가 건너가는 노란 점. 앱의 "콕" 이 화면을 건너는 순간을 그릴 때 이 색이다 */
+  --ss-signal: #ffd84d;
+  --ss-signal-ink: #5b4a12;
+
+  /* 잠든 캐릭터 위의 Z — 앱의 Z 말풍선(`apps/desktop/src/renderer/pet/sleep-bubble.ts` 의 Z_COLOR)과 같은 남색 */
+  --ss-sleep-z: #5b6bb5;
+
+  /* 멤버 목록의 접속 중 · 자리 비움 점 (앱 `theme.css` 의 `--color-online` 과 같은 값) */
+  --ss-online: #6fc48a;
+  --ss-away: #c9c2b6;
+
+  /*
+   * 서체. 셋 다 SIL OFL 이고 우리 도메인(앱은 번들)에서 낸다.
+   * - 픽셀: 갈무리 11 Bold — 미니룸 랜딩의 제목 · 탭 · 단추 · 라벨. 12px 의 배수에서 또렷하다
+   * - 둥근: 학교안심 둥근미소 Bold — 앱 창 제목
+   * - 본문: 운영체제 글꼴 위주. 랜딩은 Pretendard 를 앞에 둔다
+   */
+  --ss-font-pixel: 'Galmuri11', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --ss-font-round: 'HakgyoansimDunggeunmiso', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --ss-font-body: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Segoe UI', 'Malgun Gothic',
+    sans-serif;
+
+  /* 모서리 눈금. 누르는 것은 알약, 판은 크게, 판 안의 판은 작게 */
+  --ss-radius-pill: 999px;
+  --ss-radius-panel: 16px;
+  --ss-radius-inner: 10px;
+  --ss-radius-field: 8px;
+
+  /*
+   * 움직임. 신호 하나가 도는 길이는 앱의 동작 길이(1.7초 안팎)에 맞춘다 — 랜딩 데모가
+   * 앱보다 빠르거나 느리면 받은 뒤 "생각보다 짧네" 가 된다.
+   */
+  --ss-signal-duration: 1.7s;
+  --ss-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
